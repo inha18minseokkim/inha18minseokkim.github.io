@@ -121,3 +121,6 @@ public class MyBatisConfig {
 - 이 방식은 로깅 실패 시 다운스트림 문제를 야기할 수 있으므로, 프로덕션에서는 try-catch로 감싸는 게 안전하다
 - 장기적으로는 MyBatis → JPA 마이그레이션이 바람직하지만, 기존 DB 스키마가 JPA 관례와 달라서 즉각 마이그레이션은 불가
 - Log4jdbc 방식(bgee 라이브러리)이 더 간단하지만 내부 폐쇄망 Nexus에서 사용 불가였음
+
+### 결론
+정보보호팀에 문의해서 방화벽 레벨을 협의하여 bgee log4jdbc를 사용 ㅋㅋ

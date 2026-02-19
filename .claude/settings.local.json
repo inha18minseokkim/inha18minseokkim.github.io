@@ -9,7 +9,11 @@
       "Bash(curl:*)",
       "Bash(python3:*)",
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(for f in Pasted image 2026021922*.png)",
+      "Bash(do mv \"$f\" \"assets/images/\")",
+      "Bash(done)"
     ]
   }
 }
