@@ -7,7 +7,7 @@ tags: [Spring, Java, 삽질, 공공API, 부동산]
 
 법정동코드 + 주소 → GPS 좌표 변환해주는 오픈 API
 
-![[Pasted image 20260219170525.png]]
+![이미지](/assets/images/Pasted%20image%2020260219170525.png)
 parcel(지번), road(도로명)으로 구분 가능
 
 ```python
