@@ -4,12 +4,12 @@ date: 2023-07-04
 tags: [삽질, 공모주, 데이터, 케이뱅크]
 ---
 
->![[Pasted image 20260219223312.png]]
+>![이미지](/assets/images/Pasted%20image%2020260219223312.png)
 
-> ![[Pasted image 20260219223318.png]]
+> ![이미지](/assets/images/Pasted%20image%2020260219223318.png)
 
-> ![[Pasted image 20260219223325.png]]
+> ![이미지](/assets/images/Pasted%20image%2020260219223325.png)
 
-> ![[Pasted image 20260219223332.png]]
+> ![이미지](/assets/images/Pasted%20image%2020260219223332.png)
 
 다만 이런경우는..검증과정에서 일어나는 문제임.

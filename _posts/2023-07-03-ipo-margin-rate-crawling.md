@@ -9,21 +9,21 @@ tags: [삽질, 공모주, 크롤링, Python, OpenDart, 케이뱅크]
 
 다음과 같은 유형 있음
 
-![[Pasted image 20260219222939.png]]
+![이미지](/assets/images/Pasted%20image%2020260219222939.png)
 
-![[Pasted image 20260219222948.png]]
+![이미지](/assets/images/Pasted%20image%2020260219222948.png)
 
-![[Pasted image 20260219222956.png]]
+![이미지](/assets/images/Pasted%20image%2020260219222956.png)
 
 왠만하면 2번 으로 다되는것같음
 
 금감원 표준이 있긴한데 맞춤법이슈..
 
-![[Pasted image 20260219223003.png]]
+![이미지](/assets/images/Pasted%20image%2020260219223003.png)
 
 교보증권이 항상 말썽
 
-![[Pasted image 20260219223011.png]]
+![이미지](/assets/images/Pasted%20image%2020260219223011.png)
 
 로그
 
@@ -1071,11 +1071,11 @@ tags: [삽질, 공모주, 크롤링, Python, OpenDart, 케이뱅크]
     ```
     
 
-![[Pasted image 20260219223026.png]]
+![이미지](/assets/images/Pasted%20image%2020260219223026.png)
 
 아..
 
-![[Pasted image 20260219223032.png]]
+![이미지](/assets/images/Pasted%20image%2020260219223032.png)
 
 - 결과 로그(길어서 접음)
     
