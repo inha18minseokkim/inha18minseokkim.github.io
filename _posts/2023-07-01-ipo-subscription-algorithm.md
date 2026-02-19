@@ -6,10 +6,10 @@ tags: [삽질, 주식, 공모주, 알고리즘]
 
 ## 관련 포스팅
 
-- [공모주 최소청약단위 크롤링 (균등배정 case)](/2023/07/02/ipo-min-subscription-unit-crawling/)
-- [공모주 증거금율 크롤링](/2023/07/03/ipo-margin-rate-crawling/)
-- [연합인포맥스 - 금감원 데이터 문제](/2023/07/04/ipo-yonhap-infomax-data-issue/)
-- [99.99% 검증완료 + 로직 개선](/2023/07/05/ipo-99-percent-verification/)
+- [공모주 최소청약단위 크롤링 (균등배정 case)]({% post_url 2023-07-02-ipo-min-subscription-unit-crawling %})
+- [공모주 증거금율 크롤링]({% post_url 2023-07-03-ipo-margin-rate-crawling %})
+- [연합인포맥스 - 금감원 데이터 문제]({% post_url 2023-07-04-ipo-yonhap-infomax-data-issue %})
+- [99.99% 검증완료 + 로직 개선]({% post_url 2023-07-05-ipo-99-percent-verification %})
 
 ---
 
