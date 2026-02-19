@@ -159,6 +159,48 @@ a:hover {
   border-bottom: 1px solid var(--border);
 }
 
+/* ============================================
+   Tag Filter
+   ============================================ */
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tag-filter-btn {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.4rem 0.85rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tag-filter-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: rgba(124, 111, 255, 0.08);
+}
+
+.tag-filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.filter-status {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  min-height: 1.25rem;
+}
+
 .post-list {
   list-style: none;
   border: 1px solid var(--border);
