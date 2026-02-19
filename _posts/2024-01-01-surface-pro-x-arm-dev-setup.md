@@ -21,10 +21,10 @@ tags: [ARM, Windows, 개발환경, Surface, WSL, 삽질]
 | 연결 | 5G + LTE | LTE |
 | 가격 | 200만원 (중고 120만원↑) | 중고 65만원 |
 | 긱벤치 | 2배 | 0.5배 |
-![[Pasted image 20260219224502.png]]
-![[Pasted image 20260219224519.png]]
+![이미지](/assets/images/Pasted%20image%2020260219224502.png)
+![이미지](/assets/images/Pasted%20image%2020260219224519.png)
 
-![[Pasted image 20260219224527.png]]
+![이미지](/assets/images/Pasted%20image%2020260219224527.png)
 
 웹개발 목적으로 200만원짜리 SQ3는 너무 비싸다. SQ3든 SQ2든 x64 에뮬레이션 성능은 쉽지 않으므로 Native 앱 위주로 쓴다고 생각하면 65만원 중고 SPX로도 충분하다.
 
@@ -52,7 +52,7 @@ tags: [ARM, Windows, 개발환경, Surface, WSL, 삽질]
   - 크롬은 생태계 정치 이슈로 ARM 지원을 미루고 있었음
 	  - ([https://www.theverge.com/2024/1/26/24051485/google-chrome-windows-arm-support-canary-channel-test](https://www.theverge.com/2024/1/26/24051485/google-chrome-windows-arm-support-canary-channel-test))
   - → 2024년 1월 Canary 버전에서 ARM 지원 시작
-	  - ![[Pasted image 20260219225421.png]]
+	  - ![이미지](/assets/images/Pasted%20image%2020260219225421.png)
   - → **2024년 5월** 크롬 정식 ARM 버전 출시! 파폭 탈출
 - 그전까지는 Firefox 또는 Whale 사용
 - Edge는 자꾸 "부모님 허락받고 컨텐츠 보라"고 해서 안씀
@@ -69,7 +69,7 @@ tags: [ARM, Windows, 개발환경, Surface, WSL, 삽질]
 	- 24년 말부터 Postman For Windows AArch 출시 이야기 솔솔 나오는 중
 		그 전까지는 VSCode 플러그인 사용
 		[https://github.com/postmanlabs/postman-app-support/issues/6583#issuecomment-2710743241](https://github.com/postmanlabs/postman-app-support/issues/6583#issuecomment-2710743241)
-	- ![[Pasted image 20260219225614.png]]
+	- ![이미지](/assets/images/Pasted%20image%2020260219225614.png)
   - 2025년 12월부터 Postman Windows ARM 공식 지원 시작
 - **Git**: 공식 ARM 지원은 아니지만 arm64 미러링 프로젝트 사용 가능
 	- https://github.com/git-for-windows/git-sdk-64
@@ -83,7 +83,7 @@ tags: [ARM, Windows, 개발환경, Surface, WSL, 삽질]
 웹개발용으로는 충분히 쾌적하다. JDK가 그렇게 무겁지 않아서 IntelliJ 빌드/실행 무리없음.
 
 절전 모드와 발열은 맥보다는 못하지만, 인텔 윈도우보다 훨씬 좋다.
-![[Pasted image 20260219224715.png]]
+![이미지](/assets/images/Pasted%20image%2020260219224715.png)
 이 정도 퍼포먼스 보여준다.
 
 
@@ -96,13 +96,13 @@ tags: [ARM, Windows, 개발환경, Surface, WSL, 삽질]
 ARM 환경에서 WSL이 hang되는 버그가 있었다:
 - GitHub Issue #10667, #9454
 - → 24H2 빌드 이후 해결
-![[Pasted image 20260219224731.png]]
+![이미지](/assets/images/Pasted%20image%2020260219224731.png)
 
 
 ---
 ### Windows 11 24H2(ARM) 변경점
 
-![[Pasted image 20260219225702.png]]
+![이미지](/assets/images/Pasted%20image%2020260219225702.png)
 
 업데이트 하려 하니 더 이상 32bit ARM은 지원하지않음
 
