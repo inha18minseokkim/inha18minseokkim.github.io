@@ -1,7 +1,10 @@
 ---
-title: "Redis 싱글스레드 + Multiplexing"
+title: Redis 싱글스레드 + Multiplexing - 싱글 스레드로 동시 처리 가능한 이유?
 date: 2025-01-10
-tags: [Redis, 백엔드, 아키텍처]
+tags:
+  - Redis
+  - 백엔드
+  - 아키텍처
 ---
 
 Redis는 싱글스레드로 동작한다.
