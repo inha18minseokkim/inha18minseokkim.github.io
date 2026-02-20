@@ -18,7 +18,7 @@ tags: [LangChain, MCP, LLM, Python, AI, 케이뱅크, 발표]
 
 순차적으로 o4-mini, o3, GPT-4.1
 
-![[Pasted image 20260220143247.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143247.png)
 
 24년 1월 기준으로 학습된 모델이 배포된 모습
 
@@ -63,7 +63,7 @@ LLM은 범용적인 언어들을 기반으로 만들어진 모델이지만 우�
 
 ### 코사인 유사도(cosine similarity)
 
-![[Pasted image 20260220143300.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143300.png)
 
 자매품 유클리드 거리, 맨해튼 거리, 자카드 유사도, 피어슨 상관계수 등..
 
@@ -73,11 +73,11 @@ LLM은 범용적인 언어들을 기반으로 만들어진 모델이지만 우�
 
 문서를 토큰 단위로 나눠서 임베딩
 
-![[Pasted image 20260220143305.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143305.png)
 
 쿼리를 임베딩 한 것
 
-![[Pasted image 20260220143309.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143309.png)
 
 ### 결론
 
@@ -85,7 +85,7 @@ LLM은 범용적인 언어들을 기반으로 만들어진 모델이지만 우�
 
 여기서는 좀 더 기능을 잘 만들기 위해 Langchain의 Langgraph 를 사용해볼 예정
 
-![[Pasted image 20260220143314.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143314.png)
 
 # 툴 목록
 
@@ -344,7 +344,7 @@ def choose_tool(state: StockQueryState) -> StockQueryState:
 
 ```
 
-![[Pasted image 20260220143330.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143330.png)
 
 ### 질문에서 선택한 툴에서 필요한 파라미터를 추출하는 기능
 
@@ -391,7 +391,7 @@ def extract_function_parameter(state: StockQueryState) -> StockQueryState:
     }
 ```
 
-![[Pasted image 20260220143336.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143336.png)
 
 ### 선택한 툴을 실행하는 함수
 
@@ -796,9 +796,9 @@ async with stdio_client(server_params) as (read, write):
         result = await agent.ainvoke({"messages": "삼성전자 재무비율 알려줘"})
 ```
 
-![[Pasted image 20260220143352.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143352.png)
 
-![[Pasted image 20260220143356.png]]
+![이미지](/assets/images/Pasted%20image%2020260220143356.png)
 
 ### 문제점
 

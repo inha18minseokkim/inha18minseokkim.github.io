@@ -4,109 +4,364 @@ date: 2025-07-01
 tags: [AI, LangChain, RAG, LLM, Python, 케이뱅크, 수상]
 ---
 
-2025년 상반기 사내 AI 공모전에서 금상(400만원 + 싱가폴 Fintech Week 참가)을 수상했다. 출품한 내용을 정리해본다.
+주요 성과 요약
 
-## 출품 주제 요약
+1. RAG를 활용한 케이뱅크 주식 데이터 정제 및 Vectorize Pipeline POC
+2. 케이뱅크 AWS 클라우드의 주식 MSA 서비스를 호출하는 langchain 활용 챗봇 개발 POC
+3. 파이썬 + LLM few-shot prompting 활용 주식 데이터 수집 후 케이뱅크 메타 표준 변환, 적재 프로세스 간소화 (생산성 향상 적용사례)
 
-1. RAG를 활용한 케이뱅크 주식 데이터 수집/정제/벡터화 Pipeline POC
-2. 케이뱅크 주식 MSA 서비스를 호출하는 LangChain 챗봇 POC
-3. Python + LLM few-shot prompting으로 주식 데이터 수집 후 케이뱅크 메타 표준 변환 프로세스 간소화
+# 세부 실행내역
 
----
+## 주제 1) RAG를 활용한 케이뱅크 주식 데이터 수집, 정제, 벡터 및 대고객 노출 Pipeline POC
 
-## 주제 1: RAG 기반 주식 정보 수집/정제/벡터화 파이프라인
+### 필요성
 
-### 왜 필요했나
+1. 케이뱅크 투자 서비스의 차별화는 투자서비스를 제공하지만 ‘증권사’가 아니라는 점에서 출발합니다. 실시간 시세 정보보다는, **투자가 처음이거나 초보인 고객들에게 유용한 정보를 제공**하는 것이 핵심 MVP 방향이라고 판단하였습니다.
+2. 하지만 이러한 정보를 **내부 인력이 직접 가공하기에는 인건비 부담이 크고**, 지속적으로 운영하기 어려운 구조입니다.
+3. 외부 데이터 피드 업체에 가공을 의뢰하는 것도 **범위의 한계가 있고, 추가 비용이 지속적으로 발생**한다는 점에서 현실적인 제약이 있습니다.
+4. 따라서 여러 외부 데이터를 조합하고, AI를 활용해 **데이터를 비선형적으로 처리하고 요약해주는 자동화 프로세스**를 만든다면, **적은 인력으로도 충분히 경쟁력 있는 정보 제공 서비스를 구현할 수 있을 것**이라는 가설 아래 본 POC를 진행하게 되었습니다.
 
-케이뱅크 투자 서비스는 "증권사가 아닌 은행"이라는 포지셔닝을 한다. 그래서 단순 주가 정보 외에, 투자자가 쉽게 이해할 수 있는 정보성 콘텐츠를 제공하는 것이 차별화 포인트다.
+### 실제 POC 예시
 
-문제는 이런 정보를 내부 인력이 직접 가공하면 인건비 부담이 크고, 외부 데이터 피드 업체에 의뢰하면 범위 한계가 있다는 것이다.
+케이뱅크 서비스 중 하나인 **공모주 메이트**에서, “**상세보기 페이지에 이 공모주가 실제로 어떤 사업을 영위하는지 알려주면 좋겠어요**”라는 내부 요구사항이 있었다고 가정해보겠습니다.
 
-**구체적인 Pain Point:** 공모주 메이트 서비스에서 비상장 기업의 사업 내용 정보를 제공하고 싶었는데, 비상장 기업은 데이터 소스가 극히 제한적이다. 금감원 전자공시시스템의 증권신고서가 사실상 유일한 소스인데, 이걸 일일이 사람이 읽고 정리하기엔 너무 많다.
+하지만 비상장 기업의 경우, 사업 내용에 대한 정보를 구하는 것이 쉽지 않습니다. 증권사들이 이용하는 상업 DB나 비즈니스 리포트를 활용하기 어려운 환경이고, 실제로 정형화된 형태로 제공해주는 데이터 피드업체도 거의 없습니다. 결국 대부분의 정보는 뉴스, 공시, 기업소개서 등의 **파편화된 비정형 문서**에서 기획자의 수작업으로 확인하고 요약해야 합니다.
 
-### RAG로 해결하기
+하지만 이러한 정보는 “**공모주로 수익을 기대하는 주린이 고객**”에게 매우 매력있게 다가올 수 있습니다. 즉, 고객이 이해하기 쉬운 언어로 기업의 핵심 사업 내용을 알려주는 것만으로도 서비스에 대한 만족도와 차별화는 충분히 확보될 수 있습니다.
 
-RAG(Retrieval-Augmented Generation)를 사용하면:
+저는 이러한 “**유용하지만 수집부터 제공까지 많은 인적 비용이 드는 정보성 컨텐츠**”를 자동화하는 데 **RAG 기반의 AI 파이프라인**이 큰 역할을 할 수 있다고 생각합니다.
 
-- **수집**: 크롤러 + 외부 API로 자동화
-- **정제**: LLM 기반 정규화 및 중요도 필터링
-- **벡터화**: 임베딩 기반 벡터 DB 저장
-- **노출**: LLM + 프롬프트 엔지니어링 기반 문답형 UI
+RAG(Retrieval-Augmented Generation)를 활용하면, 외부에서 수집한 다수의 문서 중 핵심적인 내용만 뽑아내고, 고객에게 적합한 형태로 재구성해 제공하는 것이 가능합니다. 이를 통해:
 
-작은 리소스로 고품질 투자 정보 서비스가 가능하다.
+- 수집은 크롤러와 외부 API로 자동화하고,
+- 정제는 LLM을 활용한 정규화 및 중요도 기반 필터링으로,
+- 벡터화 및 저장은 임베딩 기반 벡터DB로,
+- 노출은 LLM + 프롬프트 엔지니어링 기반 문답형 UI 또는 기존 케이뱅크 화면, 푸시 메세지에 녹여내어
 
-### 구현 방식
+**작은 리소스로도 충분히 고품질의 투자 정보 제공 서비스**를 만들 수 있다는 가능성을 확인할 수 있었습니다.
 
-케이뱅크 MSA 환경에서 실현 가능한 방식으로 POC를 구성했다:
+### 데이터 수집 파이프라인
 
-1. 금융감독원 공시 데이터 원본 수집
-2. 기계적 파싱 및 청킹
-3. 청킹된 데이터 임베딩
+![이미지](/assets/images/Pasted%20image%2020260220144635.png)
+
+### 저는 케이뱅크 MSA 환경에서 실현 가능한 방식으로 데이터 수집 파이프라인을 POC 하였습니다.
+
+1. 금융감독원 공시 데이터 원본(위의 이미지에서 1~3)
+    
+    ![이미지](/assets/images/Pasted%20image%2020260220144643.png)
+    
+2. 기계적 파싱 및 청킹 수행(위의 이미지에서 4~5)
+    
+    ![이미지](/assets/images/Pasted%20image%2020260220144653.png)
+    
+3. 청킹 된 데이터 임베딩 수행
+    
+    ![이미지](/assets/images/Pasted%20image%2020260220144700.png)
+    
 4. 실제 비즈니스 요건에 맞춰 응답 결과 생성
+    
+    ![이미지](/assets/images/Pasted%20image%2020260220144705.png)
+    
 
-비선형적인 처리가 가능하기 때문에 다양한 비즈니스 요건을 프롬프트에 맞게 조정할 수 있다.
+비선형적인 처리가 가능하기 때문에 다양한 비즈니스 요건을 프롬프트에 잘 녹여내는 행위 하나만으로 유연한 처리가 가능합니다.
 
 ### 의의
 
-**실현 가능성:** 케이뱅크 내부 IDC와 AWS 인프라 모두에서 동작 가능한 구조로 설계했다.
+**실현 가능성**
 
-**확장성:** 예시는 금감원 전자공시 시스템으로 제한했지만, 딥서치 뉴스, aT 농수산물 가격 정보 등 현재 케이뱅크에서 활용 중인 다른 외부 데이터 소스도 동일한 파이프라인으로 처리할 수 있다.
+본 POC에서 구현한 RAG 기반 파이프라인은 케이뱅크의 내부 IDC 및 MSA 아키텍처 환경을 활용하면 충분히 구현 가능한 구조입니다. 실제 운영 환경에 무리 없이 연동될 수 있도록 설계되었습니다.
 
----
+**확장성**
 
-## 주제 2: LangChain 기반 주식 서비스 챗봇
+예시는 금융감독원 전자공시시스템으로 제한했지만, 텍스트 형태로 접근 가능한 API라면 모두 본 파이프라인에 연동 가능합니다.
 
-### 문제 정의
+예를 들어, 현재 케이뱅크에서 활용 중인 **딥서치 뉴스**, **aT 농수산물 가격 정보**, **업비트 제휴 가상자산 시세**, **보난자랩 가상자산 뉴스** 등도 동일한 방식으로 통합할 수 있어, 다양한 데이터 소스에 유연하게 대응할 수 있습니다.
 
-기존에 "삼성전자 최신가격 알려줘"라고 물었을 때 LLM이 그냥 답을 만들어내면 잘못된 정보가 나올 수 있다. 금융 정보는 금감원 제재 이슈가 있어서 신뢰성이 핵심이다.
+## 주제 2) 케이뱅크 주식 MSA 서비스를 활용한 Langchain 어플리케이션
 
-**목표:** AI가 직접 정보를 만들어내는 것이 아니라, 기존 시스템(케이뱅크 MSA API)을 통해 정확한 데이터를 가져오고 AI는 그 결과를 자연어로 표현하는 것.
+### POC의 필요성
 
-### LangChain을 선택한 이유
+**기존 쿼리 방식의 한계를 넘어서는 유연성**
 
-LangChain 기반의 플로우 컨트롤 구조를 채택한 이유:
+기존 대고객 서비스에서는 화면이나 푸시를 통해 정보를 제공할 때, 주로 **사전에 정의된 쿼리 결과**를 정해진 형태로만 보여줄 수 있었습니다. 그러나 LangChain 기반 구조에서는, **질문 목적을 분석하고 그에 맞는 API를 선택해 적절히 조합하는 비선형 처리**가 가능합니다. 예를 들어 “이번 달 공모주 중에서 배당이 높은 기업은?”처럼 여러 조건이 결합된 질의를 처리할 수 있게 됩니다.
 
-1. 기존 MSA 주식 시스템의 API 재활용 가능
-2. 투자 정보의 민감성과 정보 신뢰성 확보
+유연한 서비스 호출이 가능하다면 주제 1 RAG를 **상호 보완**하는 형태로 고객에게 좀 더 완성도 높고 유용한 정보를 제공할 수 있다고 생각하였습니다.
 
-```python
-class GetListedStockSummaryRequest(BaseModel):
-    itms_cd_nbr: str
+### POC 목표
 
-@tool(args_schema=GetListedStockSummaryRequest)
-def getListedStockSummary(itms_cd_nbr: str):
-    """
-    Use this function to get Summary Info of Stock in Korea.
-    :param itms_cd_nbr(str) : 6 length number
-            example) 005930, 000660
-    :return: json info of company info
-    """
-    return requests.get(
-        f"http://localhost:38080/listed-stock-service/v1/listedStock/{itms_cd_nbr}"
-    ).json()
-```
+(삼성전자)의 (상세정보, 재무비율, 최신가격)에 대해 알려줘 >> 질문을
 
-이런 식으로 케이뱅크 MSA 서비스의 각 API를 Tool로 등록하고, LangGraph로 플로우를 제어한다.
+![이미지](/assets/images/Pasted%20image%2020260220144752.png)
+
+### LangChain을 선택한 이유: 기존 시스템과 AI의 안전한 접점
+
+본 POC에서는 **LangChain 기반의 플로우 컨트롤 구조**를 채택하였습니다. 그 이유는 다음과 같은 **기존 시스템과의 통합 가능성과 AI 사용의 안정성** 측면에서 더 뛰어난 장점이 있었기 때문입니다.
+
+1. **기존 MSA 주식 시스템의 API 재활용**
+    
+    케이뱅크의 주식 서비스는 이미 MSA 기반으로 잘 나뉘어져 있고, 각 도메인별 API가 체계적으로 제공되고 있습니다. LangChain을 활용하면 이러한 **기존 API를 그대로 활용**하면서, 자연어 입력을 기반으로 해당 API를 적절히 조합하거나 호출하는 **비선형적인 챗봇 UX**를 구현할 수 있습니다. 이는 기존 시스템 위에 자연스럽게 AI 계층을 얹는 방식으로 개발 생산성과 안정성을 모두 확보할 수 있다고 생각합니다.
+    
+2. **투자 정보의 민감성과 정보 신뢰성 확보**
+    
+    투자 정보는 민감한 영역이기 때문에, **LLM의 자율적 생성 능력을 그대로 노출하는 것은 리스크가 큽니다.** LangChain은 LLM이 정보를 직접 생성하는 것이 아니라, **기존 MSA 시스템에서 제공하는 공식 API를 호출**하도록 유도하는 방식이기 때문에, **정확성과 신뢰성이 보장된 데이터만을 노출**할 수 있어 훨씬 안전한 구조입니다.
+    
+    이러한 구조는 예를 들어 "삼성전자 최신 주가 알려줘" 같은 질문에 대해 갑자기 "좋으니 사세요" 같은 **비정형적, 위험한 답변을 원천적으로 차단**할 수 있는 장점이 있습니다(투자자문업 라이센스가 없는 상황에서의 투자 권유). LLM은 **'어떻게 질문을 해석할 것인가'와 '어떤 API를 호출할 것인가'를 결정하는 역할**만 수행하며, 실제 응답은 내부 시스템에서 책임 있게 처리합니다.
+    
 
 ### 결론: LangChain은 '비선형 처리기'
 
-핵심 메시지는 **"AI가 알아서"는 어느 정도까지만 가능하다**는 것이다.
+결과적으로 이번 POC의 핵심 목표는,
 
-| 케이스 | AI 처리 가능 여부 |
-|--------|-----------------|
-| 간단한 툴 호출 | 강함 |
-| 조건부 논리 (A이면 X, B이면 Y) | 설계 필요 |
-| 완전 자유 입력 처리 | LangGraph 등 보완 필요 |
+> “AI가 직접 정보를 만들어내는 것이 아니라, 기존 시스템을 어떻게 유연하고 똑똑하게 사용할지를 결정하도록 하는 것”
 
-또한 주제 1의 RAG 시스템과 결합하면:
-1. 자체 언어모델 추론 결과를 사용할지
-2. RAG 벡터 저장소에 질의할지
-3. 케이뱅크 MSA 기반 API를 활용할지
+입니다.
 
-이 세 가지를 AI가 판단해서 라우팅하는 구조가 만들어진다.
+제가 개발한 주식 서비스 LangChain은 기존 어플리케이션과 API를 중심에 두고, **LLM은 오직 '비선형 처리기' 역할만 수행**합니다. 즉, 질문의 의미를 해석하고, 어떤 시스템 API를 언제, 어떻게 호출할지를 판단합니다.
 
----
+이를 통해 **안정성과 신뢰성, 유연성과 확장성**을 모두 확보할 수 있었습니다.
 
-## 수상 결과
+### 코드 예시
 
-금상 + 상금 400만원 + 싱가폴 Fintech Festival 참가 기회를 얻었다. 회사 내 AI 아이디어 포상으로 AWS re:Invent Las Vegas도 이어서 참가하게 되었다.
+```bash
+from langchain.tools import tool
+from pydantic import BaseModel
+from typing import Optional
+import requests
+
+def to_query_params(request: dict) -> str:
+    return "&".join(f"{k}={v}" for k, v in request.items() if v is not None)
+
+@tool
+def get_listed_stock_past_financial_statements(itms_cd_nbr: str, target_financial_statement: str):
+    """
+    과거 재무제표를 조회한다.
+    :param
+        itms_cd_nbr(str) : 6자리 종목코드번호 ex)005930
+        target_financial_statement(str) : SALES, OPERATING_PROFIT, NET_INCOME, ASSET, LIABILITY, EQUITY 중 하나
+
+    """
+    return requests.get(
+        f"<http://케이뱅크MSA엔드포인트/listed-stock-service/listed-stock/v1/{itms_cd_nbr}/financial/statement/past/{target_financial_statement}>"
+    ).json()
+@tool
+def get_rank(order_code: str, limitLength: int):
+    """
+    랭킹 데이터를 조회한다.
+    :param
+        order_code(enum) : "PRICE_CHANGE_DESCENDING", "VOLUME_DESCENDING", "VALUE_DESCENDING" 중 필수로 하나 선택
+            enum에 대한 세부 설명:
+                PRICE_CHANGE_DESCENDING -> 가격이 많이 하락한 순
+                VOLUME_DESCENDING -> 거래량이 많은 순
+                VALUE_DESCENDING -> 거래대금이 많은 순
+        limitLength(int) : 최대 몇 개 보여줄지
+    """
+    request = {"limitLength" : limitLength}
+    query_string = to_query_params(request)
+    return requests.get(
+        f"<http://케이뱅크MSA엔드포인트/listed-stock-service/listed-stock/v2/rank/{order_code}?{query_string>}"
+    ).json()
+
+```
+
+위와 같이 프롬프트 + 기존 케이뱅크 MSA 서비스를 호출하는 방식으로 코드를 작성하였습니다.
+
+## 실행
+
+```python
+response = final_graph.invoke({
+    "query": "삼성전자 재무비율 알려줘"
+})
+
+print(response["result"])
+```
+
+실행 흐름 TraceLog
+
+```python
+extract_stock_info :  {'query': '삼성전자 재무비율 알려줘'}
+decide_after_extract : {'query': '삼성전자 재무비율 알려줘', 'stock_names': ['삼성전자']}
+decide_after_extract: symbol_to_code로 이동
+찾았다 삼성전자
+choose_tool : {'query': '삼성전자 재무비율 알려줘', 'converted_query': '005930 재무비율 알려줘', 'stock_names': ['삼성전자']}
+extract_function_parameter : name='get_listed_stock_financial_ratio' description='재무비율을 조회한다.\\n:param\\n    itms_cd_nbr(str) : 6자리 종목코드번호 ex)005930' args_schema=<class 'langchain_core.utils.pydantic.get_listed_stock_financial_ratio'> func=<function get_listed_stock_financial_ratio at 0x11a79bc70>
+call_selected_tool : {'query': '삼성전자 재무비율 알려줘', 'converted_query': '005930 재무비율 알려줘', 'stock_names': ['삼성전자'], 'tool_name': 'get_listed_stock_financial_ratio', 'extracted_parameters': {'itms_cd_nbr': '005930'}}
+call_selected_tool : name='get_listed_stock_financial_ratio' description='재무비율을 조회한다.\\n:param\\n    itms_cd_nbr(str) : 6자리 종목코드번호 ex)005930' args_schema=<class 'langchain_core.utils.pydantic.get_listed_stock_financial_ratio'> func=<function get_listed_stock_financial_ratio at 0x11a79bc70> {'acnBaseDt': [2025, 2, 6], 'itmsCdNbr': '005930', 'bpsVal': 52002.0, 'epsVal': 2131.0, 'perVal': 25.34022, 'pbrVal': 1.038422, 'pstkDivdVal': 1444.0, 'dvdnErnnRate': 2.674074} 
+
+```
+
+결과(케이뱅크 MSA 서비스 응답값)
+
+```json
+{'acnBaseDt': [2025, 2, 6], 
+'itmsCdNbr': '005930',
+ 'bpsVal': 52002.0,
+ 'epsVal': 2131.0, 
+ 'perVal': 25.34022,
+ 'pbrVal': 1.038422,
+ 'pstkDivdVal': 1444.0,
+ 'dvdnErnnRate': 2.674074
+ }
+```
+
+위 응답값을 활용하여 챗봇이 응답하는 형식의 포맷으로 만든다면 아래와 같은 메세지가 나온다고 할 수 있습니다.
+
+![이미지](/assets/images/Pasted%20image%2020260220144817.png)
+
+### 의의
+
+**확장 가능성**
+
+정확하게 작성된 프롬프트만 있다면, **어떤 서비스든 LLM이 스스로 판단하여 선택적으로 활용**할 수 있도록 확장 가능합니다.
+
+또한 주제 1에서 다룬 RAG 시스템과 결합하면, 사용자의 질문이나 비즈니스 요청이 들어왔을 때 **다음 중 어떤 접근 방식이 최적인지를 LLM이 동적으로 결정**할 수 있습니다.
+
+1. 자체적인 언어모델 추론 결과를 사용할 것인지
+2. RAG 벡터 저장소에 질의할 것인지
+3. 케이뱅크 MSA 기반 시스템의 API를 활용할 것인지
+
+이러한 구조는 LangChain의 체계적인 플로우 설계 덕분에 구현 가능하며, **서비스 품질과 안정성을 해치지 않으면서도 새로운 기능을 유연하게 확장할 수 있는 기반**이 됩니다.
+
+따라서 향후 **신규 혁신 서비스 개발과 차별화된 고객 경험 제공 측면에서 필수적인 아키텍처**라고 생각하였습니다.
+
+**실현 가능성**
+
+본 POC는 케이뱅크 내부의 기존 인프라와 시스템 구조를 충분히 고려하여 설계되었습니다. 특히 다음과 같은 이유로 **실제 서비스 적용에 있어서도 높은 실현 가능성**을 보입니다.
+
+1. **기존 MSA 기반 주식 서비스와의 자연스러운 통합**
+    
+    케이뱅크 주식 시스템은 이미 마이크로서비스 아키텍처(MSA) 기반으로 구축되어 있으며, 각 도메인이 **Restful하게 잘 분리**되어 있어 API 단위의 연결이 매우 용이합니다. 따라서 LLM 기반의 LangChain 구조를 도입하더라도, **기존 서비스를 수정 없이 그대로 활용**할 수 있으며, 기능 확장 측면에서도 높은 호환성을 기대할 수 있습니다.
+    
+2. **실제 구현 가능성과 검증된 POC**
+    
+    이번 POC는 외부 환경에서 **OpenAI의 GPT-3.5 API를 활용해 구축**되었으며, 단순 시뮬레이션 수준이 아닌 **실제 API 연동 및 LangChain 워크플로우 설계까지 포함**되어 있습니다.
+    
+    행 내에서도 LLM API 접근만 허용된다면 **동일한 구조로 바로 적용이 가능**합니다.
+    
+3. **툴 콜 제약에 대한 대안 확보**
+    
+    행 내에서는 보안 정책상 OpenAI 기반의 LangChain 툴 콜 기능 사용이 제한될 수 있으나, 이를 고려하여 **로컬 환경에서 DeepSeek 모델을 사용한 대체 구조로도 POC를 완료**했습니다. 이는 향후 케이뱅크의 프라이빗 LLM 환경에서도 유사한 구조가 충분히 구현 가능하다는 것을 의미합니다.
+    
+
+### 주제 3) Python + Few-shot Prompting 활용 주식 데이터 수집 및 메타 표준 변환, 배포 프로세스 개선
+
+케이뱅크 투자 서비스에서는 다양한 외부 데이터 소스를 수집하여 내부 시스템에 저장해야 합니다.
+
+이를 위해 반드시 **행 내 표준 테이블 구조에 맞게 데이터 매핑 및 변환, 배포**하는 과정이 필요합니다.
+
+예를 들어, 현재 주식 서비스에는 약 **40여 개의 정보성 테이블이 존재**하며, 새로운 데이터가 들어올 때마다 각각의 컬럼을 **케이뱅크 표준 스키마에 맞춰 수작업으로 매핑**해주어야 합니다.
+
+이러한 작업은 지난 2년간 전체 개발 리소스 중 최소 **50% 이상이 소모된 핵심 반복 업무**였으며, 신규 서비스 개발 시마다 병목으로 작용하곤 했습니다.
+
+이에 저는 **Few-shot Prompting 기법을 학습해 도입**함으로써, 이러한 매핑 및 변환 로직을 자동화하는 데 성공했습니다.
+
+예를 들어, 아래와 같은 방식으로 몇 가지 예시를 프롬프트에 함께 제공하면:
+
+```
+{
+    "date_time": "20250421113441",
+    "total_row_count": "29",
+    "data": [
+        {
+            "id": "b4a6da5cac8f45aa87d0f81c4865e26c",
+            "entity_name": "지어드 캐피털 매니지먼트",
+            "eng_entity_name": "Geode Capital Management LLC",
+            "current_aum": "1292676.0",
+            "previous_aum": "1238310.0",
+            "aum_change": "54366.0",
+            "report_date": "2024-12-31"
+        },
+psycopg2 upsert 
+
+```
+
+LLM은 다음과 같이 **정확하게 매핑된 Python 코드**를 자동으로 생성해냅니다:
+
+```python
+import psycopg2
+from datetime import datetime
+
+json_data = {
+    "date_time": "20250421113441",
+    "total_row_count": "29",
+    "data": [
+        {
+            "id": "b4a6da5cac8f45aa87d0f81c4865e26c",
+            "entity_name": "지어드 캐피털 매니지먼트",
+            "eng_entity_name": "Geode Capital Management LLC",
+            "current_aum": "1292676.0",
+            "previous_aum": "1238310.0",
+            "aum_change": "54366.0",
+            "report_date": "2024-12-31"
+        }
+    ]
+}
+
+connection = psycopg2.connect(
+    dbname="your_db",
+    user="your_user",
+    password="your_password",
+    host="localhost",
+    port="5432"
+)
+
+upsert_sql = """
+    INSERT INTO tb_stk_ovrs_mgcp_m (
+        mgcp_id, mgcp_nm, mgcp_eng_nm, psnt_aum_amt, bf_aum_amt, aum_chng_amt, inst_updt_dttm
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (mgcp_id)
+    DO UPDATE SET
+        mgcp_nm = EXCLUDED.mgcp_nm,
+        mgcp_eng_nm = EXCLUDED.mgcp_eng_nm,
+        psnt_aum_amt = EXCLUDED.psnt_aum_amt,
+        bf_aum_amt = EXCLUDED.bf_aum_amt,
+        aum_chng_amt = EXCLUDED.aum_chng_amt,
+        inst_updt_dttm = EXCLUDED.inst_updt_dttm
+"""
+
+with connection:
+    with connection.cursor() as cursor:
+        for item in json_data["data"]:
+            cursor.execute(upsert_sql, (
+                item["id"],
+                item["entity_name"],
+                item["eng_entity_name"],
+                int(float(item["current_aum"])),
+                int(float(item["previous_aum"])),
+                int(float(item["aum_change"])),
+                datetime.strptime(item["report_date"], "%Y-%m-%d").date()
+            ))
+
+connection.close()
+```
+
+이러한 방식으로 **반복 작업의 공수를 획기적으로 절감**할 수 있었습니다.
+
+![이미지](/assets/images/Pasted%20image%2020260220144806.png)
+
+### 성과
+
+특히, 현재 구축 중인 **‘투자 종목 둘러보기 서비스’ 및 ‘투자 캘린더 서비스’ 초기 구축 단계**에서는 약 30개의 신규 테이블을 대상으로 위 방식의 테스트를 진행했으며, **기존에 약 2주 이상 소요될 작업을 단 이틀(런타임 기준 약 8시간)** 만에 완료하고 스테이징 배포까지 마무리했습니다.
+
+이는 단순한 자동화 수준을 넘어, **신규 투자 서비스를 빠르고 안정적으로 확장하기 위한 전략적 도구**로서 Python + LLM 기반 Few-shot Prompting이 실질적인 성과를 낸 사례입니다.
+
+### 의의
+
+**확장성**
+
+기존에는 외부 데이터 필드를 케이뱅크 내부 메타 필드에 맞춰 매핑할 때, **사람이 일일이 개입해 로직을 작성해야 하는 반복적인 작업**이 필요했습니다.
+
+하지만 이번 POC를 통해, **프롬프트에 테이블 정보와 원본 데이터를 입력하기만 하면 변환 로직이 자동으로 생성**되도록 함으로써, 이러한 수작업 공수를 획기적으로 줄일 수 있었습니다.
+
+특히 제 업무 특성상 이러한 데이터 표준화 및 매핑 작업은 앞으로도 계속 반복될 가능성이 높기 때문에, 이번 방식은 **단순한 자동화 이상의 구조적 개선**이라고 판단하고 있으며, **계속해서 활용 및 고도화할 예정**입니다.
+
+**향후 보완 방향**
+
+이번 POC는 DDL과 코멘트 기반의 테이블 정의서를 바탕으로 로컬 환경에서 직접 메타 정보를 구성하여 작업을 수행했습니다. 하지만, 만약 **정식 메타 시스템에서 용어 사전을 API 형태로 제공**받을 수 있다면,
+
+- 변환 정확도 향상
+- 속도 개선
+- 사내 메타 용어와의 일관성 유지
+
+등의 측면에서 **훨씬 더 높은 품질의 결과를 기대할 수 있을 것**입니다.
+
+행내 용어 사전과 연동하는 사례는 실제로 AWS 서밋 등에서 소개된 사례에서도 확인된 바 있으며, 메타 용어에 대한 정보가 **명확하고 체계적으로 관리될수록 LLM 기반 자동화의 정확성과 효율성이 함께 향상**된다는 점에서, 향후 LLM과 **메타 사전 API 연동은 꼭 고려해볼 가치가 있는 보완점**이라고 생각합니다.
