@@ -433,8 +433,29 @@ a:hover {
   height: auto;
 }
 
+/* 이미지 3열 그리드 */
+.post-content .image-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin: 1.75rem 0;
+}
+
+.post-content .image-grid-3 p {
+  margin: 0;
+}
+
+.post-content .image-grid-3 img {
+  margin: 0;
+  width: 100%;
+  height: auto;
+}
+
 @media (max-width: 600px) {
   .post-content .image-grid {
+    grid-template-columns: 1fr;
+  }
+  .post-content .image-grid-3 {
     grid-template-columns: 1fr;
   }
 }
