@@ -14,7 +14,8 @@
       "Bash(for f in Pasted image 2026021922*.png)",
       "Bash(do mv \"$f\" \"assets/images/\")",
       "Bash(done)",
-      "Bash(bash obsidian_to_jekyll_image.sh)"
+      "Bash(bash obsidian_to_jekyll_image.sh)",
+      "Bash(python notion_to_obsidian.py:*)"
     ]
   }
 }
