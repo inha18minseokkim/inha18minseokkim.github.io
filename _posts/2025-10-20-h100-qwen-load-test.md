@@ -1,7 +1,12 @@
 ---
-title: "H100 4장 + Qwen-32b-Instruct 부하테스트 - GPU 4장을 제대로 쓰는 방법"
+title: H100 4장 + Qwen-32b-Instruct 부하테스트 - GPU 4장을 제대로 쓰는 방법
 date: 2025-10-20
-tags: [LLM, vLLM, H100, GPU, nginx, Docker, 성능최적화]
+tags:
+  - LLM
+  - GPU
+  - nginx
+  - Docker
+  - AI
 ---
 
 H100 4장에 올라간 Qwen-32b-Instruct 추론 서버 부하테스트를 봐주다가 재미있는 문제를 발견해서 직접 파고들었다.
