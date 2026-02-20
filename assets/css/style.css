@@ -415,48 +415,27 @@ a:hover {
   display: block;
 }
 
-/* 연속 이미지 2열 그리드 */
-.post-content .image-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* 이미지 가로 배열 - N개 자동 균등 분배 */
+.post-content .image-row {
+  display: flex;
   gap: 0.5rem;
   margin: 1.75rem 0;
 }
 
-.post-content .image-grid p {
+.post-content .image-row p {
+  flex: 1;
   margin: 0;
 }
 
-.post-content .image-grid img {
-  margin: 0;
-  width: 100%;
-  height: auto;
-}
-
-/* 이미지 3열 그리드 */
-.post-content .image-grid-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0.5rem;
-  margin: 1.75rem 0;
-}
-
-.post-content .image-grid-3 p {
-  margin: 0;
-}
-
-.post-content .image-grid-3 img {
+.post-content .image-row img {
   margin: 0;
   width: 100%;
   height: auto;
 }
 
 @media (max-width: 600px) {
-  .post-content .image-grid {
-    grid-template-columns: 1fr;
-  }
-  .post-content .image-grid-3 {
-    grid-template-columns: 1fr;
+  .post-content .image-row {
+    flex-direction: column;
   }
 }
 

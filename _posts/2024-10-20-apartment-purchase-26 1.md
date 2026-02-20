@@ -124,7 +124,7 @@ tags:
     
     주택금융공사 보금자리론은 잔금일로부터 90일 넘어가면 신청이 안된다. D-90에 바로 실행하면 된다.
     
-    <div class="image-grid-3" markdown="1">
+    <div class="image-row" markdown="1">
 
     ![이미지](/assets/images/Pasted%20image%2020260220085617.png)
 
@@ -133,7 +133,6 @@ tags:
     ![이미지](/assets/images/Pasted%20image%2020260220085628.png)
 
     </div>
-
     
 
 이렇게 해서 서류 제출하고 카카오뱅크에서 오는 확인 전화를 다 받으면 대출심사로 넘어간다.
