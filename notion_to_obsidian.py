@@ -18,6 +18,7 @@ import json
 import urllib.request
 import os
 from pathlib import Path
+from datetime import datetime, timezone
 
 SPLITBEE_API = "https://notion-api.splitbee.io/v1/page/"
 
@@ -258,6 +259,16 @@ def get_page_title(page_id: str, blocks: dict) -> str:
     return rich_text_to_md(segs) or "Untitled"
 
 
+def get_page_date(page_id: str, blocks: dict) -> str:
+    """페이지의 created_time(Unix ms)을 YYYY-MM-DD 문자열로 반환합니다."""
+    val = blocks.get(page_id, {}).get("value", {})
+    created_time = val.get("created_time")
+    if created_time:
+        dt = datetime.fromtimestamp(created_time / 1000, tz=timezone.utc)
+        return dt.strftime("%Y-%m-%d")
+    return datetime.now(tz=timezone.utc).strftime("%Y-%m-%d")
+
+
 def sanitize_filename(title: str) -> str:
     """파일명에 사용할 수 없는 문자를 제거합니다."""
     name = re.sub(r'[<>:"/\\|?*\n\r]', "", title).strip()
@@ -280,7 +291,8 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
         return
 
     title = get_page_title(page_id, blocks)
-    print(f"  제목: {title}")
+    date_str = get_page_date(page_id, blocks)
+    print(f"  제목: {title} ({date_str})")
 
     # 루트 페이지의 content 블록들 렌더링
     root_val = blocks.get(page_id, {}).get("value", {})
@@ -289,7 +301,7 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
 
     # 파일 저장
     Path(output_dir).mkdir(parents=True, exist_ok=True)
-    filename = sanitize_filename(title) + ".md"
+    filename = f"{date_str}-{sanitize_filename(title)}.md"
     output_path = Path(output_dir) / filename
 
     with open(output_path, "w", encoding="utf-8") as f:
