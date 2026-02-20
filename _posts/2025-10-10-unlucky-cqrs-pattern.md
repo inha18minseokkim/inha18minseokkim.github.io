@@ -14,23 +14,23 @@ tags: [아키텍처, CQRS, Spring, 백엔드, 주식서비스]
 
 ASIS)
 
-unlisted-stock : 비상장주식서비스 관심 등록, 푸시 등록, 비상장주식 조회순위집계, 비상장주식서비스 데이터 제공
+	unlisted-stock : 비상장주식서비스 관심 등록, 푸시 등록, 비상장주식 조회순위집계, 비상장주식서비스 데이터 제공
 
-stock-customer : 주식둘러보기 관심등록, 공통 푸시 등록, 랭킹 집계
+	stock-customer : 주식둘러보기 관심등록, 공통 푸시 등록, 랭킹 집계
 
 TOBE)
 
-unlisted-stock : 비상장주식서비스 데이터 제공
+	unlisted-stock : 비상장주식서비스 데이터 제공
 
-stock-customer: 주식 서비스 내의 모든 고객들의 관심정보 관리, 푸시정보 관리, 조회 랭킹 집계
+	stock-customer: 주식 서비스 내의 모든 고객들의 관심정보 관리, 푸시정보 관리, 조회 랭킹 집계
 
 ipo-service(공모주 메이트) 서비스에 있는 푸시 등록도 추후에 stock-customer 서비스로 뺄 예정이다.
 
 그러다보니 궁극적으로
 
-CRUD를 수행하는 서비스: stock-customer
+	CRUD를 수행하는 서비스: stock-customer
 
-R만 수행하는 서비스 : ipo,unlisted,listed,overseas,etf
+	R만 수행하는 서비스 : ipo,unlisted,listed,overseas,etf
 
 가 되어버렸다
 
