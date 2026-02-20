@@ -36,6 +36,10 @@ LLM을 로컬에서 돌리기 전에 하드웨어 구조 차이를 이해해야 
 
 **한계**: NVIDIA CUDA 생태계를 사용하지 못한다. 학습 속도는 NVIDIA GPU에 비해 답이 없으므로 **추론 전용**으로 사용해야 한다.
 
+![이미지](/assets/images/Pasted%20image%2020260220141405.png)
+![이미지](/assets/images/Pasted%20image%2020260220141412.png)
+한 줄 요약 : 싼 가격에 gpu 메모리를 "사용은" 할 수 있다.
+
 ---
 
 ## Ollama로 딥시크 실행하기
@@ -86,6 +90,12 @@ deepseek 13b Qwen 튜닝 기준 Function Call 사용 어느 정도 가능. ollam
 - 딥시크 7b: 그나마 됨
 - 라마 8b: Function Call 시 800초 소요 (...)
 - 딥시크 13b: 느리지만 그나마 사용 가능
+
+![이미지](/assets/images/Pasted%20image%2020260220141519.png)
+긱벤치 OpenCL 기준
+![이미지](/assets/images/Pasted%20image%2020260220141533.png)
+![이미지](/assets/images/Pasted%20image%2020260220141538.png)
+![이미지](/assets/images/Pasted%20image%2020260220141545.png)
 
 M4 에어였다면 임베드 AI 구축을 충분히 할 수 있겠지만, M1 에어는 적절하지 않다. 긱벤치 GPU 점수 차이가 꽤 난다.
 
