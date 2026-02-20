@@ -216,12 +216,38 @@ def render_block(bval: dict, blocks: dict, depth: int = 0) -> str:
 
     # ── 테이블 ──────────────────────────────────────────────────────────────
     elif btype == "table":
-        return render_blocks(children, blocks, depth) if children else ""
+        fmt = bval.get("format", {}) or {}
+        col_order = fmt.get("table_block_column_order", [])
+        has_col_header = fmt.get("table_block_column_header", False)
+
+        rows_md = []
+        for i, row_id in enumerate(children):
+            if row_id not in blocks:
+                continue
+            row_props = blocks[row_id].get("value", {}).get("properties", {}) or {}
+
+            if col_order:
+                cells = [rich_text_to_md(row_props.get(col, [])) for col in col_order]
+            else:
+                cells = [rich_text_to_md(v) for v in row_props.values()]
+
+            rows_md.append("| " + " | ".join(cells) + " |")
+
+            # 첫 행이 헤더인 경우 구분선 추가
+            if i == 0 and has_col_header:
+                rows_md.append("| " + " | ".join(["---"] * len(cells)) + " |")
+
+        # 헤더 지정 없어도 마크다운 테이블은 구분선 필요 — 첫 행 뒤에 추가
+        if rows_md and not has_col_header:
+            first_cell_count = rows_md[0].count("|") - 1
+            rows_md.insert(1, "| " + " | ".join(["---"] * first_cell_count) + " |")
+
+        return "\n" + "\n".join(rows_md) + "\n" if rows_md else ""
 
     elif btype == "table_row":
-        cells = props.get("cells", [])
-        cell_texts = [rich_text_to_md(cell) for cell in cells]
-        return "| " + " | ".join(cell_texts) + " |"
+        # table 핸들러 안에서 처리되므로 단독 호출 시 fallback
+        cells = [rich_text_to_md(v) for v in props.values()]
+        return "| " + " | ".join(cells) + " |"
 
     # ── 컬럼 레이아웃 ────────────────────────────────────────────────────────
     elif btype in ("column_list", "column"):
