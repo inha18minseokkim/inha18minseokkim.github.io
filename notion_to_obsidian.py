@@ -231,6 +231,9 @@ def render_block(bval: dict, blocks: dict, depth: int = 0) -> str:
             else:
                 cells = [rich_text_to_md(v) for v in row_props.values()]
 
+            # 셀 안의 줄바꿈은 마크다운 테이블을 깨뜨리므로 공백으로 치환
+            cells = [c.replace("\n", " ").strip() for c in cells]
+
             rows_md.append("| " + " | ".join(cells) + " |")
 
             # 첫 행이 헤더인 경우 구분선 추가
