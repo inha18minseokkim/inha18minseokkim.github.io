@@ -28,3 +28,34 @@ layout: default
     </div>
   </div>
 </article>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const content = document.querySelector('.post-content');
+  if (!content) return;
+
+  const children = Array.from(content.children);
+
+  function isImgP(el) {
+    return el.tagName === 'P' && el.children.length === 1 && el.children[0].tagName === 'IMG';
+  }
+
+  let i = 0;
+  while (i < children.length) {
+    if (isImgP(children[i])) {
+      let j = i + 1;
+      while (j < children.length && isImgP(children[j])) j++;
+
+      if (j - i >= 2) {
+        const grid = document.createElement('div');
+        grid.className = 'image-grid';
+        children[i].parentNode.insertBefore(grid, children[i]);
+        for (let k = i; k < j; k++) grid.appendChild(children[k]);
+      }
+      i = j;
+    } else {
+      i++;
+    }
+  }
+});
+</script>
