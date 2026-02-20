@@ -9,7 +9,7 @@ Redis는 싱글스레드로 동작한다.
 싱글스레드로 동작하기 때문에 빠른 접근 + Race condition 가능성이 없다.
 
 그럼 다중 요청은 어떻게 처리할까?
-![[Pasted image 20260220120307.png]]
+![이미지](/assets/images/Pasted%20image%2020260220120307.png)
 
 
 ## 이벤트 루프 기반의 논블로킹 I/O
