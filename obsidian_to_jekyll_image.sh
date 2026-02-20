@@ -41,7 +41,7 @@ for md_file in "$POSTS_DIR"/*.md; do
         if grep -q '!\[\[Pasted image' "$md_file" 2>/dev/null; then
             filename=$(basename "$md_file")
             # ![[Pasted image XXXXX.png]] -> ![이미지](/assets/images/Pasted%20image%20XXXXX.png)
-            sed -i '' 's/!\[\[Pasted image \([0-9]*\)\.png\]\]/![이미지](\/assets\/images\/Pasted%20image%20\1.png)/g' "$md_file"
+            sed -i 's/!\[\[Pasted image \([0-9]*\)\.png\]\]/![이미지](\/assets\/images\/Pasted%20image%20\1.png)/g' "$md_file"
             echo "변환: $filename"
             ((converted_count++)) || true
         fi
