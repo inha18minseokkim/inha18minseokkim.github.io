@@ -88,6 +88,14 @@ def rich_text_to_md(segments) -> str:
                 strike = True
             elif kind == "a":
                 link_url = val
+            elif kind == "lm":
+                # Link mention (링크 프리뷰)
+                if isinstance(val, dict):
+                    link_url = val.get("href", "")
+                    # 링크 제목이 있으면 텍스트로 사용
+                    link_title = val.get("title", "")
+                    if link_title and text == "‣":
+                        text = link_title
 
         if code:
             text = f"`{text}`"
