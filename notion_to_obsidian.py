@@ -22,6 +22,9 @@ from datetime import datetime, timezone
 
 SPLITBEE_API = "https://notion-api.splitbee.io/v1/page/"
 
+# page_id → post_slug (변환된 페이지 캐시)
+_slug_cache: dict = {}
+
 
 # ─── URL / ID 파싱 ───────────────────────────────────────────────────────────
 
@@ -88,6 +91,13 @@ def rich_text_to_md(segments) -> str:
                 strike = True
             elif kind == "a":
                 link_url = val
+                if link_url and is_notion_url(link_url):
+                    try:
+                        pid = extract_page_id(link_url)
+                        if pid in _slug_cache:
+                            link_url = "{% post_url " + _slug_cache[pid] + " %}"
+                    except ValueError:
+                        pass
             elif kind == "lm":
                 # Link mention (링크 프리뷰)
                 if isinstance(val, dict):
@@ -96,6 +106,13 @@ def rich_text_to_md(segments) -> str:
                     link_title = val.get("title", "")
                     if link_title and text == "‣":
                         text = link_title
+                    if link_url and is_notion_url(link_url):
+                        try:
+                            pid = extract_page_id(link_url)
+                            if pid in _slug_cache:
+                                link_url = "{% post_url " + _slug_cache[pid] + " %}"
+                        except ValueError:
+                            pass
 
         if code:
             text = f"`{text}`"
@@ -127,7 +144,14 @@ def render_block(bval: dict, blocks: dict, depth: int = 0) -> str:
     # ── 페이지 (child page) ──────────────────────────────────────────────────
     if btype == "page":
         page_title = title or "Untitled"
-        return f"[[{page_title}]]"
+        created_time = bval.get("created_time")
+        if created_time:
+            dt = datetime.fromtimestamp(created_time / 1000, tz=timezone.utc)
+            date_prefix = dt.strftime("%Y-%m-%d")
+        else:
+            date_prefix = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d")
+        post_slug = date_prefix + "-" + sanitize_filename(page_title)
+        return "[" + page_title + "]({% post_url " + post_slug + " %})"
 
     # ── 제목 ────────────────────────────────────────────────────────────────
     elif btype in ("heading_1", "header"):
@@ -368,8 +392,12 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
     date_str = get_page_date(page_id, blocks)
 
     Path(output_dir).mkdir(parents=True, exist_ok=True)
-    filename = f"{date_str}-{sanitize_filename(title)}.md"
+    post_slug = f"{date_str}-{sanitize_filename(title)}"
+    filename = post_slug + ".md"
     output_path = Path(output_dir) / filename
+
+    # slug 캐시에 등록 (rich text 링크 변환에 사용)
+    _slug_cache[page_id] = post_slug
 
     # 동일 파일 존재 시 스킵
     if output_path.exists():
