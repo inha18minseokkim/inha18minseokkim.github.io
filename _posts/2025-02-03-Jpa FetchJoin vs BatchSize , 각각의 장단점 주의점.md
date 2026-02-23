@@ -1,7 +1,9 @@
 ---
-title: "Jpa FetchJoin vs BatchSize , 각각의 장단점 주의점"
+title: Jpa FetchJoin vs BatchSize , 각각의 장단점 주의점
 date: 2025-02-03
-tags: [미지정]
+tags:
+  - Spring
+  - JPA
 ---
 
 ```java
@@ -106,7 +108,7 @@ preparedstatement는 in절이 들어가는 select 쿼리에 대해 각 경우를
 우리가 SELECT 절을 호출할 때 Java에서 “SELECT * FROM TABLE WHERE COL = “ + “값;” 이런식으로 호출안하고  “SELECT * FROM TABLE WHERE COL = ?;“ 을 준비한다음에 변수에 입력한다.
 이렇게 하지 않고 전자 처럼 하면 모든 변수에 대한 쿼리 플랜이 캐싱됨. 
 
-![](attachment:2ebcfc05-1bd9-4a4e-b799-74075447f23c:image.png)
+![이미지](/assets/images/Pasted%20image%2020260224083207.png)
 
 
 
