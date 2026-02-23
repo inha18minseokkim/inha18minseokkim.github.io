@@ -163,7 +163,7 @@ def render_block(bval: dict, blocks: dict, depth: int = 0, number: int = None) -
 
     # ── 단락 ────────────────────────────────────────────────────────────────
     elif btype == "paragraph":
-        formatted_title = f"{'  ' * (depth - 1)}- {title}" if (depth > 0 and title) else title
+        formatted_title = f"{indent}- {title}" if (depth > 0 and title) else title
         child_md = render_blocks(children, blocks, depth + 1) if children else ""
         parts = [p for p in [formatted_title, child_md] if p]
         return "\n".join(parts) if parts else ""
@@ -296,7 +296,7 @@ def render_block(bval: dict, blocks: dict, depth: int = 0, number: int = None) -
 
     # ── 기타 폴백 ────────────────────────────────────────────────────────────
     else:
-        formatted_title = f"{'  ' * (depth - 1)}- {title}" if (depth > 0 and title) else title
+        formatted_title = f"{indent}- {title}" if (depth > 0 and title) else title
         child_md = render_blocks(children, blocks, depth + 1) if children else ""
         parts = [p for p in [formatted_title, child_md] if p]
         return "\n".join(parts) if parts else ""
