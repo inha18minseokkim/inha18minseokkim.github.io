@@ -132,7 +132,7 @@ def rich_text_to_md(segments) -> str:
 
 # ─── 블록 → Markdown ──────────────────────────────────────────────────────────
 
-def render_block(bval: dict, blocks: dict, depth: int = 0) -> str:
+def render_block(bval: dict, blocks: dict, depth: int = 0, number: int = None) -> str:
     """단일 블록을 마크다운 문자열로 변환합니다."""
     btype = bval.get("type", "")
     props = bval.get("properties", {})
@@ -173,8 +173,9 @@ def render_block(bval: dict, blocks: dict, depth: int = 0) -> str:
         child_md = render_blocks(children, blocks, depth + 1) if children else ""
         return "\n".join(p for p in [line, child_md] if p)
 
-    elif btype == "numbered_list_item":
-        line = f"{indent}1. {title}"
+    elif btype in ("numbered_list_item", "numbered_list"):
+        n = number if number is not None else 1
+        line = f"{indent}{n}. {title}"
         child_md = render_blocks(children, blocks, depth + 1) if children else ""
         return "\n".join(p for p in [line, child_md] if p)
 
@@ -302,11 +303,22 @@ def render_block(bval: dict, blocks: dict, depth: int = 0) -> str:
 def render_blocks(block_ids: list, blocks: dict, depth: int = 0) -> str:
     """블록 ID 목록을 순서대로 마크다운으로 변환합니다."""
     parts = []
+    numbered_counter = 0
     for bid in block_ids:
         if bid not in blocks:
             continue
         bval = blocks[bid].get("value", {})
-        md = render_block(bval, blocks, depth)
+        btype = bval.get("type", "")
+
+        if btype in ("numbered_list_item", "numbered_list"):
+            numbered_counter += 1
+        else:
+            numbered_counter = 0
+
+        md = render_block(
+            bval, blocks, depth,
+            number=numbered_counter if btype in ("numbered_list_item", "numbered_list") else None
+        )
         if md is not None:
             parts.append(md)
     return "\n".join(parts)
