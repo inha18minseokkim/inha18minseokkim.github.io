@@ -1,7 +1,9 @@
 ---
-title: "Finalizer 주의점"
+title: Finalizer 주의점
 date: 2023-09-11
-tags: [미지정]
+tags:
+  - Java
+  - 개발
 ---
 
 ```javascript
