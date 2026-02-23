@@ -3,13 +3,13 @@
 notion_to_obsidian.py
 
 공개 Notion 페이지(splitbee API 경유)를 Obsidian 마크다운 파일로 변환합니다.
-하위 페이지(child page)도 DFS로 순회하며 각각 별도 .md 파일로 생성합니다.
+하위 페이지(child page) 및 본문 내 Notion 링크도 DFS로 순회하며 각각 별도 .md 파일로 생성합니다.
 
 사용법:
-    python notion_to_obsidian.py <notion_url> [output_dir]
+    python notion_to_obsidian.py <output_dir> <notion_url>
 
 예시:
-    python notion_to_obsidian.py https://stump-blender-387.notion.site/abc123 ./output
+    python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123
 """
 
 import sys
@@ -288,6 +288,43 @@ def render_blocks(block_ids: list, blocks: dict, depth: int = 0) -> str:
     return "\n".join(parts)
 
 
+# ─── Notion 링크 수집 ────────────────────────────────────────────────────────
+
+NOTION_HOST_RE = re.compile(r'https://(?:[\w-]+\.notion\.site|(?:www\.)?notion\.so)/')
+
+def is_notion_url(url: str) -> bool:
+    return bool(url and NOTION_HOST_RE.match(url))
+
+def collect_notion_links(blocks: dict) -> set:
+    """모든 블록의 rich text에서 Notion 페이지 링크 ID를 수집합니다."""
+    linked_ids = set()
+    for bdata in blocks.values():
+        val = bdata.get("value", {})
+        props = val.get("properties", {})
+        for prop_val in props.values():
+            if not isinstance(prop_val, list):
+                continue
+            for seg in prop_val:
+                if not isinstance(seg, list) or len(seg) < 2:
+                    continue
+                for ann in seg[1]:
+                    if not ann:
+                        continue
+                    kind = ann[0] if ann else None
+                    ann_val = ann[1] if len(ann) > 1 else None
+                    url = None
+                    if kind == "a" and isinstance(ann_val, str):
+                        url = ann_val
+                    elif kind == "lm" and isinstance(ann_val, dict):
+                        url = ann_val.get("href", "")
+                    if url and is_notion_url(url):
+                        try:
+                            linked_ids.add(extract_page_id(url))
+                        except ValueError:
+                            pass
+    return linked_ids
+
+
 # ─── 페이지 변환 메인 로직 ────────────────────────────────────────────────────
 
 def get_page_title(page_id: str, blocks: dict) -> str:
@@ -313,7 +350,7 @@ def sanitize_filename(title: str) -> str:
 
 
 def convert_page(page_id: str, output_dir: str, visited: set = None):
-    """페이지를 마크다운으로 변환하고, 하위 페이지도 재귀적으로 처리합니다."""
+    """페이지를 마크다운으로 변환하고, child page 및 본문 내 Notion 링크도 재귀 처리합니다."""
     if visited is None:
         visited = set()
     if page_id in visited:
@@ -329,6 +366,16 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
 
     title = get_page_title(page_id, blocks)
     date_str = get_page_date(page_id, blocks)
+
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    filename = f"{date_str}-{sanitize_filename(title)}.md"
+    output_path = Path(output_dir) / filename
+
+    # 동일 파일 존재 시 스킵
+    if output_path.exists():
+        print(f"  스킵 (이미 존재): {filename}")
+        return
+
     print(f"  제목: {title} ({date_str})")
 
     # 루트 페이지의 content 블록들 렌더링
@@ -336,17 +383,12 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
     content_ids = root_val.get("content", [])
     md_body = render_blocks(content_ids, blocks, depth=0)
 
-    # 파일 저장
-    Path(output_dir).mkdir(parents=True, exist_ok=True)
-    filename = f"{date_str}-{sanitize_filename(title)}.md"
-    output_path = Path(output_dir) / filename
-
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(md_body)
 
     print(f"  저장: {output_path}")
 
-    # 하위 child page 재귀 처리
+    # 1. child page (type="page" 블록) DFS
     for bid in content_ids:
         if bid not in blocks:
             continue
@@ -354,17 +396,21 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
         if bval.get("type") == "page":
             convert_page(bid, output_dir, visited)
 
+    # 2. 본문 내 Notion 링크 DFS
+    for linked_id in collect_notion_links(blocks):
+        convert_page(linked_id, output_dir, visited)
+
 
 # ─── 진입점 ──────────────────────────────────────────────────────────────────
 
 def main():
-    if len(sys.argv) < 2:
-        print("사용법: python notion_to_obsidian.py <notion_url> [output_dir]")
-        print("예시:   python notion_to_obsidian.py https://stump-blender-387.notion.site/abc123def456 ./output")
+    if len(sys.argv) < 3:
+        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url>")
+        print("예시:   python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456")
         sys.exit(1)
 
-    url = sys.argv[1]
-    output_dir = sys.argv[2] if len(sys.argv) > 2 else "."
+    output_dir = sys.argv[1]
+    url = sys.argv[2]
 
     try:
         page_id = extract_page_id(url)
