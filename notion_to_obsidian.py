@@ -387,7 +387,7 @@ def sanitize_filename(title: str) -> str:
     return name or "Untitled"
 
 
-def convert_page(page_id: str, output_dir: str, visited: set = None):
+def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bool = False):
     """페이지를 마크다운으로 변환하고, child page 및 본문 내 Notion 링크도 재귀 처리합니다."""
     if visited is None:
         visited = set()
@@ -413,10 +413,14 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
     # slug 캐시에 등록 (rich text 링크 변환에 사용)
     _slug_cache[page_id] = post_slug
 
-    # 동일 파일 존재 시 스킵
+    # 동일 파일 존재 시 스킵 (--rewrite 시 덮어쓰기)
     if output_path.exists():
-        print(f"  스킵 (이미 존재): {filename}")
-        return
+        if rewrite:
+            output_path.unlink()
+            print(f"  덮어쓰기: {filename}")
+        else:
+            print(f"  스킵 (이미 존재): {filename}")
+            return
 
     print(f"  제목: {title} ({date_str})")
 
@@ -438,23 +442,28 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
             continue
         bval = blocks[bid].get("value", {})
         if bval.get("type") == "page":
-            convert_page(bid, output_dir, visited)
+            convert_page(bid, output_dir, visited, rewrite=rewrite)
 
     # 2. 본문 내 Notion 링크 DFS
     for linked_id in collect_notion_links(blocks):
-        convert_page(linked_id, output_dir, visited)
+        convert_page(linked_id, output_dir, visited, rewrite=rewrite)
 
 
 # ─── 진입점 ──────────────────────────────────────────────────────────────────
 
 def main():
-    if len(sys.argv) < 3:
-        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url>")
+    args = sys.argv[1:]
+    rewrite = "--rewrite" in args
+    args = [a for a in args if a != "--rewrite"]
+
+    if len(args) < 2:
+        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url> [--rewrite]")
         print("예시:   python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456")
+        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --rewrite")
         sys.exit(1)
 
-    output_dir = sys.argv[1]
-    url = sys.argv[2]
+    output_dir = args[0]
+    url = args[1]
 
     try:
         page_id = extract_page_id(url)
@@ -463,7 +472,7 @@ def main():
         print(f"오류: {e}")
         sys.exit(1)
 
-    convert_page(page_id, output_dir)
+    convert_page(page_id, output_dir, rewrite=rewrite)
     print("\n완료!")
 
 
