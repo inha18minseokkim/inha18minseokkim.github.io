@@ -1,7 +1,9 @@
 ---
 title: "JPA: Query Based vs Domain Based / @NotFound Ignore vs Exception"
 date: 2024-04-29
-tags: [미지정]
+tags:
+  - JPA
+  - QueryDSL
 ---
 
 리팩토링 수행 간 문제 인식. 아마 마이그레이션을 할 때 한번 씩 생길 수 있을 문제인것같음.
@@ -173,9 +175,9 @@ interestStock 엔티티가 존재하는데 DB에서 ManyToOne 으로 매핑되�
 ## 해결방법
 
 크게 세 가지 해결법이 있을 것 같다(세가지 다 적용 가능, 배타적 X)
-delete 시 Soft Delete 사용(위 코드에서는 effectiveYn을 N으로 바꾸고 filter에서 N을 걸러냄)
-@NotFound(action = NotFoundAction.IGNORE) 사용
-이걸 논의하지 않는 것
+1. delete 시 Soft Delete 사용(위 코드에서는 effectiveYn을 N으로 바꾸고 filter에서 N을 걸러냄)
+2. @NotFound(action = NotFoundAction.IGNORE) 사용
+3. 이걸 논의하지 않는 것
 
 @NotFound  Ignore 하고 싶지만 위 상황을 피하는 것이지 오류가 없는건 아니기 때문에 더 위험하다고 판단.
 그리고 아마 조회할때는 괜찮겠지만 설정할 때 문제 생길것.
@@ -186,9 +188,9 @@ delete 시 Soft Delete 사용(위 코드에서는 effectiveYn을 N으로 바꾸�
 ## 쿼리 기반 어플리케이션이 아니기 때문에
 
 문제는 크게 세 가지 상황에서 일어날 것
-ITISM으로 직접 원장 변경 작업을 요청할 경우
-BXM → MSA 환경으로 계속 마이그레이션 할 때 기존 업무에서 놓친 경우
-Mybatis나 JDBC를 이용한 DB 변경
+1. ITISM으로 직접 원장 변경 작업을 요청할 경우
+2. BXM → MSA 환경으로 계속 마이그레이션 할 때 기존 업무에서 놓친 경우
+3. Mybatis나 JDBC를 이용한 DB 변경
 1, 2번은 잘 안일어나니 차치하고
 3번의 경우
 기존 BXM 프레임워크에서 Mybatis 쿼리 기반으로 작업을 하는 경우에는 대부분 Inner Join + 외래키 없음 방식으로 데이터를 관리했기 때문에 데이터가 없다 → 그냥 넣는다 이런식으로 처리가 가능했지만

@@ -1,7 +1,10 @@
 ---
-title: "Mono context cannot contain job in it. Its lifecycle"
+title: Mono context cannot contain job in it. Its lifecycle
 date: 2025-04-02
-tags: [미지정]
+tags:
+  - Reactive
+  - Kotlin
+  - Webflux
 ---
 
 ```kotlin
