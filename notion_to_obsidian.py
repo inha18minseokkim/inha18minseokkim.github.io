@@ -411,8 +411,10 @@ def convert_page(page_id: str, output_dir: str, visited: set = None):
     content_ids = root_val.get("content", [])
     md_body = render_blocks(content_ids, blocks, depth=0)
 
+    front_matter = f'---\ntitle: "{title}"\ndate: {date_str}\ntags: [미지정]\n---\n'
+
     with open(output_path, "w", encoding="utf-8") as f:
-        f.write(md_body)
+        f.write(front_matter + md_body)
 
     print(f"  저장: {output_path}")
 
