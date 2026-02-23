@@ -224,7 +224,7 @@ tags:
     
     - H100 NVLink Bridge
         
-        ![image.png](attachment:24989008-849b-4c0e-9858-f2a85d738e67:image.png)
+        ![이미지](/assets/images/Pasted%20image%2020260223115955.png)
         
     
     ### **1. 문제 정의: GPU 간 통신 병목과 비효율적 부하 분산**
@@ -237,7 +237,7 @@ tags:
     
     - **H100 GPU는 NVLink로 2장씩 강하게 연결**되어 있음 (`nvidia-smi topo -m` 으로 확인)
         
-        ![image.png](attachment:42cb9f63-c8a3-470a-a832-c195ac7f2290:image.png)
+        ![이미지](/assets/images/Pasted%20image%2020260223120002.png)
         
     - **단순히 GPU 개수를 늘리는 것보다, NVLink로 연결된 GPU를 하나의 논리적 그룹으로 배포하는 것이 효율적**일 가능성이 높음
         
@@ -278,23 +278,23 @@ tags:
         
         - H100 4장 (속도 최적화 X)
             
-            ![image.png](attachment:71e4d6e8-74ed-4b64-be9d-f10b06f8fe6a:image.png)
+            ![이미지](/assets/images/Pasted%20image%2020260223120020.png)
             
         - H100 2장 (속도 최적화 X)
             
-            ![image.png](attachment:5b2273af-66f7-44fa-ad08-878ee9f25ddc:image.png)
+            ![이미지](/assets/images/Pasted%20image%2020260223120024.png)
             
         - H100 4장 (속도 최적화 O)
             
-            ![image.png](attachment:f71639ed-f58d-43a4-8ab7-3b12bd9c1b24:image.png)
+            ![이미지](/assets/images/Pasted%20image%2020260223120030.png)
             
         - H100 2장 (속도 최적화 O)
             
-            ![image.png](attachment:b5558c0d-abab-43b7-a2b2-cafa6f928750:image.png)
+            ![이미지](/assets/images/Pasted%20image%2020260223120034.png)
             
         - H100 2장 x 2 (속도 최적화 O + nginx 활용)
             
-            ![image.png](attachment:4d5a4f29-d427-4380-93b7-f4ca0ab20668:image.png)
+            ![이미지](/assets/images/Pasted%20image%2020260223120038.png)
             
 
 ### 그냥 Round-Robin 사용한 이유
