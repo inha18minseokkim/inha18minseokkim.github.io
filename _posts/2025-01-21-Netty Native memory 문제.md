@@ -1,7 +1,9 @@
 ---
-title: "Netty Native memory 문제"
+title: Netty Native memory 문제
 date: 2025-01-21
-tags: [미지정]
+tags:
+  - Java
+  - Webflux
 ---
 
 여기서 openapi-servlet 프로젝트를 구현하다가 맞닥뜨린 이슈.
