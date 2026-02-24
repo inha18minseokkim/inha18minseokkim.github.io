@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
       filterStatus.textContent = `${parts.join(' · ')}: ${visibleCount}개의 글`;
     }
 
-    dateClearBtn.style.display = (dateFrom && dateTo) ? '' : 'none';
+    dateClearBtn.style.display = (dateFrom && dateTo) ? 'inline-block' : 'none';
   }
 
   // Flatpickr 날짜 범위 피커
