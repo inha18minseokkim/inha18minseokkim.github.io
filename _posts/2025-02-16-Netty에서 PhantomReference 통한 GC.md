@@ -1,7 +1,8 @@
 ---
-title: "Netty에서 PhantomReference 통한 GC"
+title: Netty에서 PhantomReference 통한 GC
 date: 2025-02-16
-tags: [미지정]
+tags:
+  - Webflux
 ---
 
 
@@ -57,7 +58,7 @@ Heap 내 다른 객체에 의한 참조
 Java 스택에서 참조하는 것
 JNI를 통한 Native Stack에서 참조하는 것
 
-![](attachment:a2ef13ed-e7d9-4a40-8abd-51224d21a3cd:image.png)
+![[Pasted image 20260225082254.png]]
 
 
 strongly reachable : root set으로부터 시작해서 어떤 reference object도 중간에 끼지 않은 상태로 참조 가능한 객체, 다시 말해, 객체까지 도달하는 여러 참조 사슬 중 reference object가 없는 사슬이 하나라도 있는 객체
@@ -80,7 +81,7 @@ unreachable : root set으로부터 시작되는 참조 사슬로 참조되지 �
 이걸 키포인트로 하고, Native Memory를 어케 삭제하냐면..
 
 
-![](attachment:6857b825-d6b8-4216-92d5-5172e66dd318:image.png)
+![[Pasted image 20260225082303.png]]
 
 ByteBuffer의 cleaner라는 객체는 PhantomReference를 상속함.
 
@@ -187,12 +188,12 @@ public void run() {
 실제로 UNSAFE를 통해 메모리를 해제함(JNI 시스템콜 해주는 기능이라고 생각하면됨)
 
 즉, PhantomReference 객체가 참조하는 객체가 GC대상이 된다면
-ex) buffer = null 해서 referenceCount가 0이 되면
+	ex) buffer = null 해서 referenceCount가 0이 되면
 PhantomReference 객체는 ReferenceQueue에 Enqueue 되고, 
-근데 여기서 PhantomReference는 Cleaner임. 
-후처리하는 데몬 스레드에서 Cleaner.clean()을 수행함
-근데 Cleaner.clean()은 내부적으로 Deallocator.run()을 실행하는데
-run할 때 JNI 콜(UNSAFE.freeMemory) 하여 DirectByteBuffer를 GC하면서 Kerner Buffer도 정리해버림
+	근데 여기서 PhantomReference는 Cleaner임. 
+		후처리하는 데몬 스레드에서 Cleaner.clean()을 수행함
+			근데 Cleaner.clean()은 내부적으로 Deallocator.run()을 실행하는데
+				run할 때 JNI 콜(UNSAFE.freeMemory) 하여 DirectByteBuffer를 GC하면서 Kerner Buffer도 정리해버림
 요약: PhantomReference는 메모리가 정리될 때 이벤트 리스닝 같은 역할을 해줌. DirectByteBuffer가 정리될 때 Phantomly Reachable 하게 만들어놓고 GC 시점에 메모리 해제하도록 함.
 
 

@@ -1,7 +1,8 @@
 ---
-title: "default Method"
+title: default Method
 date: 2023-08-20
-tags: [미지정]
+tags:
+  - Java
 ---
 인터페이스에서 구현된 함수의 대안
 

@@ -1,7 +1,9 @@
 ---
-title: "WebClient.Builder + 싱글톤 시 헤더 설정 주의(중복 정의 가능)"
+title: WebClient.Builder + 싱글톤 시 헤더 설정 주의(중복 정의 가능)
 date: 2024-10-19
-tags: [미지정]
+tags:
+  - Spring
+  - Webflux
 ---
 
 ```java

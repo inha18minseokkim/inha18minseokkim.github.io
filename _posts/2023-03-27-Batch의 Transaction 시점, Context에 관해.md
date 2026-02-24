@@ -1,7 +1,9 @@
 ---
-title: "Batch의 Transaction 시점, Context에 관해"
+title: Batch의 Transaction 시점, Context에 관해
 date: 2023-03-27
-tags: [미지정]
+tags:
+  - Spring
+  - Batch
 ---
 ![이미지](/assets/images/Pasted%20image%2020260224162733.png)
 
