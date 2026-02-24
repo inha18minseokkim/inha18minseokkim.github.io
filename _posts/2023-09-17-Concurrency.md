@@ -1,7 +1,10 @@
 ---
-title: "Concurrency"
+title: Concurrency
 date: 2023-09-17
-tags: [미지정]
+tags:
+  - Java
+  - 동시성
+  - 개발
 ---
 
 ```java

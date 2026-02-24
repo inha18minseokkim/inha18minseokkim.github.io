@@ -1,7 +1,10 @@
 ---
-title: "Caffeine Cache를 Static 선언한다면 어떻게 될까"
+title: Caffeine Cache를 Static 선언한다면 어떻게 될까
 date: 2025-06-28
-tags: [미지정]
+tags:
+  - Java
+  - 동시성
+  - 개발
 ---
 
 ### 왜?

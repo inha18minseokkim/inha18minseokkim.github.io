@@ -1,7 +1,10 @@
 ---
-title: "RouteLocator로 Path 파싱 후 라우팅"
+title: RouteLocator로 Path 파싱 후 라우팅
 date: 2024-04-04
-tags: [미지정]
+tags:
+  - Spring
+  - SCG
+  - Webflux
 ---
 
 ```javascript
