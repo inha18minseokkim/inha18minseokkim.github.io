@@ -14,6 +14,27 @@
   --code-bg: #161b22;
   --tag-bg: rgba(124, 111, 255, 0.12);
   --tag-border: rgba(124, 111, 255, 0.25);
+  --header-bg: rgba(13, 17, 23, 0.85);
+  --hero-gradient-start: #e6edf3;
+  --strong-color: #ffffff;
+}
+
+html.light {
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card-hover: #f6f8fa;
+  --border: #d0d7de;
+  --accent: #6e5af0;
+  --accent-light: #7c6fff;
+  --text: #1f2328;
+  --text-muted: #636c76;
+  --code-bg: #f6f8fa;
+  --tag-bg: rgba(110, 90, 240, 0.08);
+  --tag-border: rgba(110, 90, 240, 0.2);
+  --header-bg: rgba(246, 248, 250, 0.92);
+  --hero-gradient-start: #1f2328;
+  --strong-color: #1f2328;
 }
 
 *, *::before, *::after {
@@ -62,7 +83,7 @@ a:hover {
   top: 0;
   z-index: 100;
   padding: 1rem 0;
-  background: rgba(13, 17, 23, 0.85);
+  background: var(--header-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -104,6 +125,41 @@ a:hover {
   color: var(--text);
 }
 
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: rgba(124, 111, 255, 0.08);
+}
+
+.theme-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* 다크 모드: 해 아이콘(라이트로 전환) 표시 */
+.icon-sun  { display: block; }
+.icon-moon { display: none; }
+
+/* 라이트 모드: 달 아이콘(다크로 전환) 표시 */
+html.light .icon-sun  { display: none; }
+html.light .icon-moon { display: block; }
+
 /* ============================================
    Hero
    ============================================ */
@@ -123,7 +179,7 @@ a:hover {
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin-bottom: 1.25rem;
-  background: linear-gradient(135deg, #e6edf3 30%, #7c6fff 100%);
+  background: linear-gradient(135deg, var(--hero-gradient-start) 30%, #7c6fff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -557,7 +613,7 @@ a:hover {
 
 .post-content strong {
   font-weight: 650;
-  color: #fff;
+  color: var(--strong-color);
 }
 
 .post-content em {
