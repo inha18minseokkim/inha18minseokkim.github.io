@@ -7,7 +7,7 @@ tags:
 [https://preshing.com/20120930/weak-vs-strong-memory-models/](https://preshing.com/20120930/weak-vs-strong-memory-models/)
 
 
-![[Pasted image 20260224113138.png]]
+![이미지](/assets/images/Pasted%20image%2020260224113138.png)
 
 Memory Reordering 하는 매커니즘이 머신마다 다를 수 있음. 그리고 이제는 대체로 다 멀티코어이므로 중요함
 
