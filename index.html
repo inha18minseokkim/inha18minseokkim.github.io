@@ -23,11 +23,22 @@ layout: default
       {% endfor %}
     </div>
 
+    <!-- 날짜 범위 필터 -->
+    <div class="date-filter">
+      <div class="date-filter-input-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25A1.75 1.75 0 0 1 15 3.75v9.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-9.5A1.75 1.75 0 0 1 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v5.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Z"/>
+        </svg>
+        <input type="text" id="dateRangePicker" class="date-filter-input" placeholder="날짜 범위 선택" readonly>
+      </div>
+      <button class="date-clear-btn" id="dateClearBtn">✕ 초기화</button>
+    </div>
+
     <p class="filter-status" id="filterStatus"></p>
 
     <ul class="post-list">
       {% for post in site.posts %}
-      <li class="post-item" data-tags="{{ post.tags | join: ',' }}">
+      <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}">
         <a href="{{ post.url | relative_url }}" class="post-link">
           <div class="post-meta">
             <time class="post-date">{{ post.date | date: "%Y. %m. %d" }}</time>
@@ -53,6 +64,7 @@ layout: default
   </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   // 태그 버튼을 언급 횟수 내림차순으로 정렬
@@ -65,28 +77,81 @@ document.addEventListener('DOMContentLoaded', function() {
   const allBtn = document.querySelector('.tag-filter-btn[data-tag="all"]');
   const postItems = document.querySelectorAll('.post-item');
   const filterStatus = document.getElementById('filterStatus');
+  const dateClearBtn = document.getElementById('dateClearBtn');
 
   let selectedTags = new Set();
+  let dateFrom = null;
+  let dateTo = null;
 
   function applyFilter() {
     let visibleCount = 0;
 
     postItems.forEach(item => {
       const tags = item.dataset.tags ? item.dataset.tags.split(',') : [];
-      const visible = selectedTags.size === 0 || tags.some(t => selectedTags.has(t));
+      const tagMatch = selectedTags.size === 0 || tags.some(t => selectedTags.has(t));
+
+      const postDate = new Date(item.dataset.date);
+      const dateMatch = (!dateFrom && !dateTo) ||
+        (dateFrom && dateTo && postDate >= dateFrom && postDate <= dateTo);
+
+      const visible = tagMatch && dateMatch;
       item.style.display = visible ? '' : 'none';
       if (visible) visibleCount++;
     });
 
-    if (selectedTags.size === 0) {
+    const tagPart = selectedTags.size > 0
+      ? `${[...selectedTags].map(t => '"' + t + '"').join(', ')} 태그`
+      : '';
+    const datePart = (dateFrom && dateTo)
+      ? `${fp.formatDate(dateFrom, 'Y.m.d')} ~ ${fp.formatDate(dateTo, 'Y.m.d')}`
+      : '';
+    const parts = [tagPart, datePart].filter(Boolean);
+
+    if (parts.length === 0) {
       allBtn.classList.add('active');
       filterStatus.textContent = '';
     } else {
       allBtn.classList.remove('active');
-      filterStatus.textContent = `${[...selectedTags].map(t => '"' + t + '"').join(', ')} 태그: ${visibleCount}개의 글`;
+      filterStatus.textContent = `${parts.join(' · ')}: ${visibleCount}개의 글`;
     }
+
+    dateClearBtn.style.display = (dateFrom && dateTo) ? '' : 'none';
   }
 
+  // Flatpickr 날짜 범위 피커
+  const fp = flatpickr('#dateRangePicker', {
+    mode: 'range',
+    dateFormat: 'Y.m.d',
+    locale: {
+      rangeSeparator: ' ~ ',
+      weekdays: { shorthand: ['일','월','화','수','목','금','토'], longhand: ['일','월','화','수','목','금','토'] },
+      months: {
+        shorthand: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+        longhand: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+      }
+    },
+    onChange(selectedDates) {
+      if (selectedDates.length === 2) {
+        dateFrom = selectedDates[0];
+        dateTo = selectedDates[1];
+        // dateTo를 해당 날짜 끝까지 포함
+        dateTo.setHours(23, 59, 59, 999);
+      } else {
+        dateFrom = null;
+        dateTo = null;
+      }
+      applyFilter();
+    }
+  });
+
+  dateClearBtn.addEventListener('click', function() {
+    fp.clear();
+    dateFrom = null;
+    dateTo = null;
+    applyFilter();
+  });
+
+  // 태그 필터
   allBtn.addEventListener('click', function() {
     selectedTags.clear();
     filterBtns.forEach(b => b.classList.remove('active'));
@@ -107,5 +172,8 @@ document.addEventListener('DOMContentLoaded', function() {
       applyFilter();
     });
   });
+
+  // 초기 상태
+  applyFilter();
 });
 </script>
