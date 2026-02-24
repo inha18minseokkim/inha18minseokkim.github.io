@@ -1,4 +1,4 @@
----
+	---
 title: "Netty Native memory 문제"
 date: 2025-01-21
 tags: [미지정]
@@ -18,15 +18,15 @@ tags: [미지정]
 
 ### 알기 전
 
-톰캣이든 네티든 자바로 구현되었으면 안의 메모리관리는 무조건 JVM이 해주겠지
-힙메모리도 가변적으로 조절하라고 쓰는거니깐 알아서 늘겠지
+1. 톰캣이든 네티든 자바로 구현되었으면 안의 메모리관리는 무조건 JVM이 해주겠지
+2. 힙메모리도 가변적으로 조절하라고 쓰는거니깐 알아서 늘겠지
 
 
 
 ### 정리
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/42d67254-73f7-49bd-b5c0-21ba4d979c2b/image.png)
+![이미지](/assets/images/Pasted%20image%2020260224101216.png)
 
 JVM 메모리 영역에서 GC에 의해 관리되지 않는 메모리 > DirectBuffer등 네이티브 메모리.
 Netty 같은것들이 최근 성능 향상을 위해 Direct Memory 사용한다고 함.
@@ -69,8 +69,7 @@ spec:
 Native Memory의 경우 GC에 의해 정리되는 대상이 아니다보니 PhantomReference 사용해서 GC 한다.
 
 
-![](attachment:43b4eb54-00c6-4279-852b-0cd921399b63:image.png)
-
+![이미지](/assets/images/Pasted%20image%2020260224101227.png)
 
 
 ### UNSAFE
@@ -80,17 +79,14 @@ JNI 사용해서 memory syscall 호출, 즉 OS 영역 접근 ex) Unsafe.allocate
 
 ### Deallocator
 
-
-![](attachment:e3f7683d-ae92-4133-b289-d5862ed07ff8:image.png)
+![이미지](/assets/images/Pasted%20image%2020260224101233.png)
 
 DirectByteBuffer 내부 클래스
-
-![](attachment:d4601eec-3557-4e4d-84ce-7f79d5434f32:image.png)
+![이미지](/assets/images/Pasted%20image%2020260224101239.png)
 
 PhantomReference를 상속, ReferenceQueue 사용하여 clean 함.
 여기서 PhantomReference, ReferenceQueue는 자바 GC에서 사용되는 그거임
-
-![](attachment:0b20d583-b585-4368-b8e6-aae13aca83ac:image.png)
+![이미지](/assets/images/Pasted%20image%2020260224101246.png)
 
 간단하게 넘어가면 Reference 되지 않는 공간에 있으면 GC가 실행될 때 ex) Stop the world
 JVM 힙 영역에 있던 객체들은 ReferenceCount가 없으면 죽여버리는것처럼 ReferenceQueue를 등록해놓고, Native Memory를 정리해야 할 때가 오면 ReferenceQueue를 통해 참조하고 있는 메모리를 제거함
@@ -101,11 +97,11 @@ JVM 힙 영역에 있던 객체들은 ReferenceCount가 없으면 죽여버리�
 그러라고 만든거임. PhantomRefence는 레퍼런스카운트에 안들어간다. Strongly Reachable, Weakly Reachable 외에 Phantomly Reference라고 따로 있음. 즉 Phantomly Reference만 남았다 > 제거대상
 Phantomly Reference는 반드시 Reference Queue 사용 함.
 GC 가 구동되면 다음 순으로 정리함
-soft references
-weak references
-finalize
-phantom references
-메모리 회수
+1. soft references
+2. weak references
+3. finalize
+4. phantom references
+5. 메모리 회수
 
 
 ### PhantomReference는 그럼 어떤 사이클을 타는거냐?
