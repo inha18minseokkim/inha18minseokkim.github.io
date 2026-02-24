@@ -3,14 +3,11 @@ title: "Batch의 Transaction 시점, Context에 관해"
 date: 2023-03-27
 tags: [미지정]
 ---
-
-![](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4d5cf962-87a0-4b49-9731-c3816f291ba1/Untitled.png)
+![이미지](/assets/images/Pasted%20image%2020260224162733.png)
 
 Spring Batch 계층 구조
 
-
-![](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/39651d6c-ed64-42f6-b90a-07c0cdc70f85/Untitled.png)
-
+![이미지](/assets/images/Pasted%20image%2020260224162740.png)
 흔히 알고 있는 Spring Batch의 Chunk 생명주기(?)
 
 들었던 의문
@@ -26,9 +23,7 @@ Spring Batch 계층 구조
 ## Transaction 설정 시점은 특정 시점에 따라 다를 수 있다(예컨데 DB 접근 시, 설정으로 바꿀 수 있는듯),Spring Batch가 Runtime에 DB접근 코드를 보고 판단함.
 
 beforechunk가 끝나고 lock을 무조건 거는것도 아니고 db에 접근하는 시점에 따라서 알아서 판단함.
-
-![](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/aeea1b59-1ac8-45dd-bab9-fb67e894d277/Screenshot_20230327_150034_Chrome.jpg)
-
+![이미지](/assets/images/Pasted%20image%2020260224162747.png)
 대체로 이런 환경을 따르긴 한다. 기본적으로 스프링 배치는 read, process, write의 프로세스를 하나의 트랜잭션으로 싸고 있다고 생각.
 
 
