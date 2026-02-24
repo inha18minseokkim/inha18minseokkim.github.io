@@ -18,7 +18,9 @@
       "Bash(./obsidian_to_jekyll_image.sh:*)",
       "Bash(git reset:*)",
       "Bash(bash obsidian_to_jekyll_image.sh)",
-      "Bash(python notion_to_obsidian.py:*)"
+      "Bash(python notion_to_obsidian.py:*)",
+      "WebSearch",
+      "Bash(cat:*)"
     ]
   }
 }
