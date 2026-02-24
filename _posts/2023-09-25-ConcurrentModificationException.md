@@ -1,7 +1,9 @@
 ---
-title: "ConcurrentModificationException"
+title: ConcurrentModificationException
 date: 2023-09-25
-tags: [미지정]
+tags:
+  - Java
+  - 동시성
 ---
 
 
