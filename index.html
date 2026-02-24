@@ -62,36 +62,49 @@ document.addEventListener('DOMContentLoaded', function() {
   tagBtns.forEach(btn => tagFilter.appendChild(btn));
 
   const filterBtns = document.querySelectorAll('.tag-filter-btn');
+  const allBtn = document.querySelector('.tag-filter-btn[data-tag="all"]');
   const postItems = document.querySelectorAll('.post-item');
   const filterStatus = document.getElementById('filterStatus');
 
+  let selectedTags = new Set();
+
+  function applyFilter() {
+    let visibleCount = 0;
+
+    postItems.forEach(item => {
+      const tags = item.dataset.tags ? item.dataset.tags.split(',') : [];
+      const visible = selectedTags.size === 0 || tags.some(t => selectedTags.has(t));
+      item.style.display = visible ? '' : 'none';
+      if (visible) visibleCount++;
+    });
+
+    if (selectedTags.size === 0) {
+      allBtn.classList.add('active');
+      filterStatus.textContent = '';
+    } else {
+      allBtn.classList.remove('active');
+      filterStatus.textContent = `${[...selectedTags].map(t => '"' + t + '"').join(', ')} 태그: ${visibleCount}개의 글`;
+    }
+  }
+
+  allBtn.addEventListener('click', function() {
+    selectedTags.clear();
+    filterBtns.forEach(b => b.classList.remove('active'));
+    applyFilter();
+  });
+
   filterBtns.forEach(btn => {
+    if (btn.dataset.tag === 'all') return;
     btn.addEventListener('click', function() {
-      const selectedTag = this.dataset.tag;
-
-      // 버튼 활성화 상태 변경
-      filterBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-
-      let visibleCount = 0;
-
-      // 포스트 필터링
-      postItems.forEach(item => {
-        const tags = item.dataset.tags.split(',');
-        if (selectedTag === 'all' || tags.includes(selectedTag)) {
-          item.style.display = '';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      // 필터 상태 표시
-      if (selectedTag === 'all') {
-        filterStatus.textContent = '';
+      const tag = this.dataset.tag;
+      if (selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        this.classList.remove('active');
       } else {
-        filterStatus.textContent = `"${selectedTag}" 태그: ${visibleCount}개의 글`;
+        selectedTags.add(tag);
+        this.classList.add('active');
       }
+      applyFilter();
     });
   });
 });
