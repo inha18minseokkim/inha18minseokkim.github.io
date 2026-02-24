@@ -1,7 +1,8 @@
 ---
-title: "Weak Memory Model"
+title: Weak Memory Model
 date: 2023-09-24
-tags: [미지정]
+tags:
+  - Java
 ---
 [https://preshing.com/20120930/weak-vs-strong-memory-models/](https://preshing.com/20120930/weak-vs-strong-memory-models/)
 
