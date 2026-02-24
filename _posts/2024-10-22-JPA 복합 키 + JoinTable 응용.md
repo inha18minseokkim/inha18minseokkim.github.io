@@ -1,7 +1,10 @@
 ---
-title: "JPA 복합 키 + JoinTable 응용"
+title: JPA 복합 키 + JoinTable 응용
 date: 2024-10-22
-tags: [미지정]
+tags:
+  - Spring
+  - JPA
+  - Spring-Data
 ---
 기존에 테이블에 pk가 여러개여야 하는 경우 다음과 같이 테이블을 짰다.
 시퀀스 식별자를 하나 둠. id

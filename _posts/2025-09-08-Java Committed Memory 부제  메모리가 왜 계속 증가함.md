@@ -1,7 +1,9 @@
 ---
 title: "Java Committed Memory 부제 : 메모리가 왜 계속 증가함?"
 date: 2025-09-08
-tags: [미지정]
+tags:
+  - Java
+  - 이슈정리
 ---
 
 ### 선 한 줄 요약
@@ -24,29 +26,29 @@ JVM이 초기에 메모리를 할당해서 자바가 메모리를 런타임에 �
  > OS **曰**) 우린 이걸 메모리를 사용중이다 라고 부르기로 했어요
 그러니깐 OS Layer를 모니터링 하는 그라파나 입장에서는 이렇게 보임
 
-![](attachment:fbb0620c-68b2-4acd-91f9-23ee1dad61ec:image.png)
+![이미지](/assets/images/Pasted%20image%2020260225084332.png)
 
 ??? : 예약해놓은건 알겠는데 어쨌든 프로세스가 쓰는거잖아
 
 개발자 입장에서는 이게 시간이 지날수록 그냥 메모리가 장기 우상향하네?? 이거 GC 잘 안돼서 메모리 누수 나는거 아닌가? 라는 생각을 할 수도 있게 만들어놓음
 그런데 실제로는 이런식으로 안에서 메모리를 쓰고 놓고 쓰고 놓고를 계속 반복한다.
 
-![](attachment:11e2ebf9-3b94-4712-b6f3-8b76140d77d3:image.png)
+![이미지](/assets/images/Pasted%20image%2020260225084339.png)
 
 그래서 JVM이 이정도는 그냥 갖고 있어야 나중에 또 쓰겠거니 하면서 메모리 점유를 놓지 않는것
 
 그라파나도 플러그인 쓰면 이렇게 보임 ㅎㅎ;;;
 
-![](attachment:515635b8-fb91-4921-adaa-945c9f2150fe:image.png)
+![이미지](/assets/images/Pasted%20image%2020260225084347.png)
 
 
 실제로 보면 자바 힙사이즈를 이런식으로 관리하잖아
 
-![](attachment:7b852e4e-2e68-408e-b1d3-aa39d75e6dcd:image.png)
+![이미지](/assets/images/Pasted%20image%2020260225084352.png)
 
 이 사이에 Committed Memory가 있을 뿐..
 
-![](attachment:1a3a1857-cea2-4faa-8c6e-0068e288b3d9:image.png)
+![이미지](/assets/images/Pasted%20image%2020260225084356.png)
 
 
 +) 요즘(이라고 해도 10년 넘음) 은 퍼포먼스를 향상시키기 위해 Native Memory를 사용하는 경우도 많다. 이런 경우 Off Heap, 즉 Heap 바깥 OS 의 메모리를 직접 사용해서 JVM 내부로의 데이터 이동 없이 레퍼런스만 바꿔버리는 식으로 처리하기도 함 ex) ehCache, Netty 등등..
