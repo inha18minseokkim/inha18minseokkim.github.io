@@ -1,7 +1,9 @@
 ---
-title: "ExecutorService"
+title: ExecutorService
 date: 2023-09-10
-tags: [미지정]
+tags:
+  - Java
+  - 개발
 ---
 
 ## 스레드풀 없는 환경

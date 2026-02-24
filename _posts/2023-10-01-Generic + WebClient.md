@@ -1,7 +1,9 @@
 ---
-title: "Generic + WebClient"
+title: Generic + WebClient
 date: 2023-10-01
-tags: [미지정]
+tags:
+  - Java
+  - 개발
 ---
 Generic Type을 선언한 클래스
 다만 Generic의 경우 Compile 타임에 타입을 결정해야 한다. 
