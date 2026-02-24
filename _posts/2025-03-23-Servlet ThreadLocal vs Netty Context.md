@@ -1,7 +1,10 @@
 ---
-title: "Servlet ThreadLocal vs Netty Context"
+title: Servlet ThreadLocal vs Netty Context
 date: 2025-03-23
-tags: [미지정]
+tags:
+  - Webflux
+  - JPA
+  - Spring
 ---
 
 ## Servlet ThreadLocal
@@ -62,7 +65,7 @@ request에서 헤더부를 추출한다(케이뱅크로 따지면 staffId, custI
 CommonContext 라는 ThreadLocal 변수에 저장함
 DB 저장 시 GUID 채번시 사용함
 
-![](attachment:a926b37b-4d5d-4be0-9059-dd3299922fdc:image.png)
+![[Pasted image 20260225083518.png]]
 
 즉 MVC의 기본 요청은 1 요청 1 스레드
 WAS는 Thread를 효율적으로 관리하기 위해 Thread와 ThreadPool을 생성한다 - (Tomcat의 기본 쓰레드 갯수 200이다)
@@ -77,7 +80,7 @@ HTTP 요청 처리가 끝나면 Thread는 다시 ThreadPool에 반납된다.
 
 Tomcat은 Thread Pool 기반으로 동작함. 스레드 호출이 끝난 다음 clear 하지 않으면 다음 리퀘스트에서 재사용 가능함.
 
-![](attachment:fccfa450-13aa-4705-b2a5-da9db7be68df:reality_thoery.gif)
+![[Pasted image 20260225083523.png]]
 
 Thread 갯수를 늘리면 동시 처리 갯수가 늘어나겠지만, 쓰레드 끼리의Context switching에 의한 오버헤드도 커지기 때문에 성능이쓰레드 갯수에 비례해서 선형적으로 증가하지는 않는다.
 오히려 많은 쓰레드 자체를 관리하는 오버헤드도 커지기 때문이다.
@@ -87,7 +90,7 @@ Thread 갯수를 늘리면 동시 처리 갯수가 늘어나겠지만, 쓰레드
 ## Netty Context
 
 
-![](attachment:8e08f1c3-a44c-4664-86de-4587ee8b9937:image.png)
+![[Pasted image 20260225083614.png]]
 
 
 <<싱글 스레드 상황>> 에서 N개의 요청을 처리해야 함.
@@ -153,7 +156,7 @@ class KbankHeaderToContextFilter : WebFilter {
 ### 덕분에 JPA를 사용하지 못한다.
 
 
-![](attachment:4ad67c95-db5f-4c7f-b053-899ccb0a1105:image.png)
+![[Pasted image 20260225083632.png]]
 
 출처) 위의 [DataSourceTransactionManager](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/datasource/DataSourceTransactionManager.html) 클래스의 문서
  DataSource로 부터 현재 스레드에 JDBC Connection을 바인딩해서 잠재적으로 DataSource당 하나의 스레드를 연결하게 된다. 

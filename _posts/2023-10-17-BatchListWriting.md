@@ -1,7 +1,9 @@
 ---
-title: "BatchListWriting"
+title: BatchListWriting
 date: 2023-10-17
-tags: [미지정]
+tags:
+  - Spring
+  - Batch
 ---
 Chunk 프로세스에서 리스트를 Write 하고 싶다..
 

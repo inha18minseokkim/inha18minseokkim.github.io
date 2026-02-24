@@ -1,7 +1,9 @@
 ---
-title: "Kotlin Arrow를 활용한 에러 변환"
+title: Kotlin Arrow를 활용한 에러 변환
 date: 2025-07-27
-tags: [미지정]
+tags:
+  - Kotlin
+  - arrow
 ---
 [[Optics/Lens] 내 멋대로 Optics 이해하기 Feat) arrow-kt](https://see-ro-e.tistory.com/333)
 함수형 프로그래밍 공부중인데 코틀린에서 변환을 좀 자동화해주는
@@ -10,7 +12,7 @@ tags: [미지정]
 ### isomorphism
 
 
-![](attachment:5632e347-b937-421c-9171-ea31385cf3fb:image.png)
+![[Pasted image 20260225083420.png]]
 
 둘은 대수적으로 같음
 **동형**은 "A 구조의 데이터를 B 구조로, 그리고 그 반대로 완전히 변환할 수 있다"는 관계

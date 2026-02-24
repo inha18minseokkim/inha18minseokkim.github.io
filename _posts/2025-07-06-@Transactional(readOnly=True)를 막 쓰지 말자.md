@@ -1,7 +1,9 @@
 ---
 title: "@Transactional(readOnly=True)를 막 쓰지 말자"
 date: 2025-07-06
-tags: [미지정]
+tags:
+  - Spring
+  - Spring-Data
 ---
 
 # @Transactional(readOnly = true) 완벽 가이드: 언제 사용하고 언제 사용하지 말아야 할까?

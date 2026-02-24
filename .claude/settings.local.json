@@ -20,7 +20,10 @@
       "Bash(bash obsidian_to_jekyll_image.sh)",
       "Bash(python notion_to_obsidian.py:*)",
       "WebSearch",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "WebFetch(domain:stackoverflow.com)",
+      "WebFetch(domain:www.baeldung.com)",
+      "WebFetch(domain:vladmihalcea.com)"
     ]
   }
 }
