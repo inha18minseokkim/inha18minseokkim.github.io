@@ -169,7 +169,7 @@ def render_block(bval: dict, blocks: dict, depth: int = 0, number: int = None) -
         return "\n".join(parts) if parts else ""
 
     # ── 목록 ────────────────────────────────────────────────────────────────
-    elif btype == "bulleted_list_item":
+    elif btype in ("bulleted_list_item", "bulleted_list"):
         line = f"{indent}- {title}"
         child_md = render_blocks(children, blocks, depth + 1) if children else ""
         return "\n".join(p for p in [line, child_md] if p)
