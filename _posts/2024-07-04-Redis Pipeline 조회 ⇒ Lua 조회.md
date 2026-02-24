@@ -1,7 +1,9 @@
 ---
-title: "Redis Pipeline 조회 ⇒ Lua 조회"
+title: Redis Pipeline 조회 ⇒ Lua 조회
 date: 2024-07-04
-tags: [미지정]
+tags:
+  - Redis
+  - Lua
 ---
 
 ```java

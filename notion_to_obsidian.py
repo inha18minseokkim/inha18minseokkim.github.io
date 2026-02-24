@@ -387,8 +387,8 @@ def sanitize_filename(title: str) -> str:
     return name or "Untitled"
 
 
-def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bool = False):
-    """페이지를 마크다운으로 변환하고, child page 및 본문 내 Notion 링크도 재귀 처리합니다."""
+def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bool = False, recursive: bool = False):
+    """페이지를 마크다운으로 변환합니다. recursive=True 이면 child page 및 본문 내 Notion 링크도 DFS로 처리합니다."""
     if visited is None:
         visited = set()
     if page_id in visited:
@@ -436,17 +436,18 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
 
     print(f"  저장: {output_path}")
 
-    # 1. child page (type="page" 블록) DFS
-    for bid in content_ids:
-        if bid not in blocks:
-            continue
-        bval = blocks[bid].get("value", {})
-        if bval.get("type") == "page":
-            convert_page(bid, output_dir, visited, rewrite=rewrite)
+    if recursive:
+        # 1. child page (type="page" 블록) DFS
+        for bid in content_ids:
+            if bid not in blocks:
+                continue
+            bval = blocks[bid].get("value", {})
+            if bval.get("type") == "page":
+                convert_page(bid, output_dir, visited, rewrite=rewrite, recursive=True)
 
-    # 2. 본문 내 Notion 링크 DFS
-    for linked_id in collect_notion_links(blocks):
-        convert_page(linked_id, output_dir, visited, rewrite=rewrite)
+        # 2. 본문 내 Notion 링크 DFS
+        for linked_id in collect_notion_links(blocks):
+            convert_page(linked_id, output_dir, visited, rewrite=rewrite, recursive=True)
 
 
 # ─── 진입점 ──────────────────────────────────────────────────────────────────
@@ -454,12 +455,14 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
 def main():
     args = sys.argv[1:]
     skip = "--skip" in args
-    args = [a for a in args if a != "--skip"]
+    recursive = "--recursive" in args
+    args = [a for a in args if a not in ("--skip", "--recursive")]
 
     if len(args) < 2:
-        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url> [--skip]")
+        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url> [--recursive] [--skip]")
         print("예시:   python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456")
-        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --skip")
+        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --recursive")
+        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --recursive --skip")
         sys.exit(1)
 
     output_dir = args[0]
@@ -472,7 +475,7 @@ def main():
         print(f"오류: {e}")
         sys.exit(1)
 
-    convert_page(page_id, output_dir, rewrite=not skip)
+    convert_page(page_id, output_dir, rewrite=not skip, recursive=recursive)
     print("\n완료!")
 
 
