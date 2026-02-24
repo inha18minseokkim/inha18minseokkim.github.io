@@ -453,13 +453,13 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
 
 def main():
     args = sys.argv[1:]
-    rewrite = "--rewrite" in args
-    args = [a for a in args if a != "--rewrite"]
+    skip = "--skip" in args
+    args = [a for a in args if a != "--skip"]
 
     if len(args) < 2:
-        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url> [--rewrite]")
+        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url> [--skip]")
         print("예시:   python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456")
-        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --rewrite")
+        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --skip")
         sys.exit(1)
 
     output_dir = args[0]
@@ -472,7 +472,7 @@ def main():
         print(f"오류: {e}")
         sys.exit(1)
 
-    convert_page(page_id, output_dir, rewrite=rewrite)
+    convert_page(page_id, output_dir, rewrite=not skip)
     print("\n완료!")
 
 
