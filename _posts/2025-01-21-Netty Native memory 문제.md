@@ -108,6 +108,22 @@ GC 가 구동되면 다음 순으로 정리함
 
 다음시간에…
 
+### 그래서 왜 OutOfMemoryError가 났는가
+
+인과관계를 정리하면 다음과 같다.
+
+1. Netty는 성능을 위해 I/O 시 `ByteBuffer.allocateDirect()`로 Direct Memory를 할당함
+2. Direct Memory는 JVM 힙이 아니라서 GC가 직접 수거하지 않음
+3. 대신 `DirectByteBuffer`가 PhantomReference + ReferenceQueue를 통해 정리됨
+4. **핵심**: 이 정리는 GC가 구동될 때(Stop-the-world)에야 비로소 일어남
+5. MB 단위의 JSON 응답을 스트리밍할 때 Netty가 Direct Buffer를 빠르게 대량 할당함
+6. GC가 충분히 자주 돌기 전에 할당량이 MaxDirectMemorySize(기본 ~10MB)에 도달
+7. 더 이상 예약할 수 없어 `Cannot reserve N bytes of direct buffer memory` OOM 발생
+
+**간헐적으로 나는 이유**: GC 타이밍에 따라 다름. GC가 먼저 돌아서 PhantomReference 정리가 선행되면 OOM이 안 나고, 요청이 몰리거나 GC 주기가 길어지면 그 사이에 Direct Memory가 한계에 도달해 OOM이 남. 처음에는 괜찮다가 나중에 나는 것도 같은 이유 — 메모리가 누적되다가 임계값을 넘는 것.
+
+결국 **할당 속도 > 해제 속도** 구간이 생기면 터지는 구조이고, MaxDirectMemorySize를 늘리는 것은 그 구간의 여유를 확보하는 것.
+
 
 [Reference Count를 통한 Netty의 ByteBuf memory 관리](https://effectivesquid.tistory.com/entry/Reference-Count%EB%A5%BC-%ED%86%B5%ED%95%9C-Netty%EC%9D%98-ByteBuf-memory-%EA%B4%80%EB%A6%AC)
 [메모리 모니터링과 원인 분석 | 인사이트리포트 | 삼성SDS](https://www.samsungsds.com/kr/insights/1232762_4627.html)
