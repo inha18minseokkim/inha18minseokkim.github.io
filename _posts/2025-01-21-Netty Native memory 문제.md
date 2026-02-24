@@ -26,7 +26,7 @@ tags: [미지정]
 ### 정리
 
 
-![[Pasted image 20260224101216.png]]
+![이미지](/assets/images/Pasted%20image%2020260224101216.png)
 
 JVM 메모리 영역에서 GC에 의해 관리되지 않는 메모리 > DirectBuffer등 네이티브 메모리.
 Netty 같은것들이 최근 성능 향상을 위해 Direct Memory 사용한다고 함.
@@ -69,7 +69,7 @@ spec:
 Native Memory의 경우 GC에 의해 정리되는 대상이 아니다보니 PhantomReference 사용해서 GC 한다.
 
 
-![[Pasted image 20260224101227.png]]
+![이미지](/assets/images/Pasted%20image%2020260224101227.png)
 
 
 ### UNSAFE
@@ -79,14 +79,14 @@ JNI 사용해서 memory syscall 호출, 즉 OS 영역 접근 ex) Unsafe.allocate
 
 ### Deallocator
 
-![[Pasted image 20260224101233.png]]
+![이미지](/assets/images/Pasted%20image%2020260224101233.png)
 
 DirectByteBuffer 내부 클래스
-![[Pasted image 20260224101239.png]]
+![이미지](/assets/images/Pasted%20image%2020260224101239.png)
 
 PhantomReference를 상속, ReferenceQueue 사용하여 clean 함.
 여기서 PhantomReference, ReferenceQueue는 자바 GC에서 사용되는 그거임
-![[Pasted image 20260224101246.png]]
+![이미지](/assets/images/Pasted%20image%2020260224101246.png)
 
 간단하게 넘어가면 Reference 되지 않는 공간에 있으면 GC가 실행될 때 ex) Stop the world
 JVM 힙 영역에 있던 객체들은 ReferenceCount가 없으면 죽여버리는것처럼 ReferenceQueue를 등록해놓고, Native Memory를 정리해야 할 때가 오면 ReferenceQueue를 통해 참조하고 있는 메모리를 제거함
