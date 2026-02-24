@@ -12,7 +12,7 @@ tags:
 ### isomorphism
 
 
-![[Pasted image 20260225083420.png]]
+![이미지](/assets/images/Pasted%20image%2020260225083420.png)
 
 둘은 대수적으로 같음
 **동형**은 "A 구조의 데이터를 B 구조로, 그리고 그 반대로 완전히 변환할 수 있다"는 관계
