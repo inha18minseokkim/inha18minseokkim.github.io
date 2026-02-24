@@ -1,7 +1,9 @@
 ---
-title: "try-with-resources"
+title: try-with-resources
 date: 2023-09-12
-tags: [미지정]
+tags:
+  - Java
+  - 개발
 ---
 
 ```java
