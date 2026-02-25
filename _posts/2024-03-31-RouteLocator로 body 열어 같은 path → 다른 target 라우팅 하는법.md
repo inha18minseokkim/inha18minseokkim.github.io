@@ -1,7 +1,10 @@
 ---
-title: "RouteLocator로 body 열어 같은 path → 다른 target 라우팅 하는법"
+title: RouteLocator로 body 열어 같은 path → 다른 target 라우팅 하는법
 date: 2024-03-31
-tags: [미지정]
+tags:
+  - Webflux
+  - 이슈정리
+  - 케이뱅크
 ---
 
 ### 상황
@@ -139,8 +142,7 @@ public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
 예시(post→ get 변경)
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/59c9c85d-cda4-46b4-aabe-1fbeeb999b24/Untitled.png)
-
+![이미지](/assets/images/Pasted%20image%2020260225090124.png)
 
 
 ### Post→Post body 전달
@@ -175,6 +177,6 @@ public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
 아무것도 안건들고 uri만 바뀐 exchange를 넘기면됨
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/f8f084cd-14e6-4b26-b850-4b1b77b9470e/Untitled.png)
+![이미지](/assets/images/Pasted%20image%2020260225090130.png)
 
 대상 컨트롤러는 requestbody 받아서 바로 문자열 리턴하는 단순한 로직
