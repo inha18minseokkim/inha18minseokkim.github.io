@@ -3,9 +3,9 @@ title: Argo Event kafka event vs KEDA kafka
 date: 2024-10-21
 tags:
   - argo
-  - EDM
   - KEDA
   - MSA
+  - EDA
 ---
 KEDA를 사용해서 Kafka Lag 를 처리하는 방식에 대해 고민중이었는데,
  Argo Event를 사용해서 Lag가 쌓임 > Argo workflow를 하나 띄워서 데이터를 consume 하고 처리 적재 하면 되지 않을까 라는 생각을 했음.
