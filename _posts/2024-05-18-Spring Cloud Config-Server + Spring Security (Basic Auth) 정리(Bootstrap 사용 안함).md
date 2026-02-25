@@ -1,7 +1,9 @@
 ---
-title: "Spring Cloud Config-Server + Spring Security (Basic Auth) 정리(Bootstrap 사용 안함)"
+title: Spring Cloud Config-Server + Spring Security (Basic Auth) 정리(Bootstrap 사용 안함)
 date: 2024-05-18
-tags: [미지정]
+tags:
+  - Spring
+  - Spring-Cloud
 ---
 
 ### 정리 사유
@@ -11,7 +13,7 @@ tags: [미지정]
 
 하지만 해당 글에 대한 정리가 한글버전으로 없어서 정리해놓음.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/1c48fcbc-daf6-4fcf-91d3-43deb3c9df34/Untitled.png)
+![이미지](/assets/images/Pasted%20image%2020260225091253.png)
 
 이렇게 설정해놓으면
 config-server의 Uri는 다음과 같다
@@ -20,8 +22,7 @@ elastic_query_service : 서비스 이름
 default: 프로필
 뒤에 label 까지 더 붙일 수 있음(여기선 안함)
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/2ade4f00-707d-43b3-b2b2-b0edcdfcbcf7/Untitled.png)
-
+![이미지](/assets/images/Pasted%20image%2020260225091304.png)
 다만 위의 Config-server의 경우, Spring security Basic Auth가 걸려있는데, 
 해당 옵션을 사용하기 위해 application.yml 파일에 작성하면 된다.
 
@@ -83,8 +84,7 @@ implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:4.1.2
 ```
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/e5460d2c-506b-4d5d-95dd-08033de1334e/Untitled.png)
-
+![이미지](/assets/images/Pasted%20image%2020260225091311.png)
 application.yml은 그냥 비워두고 bootstrap.yml에 다음과 같이 사용 
 
 ```yaml

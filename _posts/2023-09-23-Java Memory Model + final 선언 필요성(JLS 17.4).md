@@ -1,7 +1,8 @@
 ---
-title: "Java Memory Model + final 선언 필요성(JLS 17.4)"
+title: Java Memory Model + final 선언 필요성(JLS 17.4)
 date: 2023-09-23
-tags: [미지정]
+tags:
+  - Java
 ---
 JLS 17.4 - 프로그램 실행 룰.
 요약 : 중간에 실행 순서를 바꿀 수도 있음. - Memory Model이 정해놓은 한도에 따라 다를 수 있음
