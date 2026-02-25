@@ -2,6 +2,7 @@
 title: "법정동코드 + 주소 → GPS 좌표 변환 (vWorld API)"
 date: 2023-05-01
 tags: [Spring, Java, 삽질, 공공API, 부동산]
+category: 재테크
 ---
 [](https://www.vworld.kr/dev/v4dv_geocoderguide2_s002.do)[https://www.vworld.kr/dev/v4dv_geocoderguide2_s002.d](https://www.vworld.kr/dev/v4dv_geocoderguide2_s002.d)
 

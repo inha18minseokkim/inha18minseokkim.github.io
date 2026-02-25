@@ -3,6 +3,7 @@ title: stratify + Clustering
 date: 2025-07-16
 tags:
   - AI/ML
+category: 기타
 ---
 
 ```python
@@ -32,6 +33,6 @@ train test split 시 stratify 지정해줘야 분포가 고르게 분할된다. 
 
 밀도기반군집 - 클러스터 자동 탐지(클러스터수 쓰지 않는 것이 핵심)
 
-![[Pasted image 20260225103932.png]]
+![이미지](/assets/images/Pasted%20image%2020260225103932.png)
 
 이렇게 될 수도 있음 noise 없애는게 좋음

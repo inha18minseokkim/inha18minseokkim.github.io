@@ -3,6 +3,7 @@ title: Restful URI
 date: 2025-10-27
 tags:
   - HTTP
+category: 기술
 ---
 
 ### Rest

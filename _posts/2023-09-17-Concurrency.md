@@ -5,6 +5,7 @@ tags:
   - Java
   - 동시성
   - 개발
+category: 기술
 ---
 
 ```java

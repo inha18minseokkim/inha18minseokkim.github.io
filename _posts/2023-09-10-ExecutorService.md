@@ -4,6 +4,7 @@ date: 2023-09-10
 tags:
   - Java
   - 개발
+category: 기술
 ---
 
 ## 스레드풀 없는 환경

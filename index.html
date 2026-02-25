@@ -11,51 +11,85 @@ layout: default
 
 <section class="posts-section">
   <div class="container">
-    <h2 class="section-title">전체 글</h2>
 
     {% if site.posts.size > 0 %}
 
-    <!-- 태그 필터 -->
-    <div class="tag-filter">
-      <button class="tag-filter-btn active" data-tag="all">전체</button>
-      {% for tag in site.tags %}
-      <button class="tag-filter-btn" data-tag="{{ tag[0] }}" data-count="{{ tag[1] | size }}">{{ tag[0] }}</button>
-      {% endfor %}
-    </div>
+    <div class="posts-layout">
 
-    <!-- 날짜 범위 필터 -->
-    <div class="date-filter">
-      <div class="date-filter-input-wrap">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25A1.75 1.75 0 0 1 15 3.75v9.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-9.5A1.75 1.75 0 0 1 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v5.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Z"/>
-        </svg>
-        <input type="text" id="dateRangePicker" class="date-filter-input" placeholder="날짜 범위 선택" readonly>
-      </div>
-      <button class="date-clear-btn" id="dateClearBtn">✕ 초기화</button>
-    </div>
+      <!-- 카테고리 사이드바 -->
+      <aside class="category-sidebar">
+        <p class="category-sidebar-title">카테고리</p>
+        <button class="category-btn active" data-category="all">
+          전체
+          <span class="category-count" id="cat-count-all"></span>
+        </button>
+        <button class="category-btn" data-category="기술">
+          기술
+          <span class="category-count" id="cat-count-기술"></span>
+        </button>
+        <button class="category-btn" data-category="실무경험">
+          실무경험
+          <span class="category-count" id="cat-count-실무경험"></span>
+        </button>
+        <button class="category-btn" data-category="재테크">
+          재테크
+          <span class="category-count" id="cat-count-재테크"></span>
+        </button>
+        <button class="category-btn" data-category="기타">
+          기타
+          <span class="category-count" id="cat-count-기타"></span>
+        </button>
+      </aside>
 
-    <p class="filter-status" id="filterStatus"></p>
+      <!-- 메인 콘텐츠 -->
+      <div class="posts-main">
+        <h2 class="section-title">전체 글</h2>
 
-    <ul class="post-list">
-      {% for post in site.posts %}
-      <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}">
-        <a href="{{ post.url | relative_url }}" class="post-link">
-          <div class="post-meta">
-            <time class="post-date">{{ post.date | date: "%Y. %m. %d" }}</time>
-            {% if post.tags %}
-            <div class="post-tags">
-              {% for tag in post.tags %}
-              <span class="tag">{{ tag }}</span>
-              {% endfor %}
-            </div>
-            {% endif %}
+        <!-- 태그 필터 -->
+        <div class="tag-filter">
+          <button class="tag-filter-btn active" data-tag="all">전체</button>
+          {% for tag in site.tags %}
+          <button class="tag-filter-btn" data-tag="{{ tag[0] }}" data-count="{{ tag[1] | size }}">{{ tag[0] }}</button>
+          {% endfor %}
+        </div>
+
+        <!-- 날짜 범위 필터 -->
+        <div class="date-filter">
+          <div class="date-filter-input-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25A1.75 1.75 0 0 1 15 3.75v9.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-9.5A1.75 1.75 0 0 1 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v5.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Z"/>
+            </svg>
+            <input type="text" id="dateRangePicker" class="date-filter-input" placeholder="날짜 범위 선택" readonly>
           </div>
-          <h2 class="post-title">{{ post.title }}</h2>
-          <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 160 }}</p>
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
+          <button class="date-clear-btn" id="dateClearBtn">✕ 초기화</button>
+        </div>
+
+        <p class="filter-status" id="filterStatus"></p>
+
+        <ul class="post-list">
+          {% for post in site.posts %}
+          <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}" data-category="{{ post.category | default: '기타' }}">
+            <a href="{{ post.url | relative_url }}" class="post-link">
+              <div class="post-meta">
+                <time class="post-date">{{ post.date | date: "%Y. %m. %d" }}</time>
+                {% if post.tags %}
+                <div class="post-tags">
+                  {% for tag in post.tags %}
+                  <span class="tag">{{ tag }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              <h2 class="post-title">{{ post.title }}</h2>
+              <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 160 }}</p>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div><!-- .posts-main -->
+
+    </div><!-- .posts-layout -->
+
     {% else %}
     <div class="empty-state">
       <p>아직 작성된 글이 없습니다.</p>
@@ -74,44 +108,80 @@ document.addEventListener('DOMContentLoaded', function() {
   tagBtns.forEach(btn => tagFilter.appendChild(btn));
 
   const filterBtns = document.querySelectorAll('.tag-filter-btn');
-  const allBtn = document.querySelector('.tag-filter-btn[data-tag="all"]');
+  const allTagBtn = document.querySelector('.tag-filter-btn[data-tag="all"]');
   const postItems = document.querySelectorAll('.post-item');
   const filterStatus = document.getElementById('filterStatus');
   const dateClearBtn = document.getElementById('dateClearBtn');
 
+  // 카테고리 버튼
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  const allCategoryBtn = document.querySelector('.category-btn[data-category="all"]');
+
   let selectedTags = new Set();
   let dateFrom = null;
   let dateTo = null;
+  let selectedCategory = null; // null = 전체
+
+  const CATEGORIES = ['기술', '실무경험', '재테크', '기타'];
+
+  function updateCategoryCounts(tagDateMatchFn) {
+    // Count posts per category based on tag+date filter only
+    const counts = { '기술': 0, '실무경험': 0, '재테크': 0, '기타': 0 };
+    postItems.forEach(item => {
+      if (tagDateMatchFn(item)) {
+        const cat = item.dataset.category || '기타';
+        if (counts[cat] !== undefined) counts[cat]++;
+      }
+    });
+
+    let total = 0;
+    CATEGORIES.forEach(cat => {
+      const el = document.getElementById('cat-count-' + cat);
+      if (el) el.textContent = counts[cat];
+      total += counts[cat];
+    });
+    const allEl = document.getElementById('cat-count-all');
+    if (allEl) allEl.textContent = total;
+  }
 
   function applyFilter() {
     let visibleCount = 0;
 
-    postItems.forEach(item => {
+    function tagDateMatch(item) {
       const tags = item.dataset.tags ? item.dataset.tags.split(',') : [];
       const tagMatch = selectedTags.size === 0 || tags.some(t => selectedTags.has(t));
-
       const postDate = new Date(item.dataset.date);
       const dateMatch = (!dateFrom && !dateTo) ||
         (dateFrom && dateTo && postDate >= dateFrom && postDate <= dateTo);
+      return tagMatch && dateMatch;
+    }
 
-      const visible = tagMatch && dateMatch;
+    postItems.forEach(item => {
+      const category = item.dataset.category || '기타';
+      const catMatch = !selectedCategory || category === selectedCategory;
+      const visible = tagDateMatch(item) && catMatch;
       item.style.display = visible ? '' : 'none';
       if (visible) visibleCount++;
     });
 
+    // Update sidebar counts (based on tag+date only, not category)
+    updateCategoryCounts(tagDateMatch);
+
+    // Update filter status text
     const tagPart = selectedTags.size > 0
       ? `${[...selectedTags].map(t => '"' + t + '"').join(', ')} 태그`
       : '';
     const datePart = (dateFrom && dateTo)
       ? `${fp.formatDate(dateFrom, 'Y.m.d')} ~ ${fp.formatDate(dateTo, 'Y.m.d')}`
       : '';
-    const parts = [tagPart, datePart].filter(Boolean);
+    const catPart = selectedCategory ? `${selectedCategory}` : '';
+    const parts = [catPart, tagPart, datePart].filter(Boolean);
 
     if (parts.length === 0) {
-      allBtn.classList.add('active');
+      allTagBtn.classList.add('active');
       filterStatus.textContent = '';
     } else {
-      allBtn.classList.remove('active');
+      allTagBtn.classList.remove('active');
       filterStatus.textContent = `${parts.join(' · ')}: ${visibleCount}개의 글`;
     }
 
@@ -134,7 +204,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (selectedDates.length === 2) {
         dateFrom = selectedDates[0];
         dateTo = selectedDates[1];
-        // dateTo를 해당 날짜 끝까지 포함
         dateTo.setHours(23, 59, 59, 999);
       } else {
         dateFrom = null;
@@ -152,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // 태그 필터
-  allBtn.addEventListener('click', function() {
+  allTagBtn.addEventListener('click', function() {
     selectedTags.clear();
     filterBtns.forEach(b => b.classList.remove('active'));
     applyFilter();
@@ -169,6 +238,18 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedTags.add(tag);
         this.classList.add('active');
       }
+      applyFilter();
+    });
+  });
+
+  // 카테고리 필터
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      categoryBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
+      const cat = this.dataset.category;
+      selectedCategory = (cat === 'all') ? null : cat;
       applyFilter();
     });
   });

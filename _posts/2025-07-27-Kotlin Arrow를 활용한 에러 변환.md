@@ -4,6 +4,7 @@ date: 2025-07-27
 tags:
   - Kotlin
   - arrow
+category: 기술
 ---
 [[Optics/Lens] 내 멋대로 Optics 이해하기 Feat) arrow-kt](https://see-ro-e.tistory.com/333)
 함수형 프로그래밍 공부중인데 코틀린에서 변환을 좀 자동화해주는

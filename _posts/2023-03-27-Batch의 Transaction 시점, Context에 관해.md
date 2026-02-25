@@ -4,6 +4,7 @@ date: 2023-03-27
 tags:
   - Spring
   - Batch
+category: 기술
 ---
 ![이미지](/assets/images/Pasted%20image%2020260224162733.png)
 

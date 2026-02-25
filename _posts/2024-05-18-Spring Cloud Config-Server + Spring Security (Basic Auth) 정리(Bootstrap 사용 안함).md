@@ -4,6 +4,7 @@ date: 2024-05-18
 tags:
   - Spring
   - Spring-Cloud
+category: 기술
 ---
 
 ### 정리 사유

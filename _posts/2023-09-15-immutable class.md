@@ -3,6 +3,7 @@ title: immutable class
 date: 2023-09-15
 tags:
   - Java
+category: 기술
 ---
 안전하고 오류생길여지 x
 Thread Safe, 동기화 안해도됨

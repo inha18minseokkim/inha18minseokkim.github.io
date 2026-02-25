@@ -3,6 +3,7 @@ title: Netty에서 PhantomReference 통한 GC
 date: 2025-02-16
 tags:
   - Webflux
+category: 기술
 ---
 
 

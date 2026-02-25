@@ -5,6 +5,7 @@ tags:
   - Spring
   - Spring-Data
   - JPA
+category: 기술
 ---
 
 [Is there any inbuilt method for UPSERT in spring JPA?](https://stackoverflow.com/questions/76160633/is-there-any-inbuilt-method-for-upsert-in-spring-jpa)

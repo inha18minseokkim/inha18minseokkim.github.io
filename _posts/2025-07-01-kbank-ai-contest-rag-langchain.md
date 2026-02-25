@@ -2,6 +2,7 @@
 title: "케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇"
 date: 2025-07-01
 tags: [AI, LangChain, RAG, LLM, Python, 케이뱅크, 수상]
+category: 실무경험
 ---
 
 주요 성과 요약

@@ -4,6 +4,7 @@ date: 2023-09-25
 tags:
   - Java
   - 동시성
+category: 기술
 ---
 
 

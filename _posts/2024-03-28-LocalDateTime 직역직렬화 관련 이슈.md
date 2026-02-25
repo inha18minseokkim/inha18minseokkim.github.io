@@ -4,6 +4,7 @@ date: 2024-03-28
 tags:
   - Redis
   - Java
+category: 기술
 ---
 참고
 [https://velog.io/@bagt/Redis-역직렬화-삽질기-feat.-RedisSerializer](https://velog.io/@bagt/Redis-%EC%97%AD%EC%A7%81%EB%A0%AC%ED%99%94-%EC%82%BD%EC%A7%88%EA%B8%B0-feat.-RedisSerializer)

@@ -2,6 +2,7 @@
 title: "MyBatis 쿼리 파라미터 로깅 - Custom Interceptor 구현"
 date: 2023-07-15
 tags: [Java, MyBatis, Spring, 디버깅, 삽질]
+category: 기술
 ---
 
 MSA 마이그레이션 통합 테스트 중 MyBatis 쿼리 로그에 파라미터 바인딩이 표시되지 않아서 Custom Interceptor를 구현했다.

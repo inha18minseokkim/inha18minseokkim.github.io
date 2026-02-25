@@ -1,0 +1,386 @@
+---
+title: "api-spec-notion-format"
+date: 2025-09-26
+tags: [미지정]
+category: 기타
+---
+
+# 주식 투자 게임 API 명세서
+
+
+## 개요
+
+주식 투자 게임 시스템의 API 명세서입니다. 모든 Timestamp 타입은 `yyyyMMddHHmmss` 포맷을 사용하며, primitive 타입이 아닌 필드는 String 타입으로 처리됩니다.
+
+---
+
+
+## 1. 게임 유효성 검증
+
+
+### API: 오늘이 게임이 열린 날인지 검증
+
+**설명**: 특정 기준일시를 기준으로 현재 게임이 열려있는지 검증합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | baseDateTime | String | 기준일시 (yyyyMMddHHmmss) |
+| **Response** |  |  |  |
+|  | gameId | Long | 게임 아이디 |
+|  | startDateTime | String | 시작일시 (yyyyMMddHHmmss) |
+|  | endDateTime | String | 종료일시 (yyyyMMddHHmmss) |
+|  | isOpened | Boolean | 유효여부 |
+
+
+---
+
+
+## 2. 고객 관리
+
+
+### API: 고객정보조회
+
+**설명**: 고객의 유효성을 확인합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+| **Response** |  |  |  |
+|  | isAvailable | Boolean | 유효여부 |
+
+
+### API: 고객의 마지막 참여 게임 조회
+
+**설명**: 고객이 마지막으로 참여한 게임을 조회합니다. (최신 참여 게임만 조회)
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+| **Response** |  |  |  |
+|  | gameId | Long | 게임식별자 |
+
+
+---
+
+
+## 3. 게임 참여
+
+
+### API: 게임참여
+
+**설명**: 고객이 게임에 참여합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+| **Response** |  |  |  |
+|  | isSuccessful | Boolean | 성공여부 |
+|  | gameId | Long | 게임식별자 |
+
+
+---
+
+
+## 4. 주식 관리
+
+
+### API: 주식뽑기 대상 조회
+
+**설명**: 주식 뽑기에서 선택 가능한 주식 목록을 조회합니다.
+**문의사항**:
+- 고객이 월요일에 안 뽑고 화요일에 뽑으면 원래 월요일에 나왔던 주식을 보여줘야 하는가?
+- 9시 59분에 월요일 주식 화면 띄워놓고 10시 1분에 주식뽑으면 이건 허용할 것인가?
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | stocksCount | Integer | 주식리스트 카운트 |
+|  | stocks | List | 주식리스트 |
+
+
+### Stock 객체
+
+
+| 필드명 | 타입 | 설명 |
+| --- | --- | --- |
+| symbolId | String | 심볼식별자 (최대 20자) |
+| symbolName | String | 심볼명 (최대 100자) |
+| nation | String | 국가코드 |
+| securities | String | 증권구분값 |
+| marketCode | String | 시장코드 |
+
+
+### API: 주식뽑기
+
+**설명**: 선택된 주식들을 뽑습니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | gameId | Long | 게임식별자 |
+|  | stocksCount | Integer | 주식리스트 카운트 |
+|  | stocks | List | 주식리스트 |
+| **Response** |  |  |  |
+|  | isSuccessful | Boolean | 성공여부 |
+
+
+### API: 내 주식 리스트 조회
+
+**설명**: 고객이 보유한 주식 목록을 조회합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | stocksCount | Integer | 주식리스트 카운트 |
+|  | stocks | List | 주식리스트 |
+
+
+---
+
+
+## 5. 출석 시스템
+
+
+### API: 출석하기
+
+**설명**: 고객이 일일 출석을 진행합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임 아이디 |
+| **Response** |  |  |  |
+|  | baseDateTime | String | 기준일시 (yyyyMMddHHmmss) |
+|  | isAttended | Boolean | 출석여부 |
+|  | isItemReceived | Boolean | 아이템 지급여부 |
+|  | attendCount | Integer | 출석 카운트 |
+
+
+---
+
+
+## 6. 아이템 시스템
+
+
+### API: 아이템뽑기
+
+**설명**: 아이템을 뽑습니다.
+**문의사항**: 9시 59분에 월요일 주식 화면 띄워놓고 10시 1분에 아이템뽑으면?
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | baseDateTime | String | 기준일시 (yyyyMMddHHmmss) |
+|  | itemId | Long | 아이템식별자 |
+|  | itemType | String | 아이템유형 |
+
+
+### API: 아이템사용하기
+
+**설명**: 보유한 아이템을 사용합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | itemId | Long | 아이템식별자 |
+|  | itemType | String | 아이템유형 |
+|  | gameId | Long | 게임식별자 |
+|  | symbolId | String | 심볼식별자 (최대 20자) |
+|  | symbolName | String | 심볼명 (최대 100자) |
+|  | nation | String | 국가코드 |
+|  | securities | String | 증권구분값 |
+|  | marketCode | String | 시장코드 |
+| **Response** |  |  |  |
+|  | isSuccessful | Boolean | 성공여부 |
+
+
+### API: 더하기용뽑기
+
+**설명**: 더하기용 아이템으로 주식을 뽑습니다. (뽑으면 일단 넣고, 채널에서 고객에게 빼는 기회를 제공)
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | itemId | Long | 아이템식별자 |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | baseDateTime | String | 기준일시 (yyyyMMddHHmmss) |
+|  | symbolId | String | 심볼식별자 (최대 20자) |
+|  | symbolName | String | 심볼명 (최대 100자) |
+|  | nation | String | 국가코드 |
+|  | securities | String | 증권구분값 |
+|  | marketCode | String | 시장코드 |
+
+
+### API: 아이템조회
+
+**설명**: 현재 유효한 아이템만 리스트로 조회합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | itemsCount | Integer | 아이템리스트 카운트 |
+|  | items | List | 아이템리스트 |
+
+
+### Item 객체
+
+
+| 필드명 | 타입 | 설명 |
+| --- | --- | --- |
+| itemId | Long | 아이템식별자 |
+| itemType | String | 아이템종류 |
+
+
+---
+
+
+## 7. 게임 현황 및 결과
+
+
+### API: 게임현황조회
+
+**설명**: 현재 게임에서의 고객 현황을 조회합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | baseDateTime | String | 기준일시 (yyyyMMddHHmmss) |
+|  | rank | Integer | 등수 |
+|  | totalCount | Integer | 총 명수 |
+|  | rateOfReturn | Double | 수익률 |
+|  | investingAmount | Double | 투자금액 |
+
+
+### API: 게임결과조회
+
+**설명**: 게임 종료 후 결과를 조회합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | isWinner | Boolean | 우승여부 |
+|  | winnersCount | Integer | 우승자수 |
+|  | winnersRate | Double | 우승비율 |
+|  | rateOfReturnOfWinner | Double | 우승자 수익률 |
+|  | isRewardAlreadyPayed | Boolean | 리워드 기지급여부 |
+
+
+### API: 게임결과상세조회
+
+**설명**: 게임 종료 후 상세 결과를 조회합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | weeklyRateOfReturn | Double | 주간수익률 |
+|  | percentileRank | Double | 백분위 |
+|  | securitiesProfit | Double | 수익금액 |
+|  | totalAmountInvested | Double | 총투자금액 |
+|  | stocksOwned | Double | 보유주식수 |
+|  | usedItemCount | Integer | 사용아이템수 |
+|  | stocksCount | Integer | 주식리스트 카운트 |
+|  | stocks | List | 주식리스트 |
+
+
+### StockDetail 객체
+
+
+| 필드명 | 타입 | 설명 |
+| --- | --- | --- |
+| symbolId | String | 심볼식별자 (최대 20자) |
+| symbolName | String | 심볼명 (최대 100자) |
+| nation | String | 국가코드 |
+| securities | String | 증권구분값 |
+| marketCode | String | 시장코드 |
+| purchasePrice | Double | 구매가격 |
+| purchaseBaseDateTime | String | 구매기준일자 (yyyyMMddHHmmss) |
+| latestPrice | Double | 최신가격 |
+| latestBaseDateTime | String | 최신기준일자 (yyyyMMddHHmmss) |
+| changeRate | Double | 변동비율 |
+
+
+---
+
+
+## 8. 소셜 기능
+
+
+### API: 초대친구조회
+
+**설명**: 고객이 초대한 친구 수를 조회합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | customerId | String | 고객식별자 (최대 15자) |
+|  | gameId | Long | 게임식별자 |
+| **Response** |  |  |  |
+|  | inviteCount | Integer | 초대건수 |
+
+
+---
+
+
+## 9. 리워드 시스템
+
+
+### API: 리워드지급요청
+
+**설명**: 게임 우승자에게 리워드를 지급 요청합니다.
+
+| 구분 | 필드명 | 타입 | 설명 |
+| --- | --- | --- | --- |
+| **Request** |  |  |  |
+|  | gameId | Long | 게임식별자 |
+|  | customerId | String | 고객식별자 (최대 15자) |
+| **Response** |  |  |  |
+|  | isSuccessful | Boolean | 성공여부 |
+|  | winnings | Double | 상금 |
+|  | winnersCount | Integer | 우승자 명수 |
+
+
+---
+
+
+## 공통 데이터 타입 설명
+
+- **Timestamp**: `yyyyMMddHHmmss` 형식의 String (예: “20250922143000”)
+- **String(n)**: 최대 n자리의 문자열
+- **Double(m,n)**: 전체 m자리, 소수점 이하 n자리의 실수
+- **List**: T 타입의 배열
+- **Nation, Securities, MarketCode, ItemType**: Enum 타입이지만 String으로 처리
+
+## 주요 비즈니스 규칙
+
+1. **게임 시간 관련**: 게임 시작/종료 시간 경계에서의 처리 방식 확인 필요
+2. **아이템 사용**: 더하기용 아이템은 뽑은 후 고객에게 제거 기회 제공
+3. **게임 결과 조회**: 최신 참여 게임만 조회 가능
+4. **아이템 조회**: 현재 유효한 아이템만 표시

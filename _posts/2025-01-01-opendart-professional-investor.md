@@ -2,6 +2,7 @@
 title: "OpenDart - 전문투자자 대상 선별 방법"
 date: 2025-01-01
 tags: [OpenDart, 공시, 가상자산, 전문투자자, 도메인지식, 케이뱅크]
+category: 재테크
 ---
 
 ## 요청배경

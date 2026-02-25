@@ -5,6 +5,7 @@ tags:
   - Redis
   - Lua
   - 케이뱅크
+category: 실무경험
 ---
 
 ```java

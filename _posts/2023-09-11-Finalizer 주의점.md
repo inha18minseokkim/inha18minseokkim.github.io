@@ -4,6 +4,7 @@ date: 2023-09-11
 tags:
   - Java
   - 개발
+category: 기술
 ---
 
 ```javascript

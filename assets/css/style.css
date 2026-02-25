@@ -781,6 +781,87 @@ html.light .icon-moon { display: block; }
 .highlight .gi { color: #aff5b4; background-color: #033a16; }
 
 /* ============================================
+   Posts Layout (sidebar + main)
+   ============================================ */
+.posts-layout {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.posts-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ============================================
+   Category Sidebar
+   ============================================ */
+.category-sidebar {
+  width: 120px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.category-sidebar-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.category-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.45rem 0.75rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.category-btn:hover {
+  color: var(--text);
+  background: rgba(124, 111, 255, 0.07);
+  border-color: var(--border);
+}
+
+.category-btn.active {
+  color: var(--accent);
+  background: rgba(124, 111, 255, 0.12);
+  border-color: rgba(124, 111, 255, 0.3);
+  font-weight: 600;
+}
+
+.category-count {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 0.3rem;
+  flex-shrink: 0;
+}
+
+.category-btn.active .category-count {
+  color: var(--accent-light);
+}
+
+/* ============================================
    Responsive
    ============================================ */
 @media (max-width: 640px) {
@@ -800,5 +881,44 @@ html.light .icon-moon { display: block; }
 
   .post-content h2 {
     font-size: 1.25rem;
+  }
+
+  /* 모바일: 사이드바를 수평 스크롤 바로 위에 배치 */
+  .posts-layout {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .category-sidebar {
+    width: 100%;
+    position: static;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    /* hide scrollbar but keep scroll */
+    scrollbar-width: none;
+  }
+
+  .category-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-sidebar-title {
+    display: none;
+  }
+
+  .category-btn {
+    width: auto;
+    flex-shrink: 0;
+    border-radius: 100px;
+    padding: 0.35rem 0.85rem;
+    border-color: var(--border);
+    font-size: 0.78rem;
+  }
+
+  .category-btn:hover {
+    border-color: var(--accent);
   }
 }

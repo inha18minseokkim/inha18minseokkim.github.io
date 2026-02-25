@@ -7,6 +7,7 @@ tags:
   - nginx
   - Docker
   - AI
+category: 기술
 ---
 
 부하테스트 좀 봐주다가 재미있는 문제가 생겨서 한번 가지고와봄
