@@ -25,6 +25,53 @@ SPLITBEE_API = "https://notion-api.splitbee.io/v1/page/"
 # page_id → post_slug (변환된 페이지 캐시)
 _slug_cache: dict = {}
 
+# ─── 카테고리 분류 ────────────────────────────────────────────────────────────
+
+_TAG_TO_CATEGORY = {
+    "재테크": {
+        "주식", "공모주", "부동산", "금융", "경제", "재테크", "가상자산",
+        "opendart", "공시", "전문투자자", "도메인지식", "재무",
+    },
+    "실무경험": {
+        "케이뱅크", "이슈정리", "장애분석", "수상", "발표", "인턴", "기획",
+    },
+    "기술": {
+        "java", "spring", "jpa", "kotlin", "webflux", "redis", "cache",
+        "msa", "아키텍처", "ai", "llm", "langchain", "rag", "mcp",
+        "분산시스템", "saga", "cqrs", "docker", "인프라", "python", "크롤링",
+        "백엔드", "http", "알고리즘", "삽질", "디버깅", "공공api", "개발환경",
+        "개발", "arm", "windows", "wsl", "macos",
+    },
+}
+
+_CATEGORY_PRIORITY = ["재테크", "실무경험", "기술"]
+
+_TITLE_KEYWORDS = {
+    "재테크": ["주식", "공모주", "etf", "부동산", "재테크", "금융", "경제",
+               "청약", "배당", "아파트", "전문투자자"],
+    "실무경험": ["회의록", "케이뱅크", "세미나", "poc", "tf", "인턴", "수상",
+                "발표", "야놀자"],
+    "기술": ["java", "spring", "jpa", "kotlin", "msa", "ai", "llm",
+             "python", "docker", "redis", "http", "알고리즘", "n+1",
+             "upsert", "batch", "aws", "macos", "wsl", "surface", "arm"],
+}
+
+
+def _get_category(title: str, slug: str, tags: list = None) -> str:
+    """태그 → 제목/슬러그 키워드 순으로 카테고리를 결정합니다."""
+    if tags:
+        lower_tags = {t.lower() for t in tags if t and t != "미지정"}
+        for cat in _CATEGORY_PRIORITY:
+            if any(kw in lower_tags for kw in _TAG_TO_CATEGORY[cat]):
+                return cat
+
+    text = (title + " " + slug).lower()
+    for cat in _CATEGORY_PRIORITY:
+        if any(kw in text for kw in _TITLE_KEYWORDS[cat]):
+            return cat
+
+    return "기타"
+
 
 # ─── URL / ID 파싱 ───────────────────────────────────────────────────────────
 
@@ -413,41 +460,66 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
     # slug 캐시에 등록 (rich text 링크 변환에 사용)
     _slug_cache[page_id] = post_slug
 
+    # content_ids는 파일 쓰기·순회 모두에 필요하므로 먼저 추출
+    root_val = blocks.get(page_id, {}).get("value", {})
+    content_ids = root_val.get("content", [])
+
     # 동일 파일 존재 시 스킵 (--rewrite 시 덮어쓰기)
+    skip_write = False
     if output_path.exists():
         if rewrite:
             output_path.unlink()
             print(f"  덮어쓰기: {filename}")
         else:
             print(f"  스킵 (이미 존재): {filename}")
-            return
+            skip_write = True
 
-    print(f"  제목: {title} ({date_str})")
+    if not skip_write:
+        print(f"  제목: {title} ({date_str})")
 
-    # 루트 페이지의 content 블록들 렌더링
-    root_val = blocks.get(page_id, {}).get("value", {})
-    content_ids = root_val.get("content", [])
-    md_body = render_blocks(content_ids, blocks, depth=0)
+        md_body = render_blocks(content_ids, blocks, depth=0)
 
-    front_matter = f'---\ntitle: "{title}"\ndate: {date_str}\ntags: [미지정]\n---\n'
+        category = _get_category(title, post_slug)
+        front_matter = f'---\ntitle: "{title}"\ndate: {date_str}\ntags: [미지정]\ncategory: {category}\n---\n'
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(front_matter + md_body)
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(front_matter + md_body)
 
-    print(f"  저장: {output_path}")
+        print(f"  저장: {output_path}")
 
     if recursive:
-        # 1. child page (type="page" 블록) DFS
-        for bid in content_ids:
-            if bid not in blocks:
-                continue
-            bval = blocks[bid].get("value", {})
-            if bval.get("type") == "page":
-                convert_page(bid, output_dir, visited, rewrite=rewrite, recursive=True)
+        # 이 페이지 내부에 속하는 비-page 블록 ID 집합
+        # (현재 page_id 포함, page가 아닌 모든 블록)
+        # → 진짜 하위 페이지의 parent_id는 이 집합 안에 있어야 함
+        local_block_ids = {page_id}
+        for bid, bdata in blocks.items():
+            if bid != page_id and bdata.get("value", {}).get("type") != "page":
+                local_block_ids.add(bid)
 
-        # 2. 본문 내 Notion 링크 DFS
-        for linked_id in collect_notion_links(blocks):
-            convert_page(linked_id, output_dir, visited, rewrite=rewrite, recursive=True)
+        child_page_bids = []
+        all_page_type_bids = []
+        for bid, bdata in blocks.items():
+            if bid == page_id:
+                continue
+            bval = bdata.get("value", {})
+            if bval.get("type") != "page":
+                continue
+            all_page_type_bids.append(bid)
+            parent_id = bval.get("parent_id", "")
+            # 진짜 하위 페이지: parent가 현재 페이지이거나 현재 페이지 내 블록
+            # 링크 참조: parent가 다른 페이지를 가리킴 → 제외
+            if parent_id in local_block_ids:
+                child_page_bids.append(bid)
+
+        print(f"  [DEBUG] blocks={len(blocks)}, page-type={len(all_page_type_bids)}, true children={len(child_page_bids)}")
+        for bid in all_page_type_bids[:4]:
+            bval = blocks[bid].get("value", {})
+            pid = bval.get("parent_id", "none")
+            ptitle = ((bval.get("properties") or {}).get("title") or [[""]])[0][0]
+            print(f"  [DEBUG]   {bid[:8]} parent={pid[:8] if len(pid) > 8 else pid} included={bid in child_page_bids} '{ptitle}'")
+
+        for bid in child_page_bids:
+            convert_page(bid, output_dir, visited, rewrite=rewrite, recursive=True)
 
 
 # ─── 진입점 ──────────────────────────────────────────────────────────────────
