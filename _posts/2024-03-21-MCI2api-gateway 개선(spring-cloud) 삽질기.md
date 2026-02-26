@@ -1,12 +1,17 @@
 ---
-title: "MCI2api-gateway 개선(spring-cloud) 삽질기"
+title: MCI2api-gateway 개선(spring-cloud) 삽질기
 date: 2024-03-21
-tags: [미지정]
-category: 기술
+tags:
+  - 주식서비스
+  - SCG
+  - Spring-Cloud
+  - 아키텍처
+  - 개발
+  - 케이뱅크
+category: 실무경험
 ---
 
-
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/2a83b3bc-89b3-4717-9ae3-3acbc647cc80/Untitled.png)
+![이미지](/assets/images/Pasted%20image%2020260226115739.png)
 
 여기서 구조를 봤을 때 
 MCI(채널) 단위업무 편의서비스(convenience)/주식(STK) 에 대응하는 어댑터는 단 한개

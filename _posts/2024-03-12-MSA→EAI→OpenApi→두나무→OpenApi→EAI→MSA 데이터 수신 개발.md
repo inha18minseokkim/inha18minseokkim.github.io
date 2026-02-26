@@ -1,8 +1,12 @@
 ---
-title: "MSA→EAI→OpenApi→두나무→OpenApi→EAI→MSA 데이터 수신 개발"
+title: MSA→EAI→OpenApi→두나무→OpenApi→EAI→MSA 데이터 수신 개발
 date: 2024-03-12
-tags: [미지정]
-category: 기술
+tags:
+  - 아키텍처
+  - Java
+  - 케이뱅크
+  - 주식서비스
+category: 실무경험
 ---
 
 EAI 바디에 전문을 fixedLength로 파싱하지 않고 통 Json으로 받는 방식으로 개발 시작

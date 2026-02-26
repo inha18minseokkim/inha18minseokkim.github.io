@@ -1,8 +1,14 @@
 ---
-title: "이력성 Column AOP(GUID,JpaAudit)"
+title: 이력성 Column AOP(GUID,JpaAudit)
 date: 2024-03-04
-tags: [미지정]
-category: 기술
+tags:
+  - 주식서비스
+  - 케이뱅크
+  - 기획
+  - Java
+  - Spring
+  - 개발
+category: 실무경험
 ---
 현재 행내에는 등록id, 등록guid, 등록일시, 수정id,수정guid,수정일시 6가지 컬럼을 이력성으로 남겨둠
 사용하지 않는 경우에는.. 그럴일은 없음. 무조건 하라고 함.
@@ -168,8 +174,7 @@ public class GuidAuditListener {
 각 instance인 경우, 특정 필드가 어노테이션을 가지고 있는 경우 Persist,Update 전에 ThreadSafe 한 CommonContext 끼워넣는 로직
 그럴일은 없지만 넣는 과정에서 예외 발생 시 throw 하지 않고 에러로그만 출력
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/235d0910-4c83-4419-bb02-a576d77f50a6/Untitled.png)
-
+![이미지](/assets/images/Pasted%20image%2020260226115435.png)
 헤더에 값 셋팅하면 이렇게 됨
 
 
