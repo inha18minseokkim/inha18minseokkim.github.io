@@ -23,7 +23,11 @@
       "Bash(cat:*)",
       "WebFetch(domain:stackoverflow.com)",
       "WebFetch(domain:www.baeldung.com)",
-      "WebFetch(domain:vladmihalcea.com)"
+      "WebFetch(domain:vladmihalcea.com)",
+      "WebFetch(domain:inha18minseokkim.github.io)",
+      "Bash(test:*)",
+      "Bash(find C:\\\\Users\\\\Surface\\\\Documents\\\\minseokkim\\\\_posts:*)",
+      "Bash(xargs -0 grep \"^tags:\")"
     ]
   }
 }
