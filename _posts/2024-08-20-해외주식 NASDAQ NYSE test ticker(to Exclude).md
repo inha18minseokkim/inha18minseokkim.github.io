@@ -1,9 +1,12 @@
 ---
-title: "해외주식 NASDAQ NYSE test ticker(to Exclude)"
+title: 해외주식 NASDAQ NYSE test ticker(to Exclude)
 date: 2024-08-20
-tags: [미지정]
+tags:
+  - 주식서비스
+  - 기획
 category:
-  - 재테크
+  - 실무경험
+  - 투자홈
 ---
 
 | Item | Symbol | Symbol Name | Product |
