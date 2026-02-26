@@ -1,7 +1,12 @@
 ---
-title: "맥북 M1 에어에 딥시크 올리기 - Apple Silicon vs NVIDIA 구조 차이"
+title: 맥북 M1 에어에 딥시크 올리기 - Apple Silicon vs NVIDIA 구조 차이
 date: 2025-02-01
-tags: [LLM, DeepSeek, Ollama, MacOS, Apple Silicon, 삽질]
+tags:
+  - LLM
+  - DeepSeek
+  - Ollama
+  - MacOS
+  - 삽질
 category:
   - 기술
 ---

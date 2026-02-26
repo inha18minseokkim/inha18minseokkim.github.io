@@ -6,7 +6,7 @@ tags:
   - Webflux
   - 이슈정리
 category:
-  - 실무경험
+  - 기술
 ---
 
 여기서 openapi-servlet 프로젝트를 구현하다가 맞닥뜨린 이슈.

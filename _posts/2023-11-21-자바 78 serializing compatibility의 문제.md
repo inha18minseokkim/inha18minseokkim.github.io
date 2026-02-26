@@ -9,6 +9,7 @@ tags:
   - 케이뱅크
 category:
   - 실무경험
+  - BXM
 ---
 결론 : 없음, java 7과 8에서 언어가 지원하는 것들이 대폭 커지기는 했는데 바이트코드 스펙이 달라지진 않음. 애초에 그러니깐 8환경에서 7이 돌아가는건가?
 [https://stackoverflow.com/questions/46322740/serialization-compatibility-java-7-8](https://stackoverflow.com/questions/46322740/serialization-compatibility-java-7-8)

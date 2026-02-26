@@ -1,9 +1,16 @@
 ---
-title: "공모주 최소청약단위 크롤링 (균등배정 case)"
+title: 공모주 최소청약단위 크롤링 (균등배정 case)
 date: 2023-07-02
-tags: [삽질, 공모주, 크롤링, Python, OpenDart, 케이뱅크]
+tags:
+  - 삽질
+  - 공모주
+  - 크롤링
+  - Python
+  - OpenDart
+  - 케이뱅크
 category:
-  - 재테크
+  - 실무경험
+  - 공모주
 ---
 
 ex) 공모주의 경우 최소청약금액 중요
