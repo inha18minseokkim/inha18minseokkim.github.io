@@ -16,30 +16,8 @@ layout: default
 
     <div class="posts-layout">
 
-      <!-- 카테고리 사이드바 -->
-      <aside class="category-sidebar">
-        <p class="category-sidebar-title">카테고리</p>
-        <button class="category-btn active" data-category="all">
-          전체
-          <span class="category-count" id="cat-count-all"></span>
-        </button>
-        <button class="category-btn" data-category="기술">
-          기술
-          <span class="category-count" id="cat-count-기술"></span>
-        </button>
-        <button class="category-btn" data-category="실무경험">
-          실무경험
-          <span class="category-count" id="cat-count-실무경험"></span>
-        </button>
-        <button class="category-btn" data-category="재테크">
-          재테크
-          <span class="category-count" id="cat-count-재테크"></span>
-        </button>
-        <button class="category-btn" data-category="기타">
-          기타
-          <span class="category-count" id="cat-count-기타"></span>
-        </button>
-      </aside>
+      <!-- 카테고리 사이드바 (JS로 동적 생성) -->
+      <aside class="category-sidebar" id="categorySidebar"></aside>
 
       <!-- 메인 콘텐츠 -->
       <div class="posts-main">
@@ -107,88 +85,179 @@ document.addEventListener('DOMContentLoaded', function() {
   tagBtns.sort((a, b) => parseInt(b.dataset.count) - parseInt(a.dataset.count));
   tagBtns.forEach(btn => tagFilter.appendChild(btn));
 
-  const filterBtns = document.querySelectorAll('.tag-filter-btn');
-  const allTagBtn = document.querySelector('.tag-filter-btn[data-tag="all"]');
-  const postItems = document.querySelectorAll('.post-item');
+  const filterBtns   = document.querySelectorAll('.tag-filter-btn');
+  const allTagBtn    = document.querySelector('.tag-filter-btn[data-tag="all"]');
+  const postItems    = document.querySelectorAll('.post-item');
   const filterStatus = document.getElementById('filterStatus');
   const dateClearBtn = document.getElementById('dateClearBtn');
+  const sidebar      = document.getElementById('categorySidebar');
 
-  // 카테고리 버튼
-  const categoryBtns = document.querySelectorAll('.category-btn');
-  const allCategoryBtn = document.querySelector('.category-btn[data-category="all"]');
+  let selectedTags    = new Set();
+  let dateFrom        = null;
+  let dateTo          = null;
+  let selectedCatPath = null; // null=전체 | "기술" | "기술,Spring" | ...
 
-  let selectedTags = new Set();
-  let dateFrom = null;
-  let dateTo = null;
-  let selectedCategory = null; // null = 전체
-
-  const CATEGORIES = ['기술', '실무경험', '재테크', '기타'];
-
-  function updateCategoryCounts(tagDateMatchFn) {
-    // Count posts per category based on tag+date filter only
-    const counts = { '기술': 0, '실무경험': 0, '재테크': 0, '기타': 0 };
-    postItems.forEach(item => {
-      if (tagDateMatchFn(item)) {
-        const cat = item.dataset.category || '기타';
-        if (counts[cat] !== undefined) counts[cat]++;
-      }
-    });
-
-    let total = 0;
-    CATEGORIES.forEach(cat => {
-      const el = document.getElementById('cat-count-' + cat);
-      if (el) el.textContent = counts[cat];
-      total += counts[cat];
-    });
-    const allEl = document.getElementById('cat-count-all');
-    if (allEl) allEl.textContent = total;
+  // ── 유틸 ──────────────────────────────────────────────────────────────────
+  // data-category 값("재테크,주식")을 HTML id에 안전하게 변환
+  function safeId(key) {
+    return 'cc-' + (key || 'all').replace(/[^a-zA-Z0-9가-힣]/g, '_');
   }
 
-  function applyFilter() {
-    let visibleCount = 0;
+  // ── 카테고리 트리 빌드 ────────────────────────────────────────────────────
+  // 대분류 고정 순서 (없는 분류는 렌더 스킵)
+  const TOP_ORDER  = ['기술', '실무경험', '재테크', '기타'];
+  // 트리 노드: { label, path, children: Map<label, node> }
+  const treeRoot   = { label: '', path: '', children: new Map() };
 
-    function tagDateMatch(item) {
-      const tags = item.dataset.tags ? item.dataset.tags.split(',') : [];
-      const tagMatch = selectedTags.size === 0 || tags.some(t => selectedTags.has(t));
-      const postDate = new Date(item.dataset.date);
-      const dateMatch = (!dateFrom && !dateTo) ||
-        (dateFrom && dateTo && postDate >= dateFrom && postDate <= dateTo);
-      return tagMatch && dateMatch;
-    }
+  postItems.forEach(item => {
+    const raw   = (item.dataset.category || '기타').trim();
+    const parts = raw.split(',').map(s => s.trim()).filter(Boolean);
+    if (!parts.length) parts.push('기타');
 
-    postItems.forEach(item => {
-      const category = item.dataset.category || '기타';
-      const catMatch = !selectedCategory || category === selectedCategory;
-      const visible = tagDateMatch(item) && catMatch;
-      item.style.display = visible ? '' : 'none';
-      if (visible) visibleCount++;
+    let node = treeRoot;
+    parts.forEach((label, i) => {
+      const path = parts.slice(0, i + 1).join(',');
+      if (!node.children.has(label))
+        node.children.set(label, { label, path, children: new Map() });
+      node = node.children.get(label);
+    });
+  });
+
+  // ── 사이드바 렌더링 (재귀) ────────────────────────────────────────────────
+  function renderNode(node, depth) {
+    const hasCh    = node.children.size > 0;
+    const subClass = depth > 1 ? ' cat-sub' : '';
+    const arrow    = hasCh
+      ? '<span class="cat-arrow">▶</span>'
+      : '<span class="cat-indent"></span>';
+
+    // 자식 노드를 한글 로케일 기준으로 정렬
+    const sorted = [...node.children.values()]
+      .sort((a, b) => a.label.localeCompare(b.label, 'ko'));
+
+    return `<div class="cat-group" data-path="${node.path}" data-depth="${depth}">
+      <button class="category-btn${subClass}" data-cat="${node.path}">
+        ${arrow}<span class="cat-label">${node.label}</span>
+        <span class="category-count" id="${safeId(node.path)}"></span>
+      </button>
+      ${hasCh ? `<div class="cat-children">${sorted.map(c => renderNode(c, depth + 1)).join('')}</div>` : ''}
+    </div>`;
+  }
+
+  function buildSidebar() {
+    let html = `<p class="category-sidebar-title">카테고리</p>
+      <button class="category-btn active" data-cat="">
+        <span class="cat-indent"></span><span class="cat-label">전체</span>
+        <span class="category-count" id="${safeId('all')}"></span>
+      </button>`;
+
+    // 고정 순서로 대분류 렌더
+    TOP_ORDER.forEach(top => {
+      if (treeRoot.children.has(top)) html += renderNode(treeRoot.children.get(top), 1);
+    });
+    // TOP_ORDER에 없는 추가 대분류
+    treeRoot.children.forEach((node, label) => {
+      if (!TOP_ORDER.includes(label)) html += renderNode(node, 1);
     });
 
-    // Update sidebar counts (based on tag+date only, not category)
+    sidebar.innerHTML = html;
+    attachCategoryListeners();
+  }
+
+  // ── 카테고리 클릭 핸들러 ──────────────────────────────────────────────────
+  function attachCategoryListeners() {
+    sidebar.querySelectorAll('.category-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const path = this.dataset.cat;
+        selectedCatPath = path || null;
+
+        // active 클래스 갱신
+        sidebar.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        // 클릭된 경로의 조상 그룹은 expand, 나머지는 collapse
+        sidebar.querySelectorAll('.cat-group').forEach(g => {
+          const gPath = g.dataset.path || '';
+          if (!path) {
+            g.classList.remove('expanded');
+          } else {
+            const pParts = path.split(',');
+            const gParts = gPath.split(',');
+            const isAncestorOrSelf =
+              gParts.length <= pParts.length &&
+              pParts.slice(0, gParts.length).join(',') === gPath;
+            g.classList.toggle('expanded', isAncestorOrSelf && g.querySelector('.cat-children') !== null);
+          }
+        });
+
+        applyFilter();
+      });
+    });
+  }
+
+  // ── 카테고리 매칭 ─────────────────────────────────────────────────────────
+  // selectedCatPath가 "기술" → "기술,*" 포스트 모두 매칭
+  // selectedCatPath가 "기술,Spring" → "기술,Spring,*" 포스트만 매칭
+  function catMatch(item) {
+    if (!selectedCatPath) return true;
+    const parts    = (item.dataset.category || '기타').split(',').map(s => s.trim());
+    const selParts = selectedCatPath.split(',');
+    return selParts.length <= parts.length && selParts.every((s, i) => s === parts[i]);
+  }
+
+  // ── 카운트 업데이트 ───────────────────────────────────────────────────────
+  // tagDate 조건만 반영한 카운트 (카테고리 선택과 무관하게 갯수 표시)
+  function updateCategoryCounts(matchFn) {
+    const counts = new Map([['all', 0]]);
+    postItems.forEach(item => {
+      if (!matchFn(item)) return;
+      counts.set('all', counts.get('all') + 1);
+      const parts = (item.dataset.category || '기타').split(',').map(s => s.trim()).filter(Boolean);
+      parts.forEach((_, i) => {
+        const prefix = parts.slice(0, i + 1).join(',');
+        counts.set(prefix, (counts.get(prefix) || 0) + 1);
+      });
+    });
+    counts.forEach((n, key) => {
+      const el = document.getElementById(safeId(key));
+      if (el) el.textContent = n;
+    });
+  }
+
+  // ── 태그 + 날짜 매칭 ──────────────────────────────────────────────────────
+  function tagDateMatch(item) {
+    const tags   = item.dataset.tags ? item.dataset.tags.split(',') : [];
+    const tagOk  = selectedTags.size === 0 || tags.some(t => selectedTags.has(t));
+    const d      = new Date(item.dataset.date);
+    const dateOk = (!dateFrom && !dateTo) || (dateFrom && dateTo && d >= dateFrom && d <= dateTo);
+    return tagOk && dateOk;
+  }
+
+  // ── 필터 적용 ─────────────────────────────────────────────────────────────
+  function applyFilter() {
+    let cnt = 0;
+    postItems.forEach(item => {
+      const show = tagDateMatch(item) && catMatch(item);
+      item.style.display = show ? '' : 'none';
+      if (show) cnt++;
+    });
+
     updateCategoryCounts(tagDateMatch);
 
-    // Update filter status text
-    const tagPart = selectedTags.size > 0
-      ? `${[...selectedTags].map(t => '"' + t + '"').join(', ')} 태그`
-      : '';
+    const tagPart  = selectedTags.size > 0
+      ? [...selectedTags].map(t => `"${t}"`).join(', ') + ' 태그' : '';
     const datePart = (dateFrom && dateTo)
-      ? `${fp.formatDate(dateFrom, 'Y.m.d')} ~ ${fp.formatDate(dateTo, 'Y.m.d')}`
-      : '';
-    const catPart = selectedCategory ? `${selectedCategory}` : '';
-    const parts = [catPart, tagPart, datePart].filter(Boolean);
+      ? `${fp.formatDate(dateFrom, 'Y.m.d')} ~ ${fp.formatDate(dateTo, 'Y.m.d')}` : '';
+    const catPart  = selectedCatPath
+      ? selectedCatPath.split(',').join(' > ') : '';
+    const parts    = [catPart, tagPart, datePart].filter(Boolean);
 
-    if (parts.length === 0) {
-      allTagBtn.classList.add('active');
-      filterStatus.textContent = '';
-    } else {
-      allTagBtn.classList.remove('active');
-      filterStatus.textContent = `${parts.join(' · ')}: ${visibleCount}개의 글`;
-    }
-
+    filterStatus.textContent = parts.length ? `${parts.join(' · ')}: ${cnt}개의 글` : '';
+    allTagBtn.classList.toggle('active', parts.length === 0);
     dateClearBtn.style.display = (dateFrom && dateTo) ? 'inline-block' : 'none';
   }
 
-  // Flatpickr 날짜 범위 피커
+  // ── Flatpickr ─────────────────────────────────────────────────────────────
   const fp = flatpickr('#dateRangePicker', {
     mode: 'range',
     dateFormat: 'Y.m.d',
@@ -203,11 +272,10 @@ document.addEventListener('DOMContentLoaded', function() {
     onChange(selectedDates) {
       if (selectedDates.length === 2) {
         dateFrom = selectedDates[0];
-        dateTo = selectedDates[1];
+        dateTo   = selectedDates[1];
         dateTo.setHours(23, 59, 59, 999);
       } else {
-        dateFrom = null;
-        dateTo = null;
+        dateFrom = dateTo = null;
       }
       applyFilter();
     }
@@ -215,12 +283,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   dateClearBtn.addEventListener('click', function() {
     fp.clear();
-    dateFrom = null;
-    dateTo = null;
+    dateFrom = dateTo = null;
     applyFilter();
   });
 
-  // 태그 필터
+  // ── 태그 필터 ─────────────────────────────────────────────────────────────
   allTagBtn.addEventListener('click', function() {
     selectedTags.clear();
     filterBtns.forEach(b => b.classList.remove('active'));
@@ -231,30 +298,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btn.dataset.tag === 'all') return;
     btn.addEventListener('click', function() {
       const tag = this.dataset.tag;
-      if (selectedTags.has(tag)) {
-        selectedTags.delete(tag);
-        this.classList.remove('active');
-      } else {
-        selectedTags.add(tag);
-        this.classList.add('active');
-      }
+      if (selectedTags.has(tag)) { selectedTags.delete(tag); this.classList.remove('active'); }
+      else                       { selectedTags.add(tag);    this.classList.add('active');    }
       applyFilter();
     });
   });
 
-  // 카테고리 필터
-  categoryBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      categoryBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-
-      const cat = this.dataset.category;
-      selectedCategory = (cat === 'all') ? null : cat;
-      applyFilter();
-    });
-  });
-
-  // 초기 상태
+  // ── 초기화 ────────────────────────────────────────────────────────────────
+  buildSidebar();
   applyFilter();
 });
 </script>
