@@ -2,7 +2,8 @@
 title: "결재 반려 시 gitlab branch delete 이슈"
 date: 2023-12-20
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ### 문제 상황

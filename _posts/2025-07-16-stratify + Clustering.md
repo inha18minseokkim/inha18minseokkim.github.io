@@ -3,7 +3,8 @@ title: stratify + Clustering
 date: 2025-07-16
 tags:
   - AI/ML
-category: 기타
+category:
+  - 기타
 ---
 
 ```python

@@ -2,7 +2,8 @@
 title: "여러 번 실행(recursive)"
 date: 2024-09-28
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 요청받은 이유:
 1분 5분에 한 번 잡을 실행할 일이 있는데

@@ -2,7 +2,8 @@
 title: "Kafka with Kbank MSA + 표준 스케줄러"
 date: 2024-07-11
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 [[Kubernetes] Keda 란?](https://velog.io/@jihwankim94/Kubernetes-Keda-란)
 

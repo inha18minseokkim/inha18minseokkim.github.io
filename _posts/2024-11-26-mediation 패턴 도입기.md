@@ -2,7 +2,8 @@
 title: "mediation 패턴 도입기"
 date: 2024-11-26
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 [mediation 패턴 도입기 - 짬통은 어디에?]({% post_url 2024-10-10-mediation 패턴 도입기 - 짬통은 어디에 %})
 [mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)]({% post_url 2024-10-11-mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915) %})

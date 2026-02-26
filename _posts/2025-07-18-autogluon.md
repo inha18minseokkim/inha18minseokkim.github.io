@@ -2,7 +2,8 @@
 title: "autogluon"
 date: 2025-07-18
 tags: [AI/ML]
-category: 기타
+category:
+  - 기타
 ---
 [Forecasting Time Series - Evaluation Metrics](https://auto.gluon.ai/stable/tutorials/timeseries/forecasting-metrics.html)
 Probabilitic Forecast - 확률에 기반한 예측, WQL

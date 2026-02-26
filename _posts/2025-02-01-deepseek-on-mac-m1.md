@@ -2,7 +2,8 @@
 title: "맥북 M1 에어에 딥시크 올리기 - Apple Silicon vs NVIDIA 구조 차이"
 date: 2025-02-01
 tags: [LLM, DeepSeek, Ollama, MacOS, Apple Silicon, 삽질]
-category: 기술
+category:
+  - 기술
 ---
 
 딥시크(DeepSeek)가 오픈소스로 공개되고 나서, 로컬에서 LLM을 돌려보고 싶어서 맥북 M1 에어에 올려봤다.

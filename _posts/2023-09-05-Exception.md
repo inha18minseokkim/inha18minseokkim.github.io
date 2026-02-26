@@ -4,7 +4,8 @@ date: 2023-09-05
 tags:
   - Java
   - 개발
-category: 기술
+category:
+  - 기술
 ---
 
 ## Checked  

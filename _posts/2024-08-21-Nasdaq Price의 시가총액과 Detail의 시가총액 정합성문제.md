@@ -2,7 +2,8 @@
 title: "Nasdaq Price의 시가총액과 Detail의 시가총액 정합성문제"
 date: 2024-08-21
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/ca0ee8eb-5082-4202-b6bc-004ebee69045/image.png)

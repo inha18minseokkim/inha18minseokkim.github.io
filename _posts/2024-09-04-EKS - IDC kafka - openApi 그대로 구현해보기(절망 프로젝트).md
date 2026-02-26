@@ -2,7 +2,8 @@
 title: "EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)"
 date: 2024-09-04
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 괴물 만들기 프로젝트
 비슷하게 맞추기

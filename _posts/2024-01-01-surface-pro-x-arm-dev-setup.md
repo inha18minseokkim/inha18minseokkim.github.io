@@ -2,7 +2,8 @@
 title: "회사에서 Surface Pro X (ARM+LTE) 개발환경 구성기"
 date: 2024-01-01
 tags: [ARM, Windows, 개발환경, Surface, WSL, 삽질]
-category: 기술
+category:
+  - 기술
 ---
 
 회사에 맥북/노트북 반입이 금지되어 있어서 ARM 기반 LTE 모델인 Surface Pro X를 업무용으로 쓰기 시작했다. 세팅하면서 겪은 것들 정리.

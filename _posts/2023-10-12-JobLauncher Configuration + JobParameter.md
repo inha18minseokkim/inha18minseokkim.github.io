@@ -2,7 +2,8 @@
 title: "JobLauncher Configuration + JobParameter"
 date: 2023-10-12
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 

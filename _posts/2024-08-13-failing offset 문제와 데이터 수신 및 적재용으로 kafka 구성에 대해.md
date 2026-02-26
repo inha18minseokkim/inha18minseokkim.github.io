@@ -2,7 +2,8 @@
 title: "failing offset 문제와 데이터 수신 및 적재용으로 kafka 구성에 대해"
 date: 2024-08-13
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 # 현상

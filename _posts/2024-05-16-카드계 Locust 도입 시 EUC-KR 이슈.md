@@ -5,7 +5,8 @@ tags:
   - Java
   - BXM
   - 케이뱅크
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 ### 문제상황

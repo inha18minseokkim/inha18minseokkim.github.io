@@ -2,7 +2,8 @@
 title: "**Building the Future Trading Platform leveraging AI and AWS**"
 date: 2025-12-04
 tags: [미지정]
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 ![](attachment:c68f7155-c998-4c26-b287-7e182a3b63af:image.png)

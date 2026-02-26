@@ -4,7 +4,8 @@ date: 2023-09-11
 tags:
   - Java
   - 개발
-category: 기술
+category:
+  - 기술
 ---
 자원 회수 프로세스(try-with-resource)를 명시하지 않았을 때 생길 수 있는 일을 정의해놓을 수 있음
 

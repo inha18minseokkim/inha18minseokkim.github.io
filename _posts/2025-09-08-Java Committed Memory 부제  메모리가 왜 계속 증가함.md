@@ -4,7 +4,8 @@ date: 2025-09-08
 tags:
   - Java
   - 이슈정리
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 ### 선 한 줄 요약

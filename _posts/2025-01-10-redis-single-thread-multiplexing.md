@@ -5,7 +5,8 @@ tags:
   - Redis
   - 백엔드
   - 아키텍처
-category: 기술
+category:
+  - 기술
 ---
 
 Redis는 싱글스레드로 동작한다.

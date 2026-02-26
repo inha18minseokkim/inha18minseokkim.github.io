@@ -6,7 +6,8 @@ tags:
   - 케이뱅크
   - 개발
   - Redis
-category: 재테크
+category:
+  - 재테크
 ---
 
 ## 조건

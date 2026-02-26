@@ -2,7 +2,8 @@
 title: "Mybatis QueryDSL 혼용 in Spring boot"
 date: 2024-02-07
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ```java

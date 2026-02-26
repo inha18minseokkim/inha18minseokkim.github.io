@@ -2,7 +2,8 @@
 title: "Gradle + Spring 멀티 모듈"
 date: 2024-05-07
 tags: [Spring, Gradle, Java, 개발, 1차수정완료]
-category: 기술
+category:
+  - 기술
 ---
 
 ## 필요성

@@ -3,7 +3,8 @@ title: Weak Memory Model
 date: 2023-09-24
 tags:
   - Java
-category: 기술
+category:
+  - 기술
 ---
 [https://preshing.com/20120930/weak-vs-strong-memory-models/](https://preshing.com/20120930/weak-vs-strong-memory-models/)
 

@@ -2,7 +2,8 @@
 title: "Python + jflow 필요성 + 샘플 프로젝트"
 date: 2024-12-31
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ## 개선 사항

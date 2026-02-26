@@ -2,7 +2,8 @@
 title: "Evaluating architectural trade-offs: Cloud patterns for flexibility"
 date: 2025-12-01
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 어떤게 모던한 어플리케이션일까
 운영코스트 줄이고 복잡도 낮게

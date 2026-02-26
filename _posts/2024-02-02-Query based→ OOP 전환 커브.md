@@ -2,7 +2,8 @@
 title: "Query based→ OOP 전환 커브"
 date: 2024-02-02
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ```sql

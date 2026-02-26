@@ -2,7 +2,8 @@
 title: "Stateless - MSA"
 date: 2023-08-01
 tags: [MSA, 아키텍처, 백엔드, 인턴]
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 ## 멱등성

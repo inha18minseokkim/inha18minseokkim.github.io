@@ -2,7 +2,8 @@
 title: "언럭키 CQRS 패턴 (20251010)"
 date: 2025-10-10
 tags: [아키텍처, CQRS, Spring, 백엔드, 주식서비스]
-category: 기술
+category:
+  - 기술
 ---
 
 ![이미지](/assets/images/Pasted%20image%2020260220151620.png)

@@ -2,7 +2,8 @@
 title: "argo-workflow - jflow 연동 개선건 2 (202502)"
 date: 2025-02-12
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ### ASIS

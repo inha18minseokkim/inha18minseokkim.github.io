@@ -2,7 +2,8 @@
 title: "Redis pub/sub 활용해서 Local Cache 동기화 - kotlin arrow 응용"
 date: 2025-12-22
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 코틀린 코루틴 스코프 상에서는 어노테이션 보다는 함수형으로 처리하는것이 좋기 때문에 arrow를 사용해서 캐시 공통화를 해보도록 하겠다.
  

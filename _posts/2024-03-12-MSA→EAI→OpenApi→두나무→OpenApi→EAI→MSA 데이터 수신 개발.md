@@ -6,7 +6,8 @@ tags:
   - Java
   - 케이뱅크
   - 주식서비스
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 EAI 바디에 전문을 fixedLength로 파싱하지 않고 통 Json으로 받는 방식으로 개발 시작

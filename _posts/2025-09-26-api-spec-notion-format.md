@@ -2,7 +2,8 @@
 title: "api-spec-notion-format"
 date: 2025-09-26
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 # 주식 투자 게임 API 명세서

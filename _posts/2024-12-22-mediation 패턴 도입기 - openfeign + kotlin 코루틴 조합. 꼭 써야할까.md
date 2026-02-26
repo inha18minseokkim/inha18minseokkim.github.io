@@ -2,7 +2,8 @@
 title: "mediation 패턴 도입기 - openfeign + kotlin 코루틴 조합. 꼭 써야할까?"
 date: 2024-12-22
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 openfeign의 경우 suspend 아직까지는 인식못하기 때문에 adapter 패턴으로 한 벌 감싸줘야 한다.
 ListedStockService.kt

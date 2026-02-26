@@ -2,7 +2,8 @@
 title: "Raptor RAG 활용 공시 문서 압축 요약"
 date: 2026-01-26
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ![](attachment:7bbae049-4b0a-470c-bf1e-98060ab92796:image.png)

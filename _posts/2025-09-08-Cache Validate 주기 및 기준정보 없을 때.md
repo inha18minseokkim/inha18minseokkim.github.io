@@ -2,7 +2,8 @@
 title: "Cache Validate 주기 및 기준정보 없을 때 "
 date: 2025-09-08
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ![](attachment:547a3115-e2d7-449b-9431-4c896aa04905:image.png)

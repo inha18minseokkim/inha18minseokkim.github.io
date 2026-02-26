@@ -2,7 +2,8 @@
 title: "Python + KEDA ScaledJob"
 date: 2025-01-09
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/d20f12b3-95fe-4fb1-b8d5-f81520a190d6/image.png)

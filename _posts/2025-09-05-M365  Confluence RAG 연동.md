@@ -2,7 +2,8 @@
 title: "M365 <> Confluence RAG 연동"
 date: 2025-09-05
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 Confluence 문서 RAG 사용을 위해 M365와 Confluence api간 3LO 인증수행해야하는데 절차 정리함
 

@@ -2,7 +2,8 @@
 title: "AI Facilitator"
 date: 2026-02-10
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ## 기존에 돌고 있는 비즈니스를 AI를 활용해서 내재화하기

@@ -5,7 +5,8 @@ tags:
   - Spring
   - Spring-Data
   - JPA
-category: 기술
+category:
+  - 기술
 ---
 
 ["N+1 selects problem" with JpaRepository method despite using @Fetch(FetchMode.JOIN)](https://stackoverflow.com/questions/77806343/n1-selects-problem-with-jparepository-method-despite-using-fetchfetchmode-j/77817535#77817535)

@@ -46,7 +46,7 @@ layout: default
 
         <ul class="post-list">
           {% for post in site.posts %}
-          <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}" data-category="{{ post.category | default: '기타' }}">
+          <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}" data-category="{{ post.categories | join: ',' | default: '기타' }}">
             <a href="{{ post.url | relative_url }}" class="post-link">
               <div class="post-meta">
                 <time class="post-date">{{ post.date | date: "%Y. %m. %d" }}</time>

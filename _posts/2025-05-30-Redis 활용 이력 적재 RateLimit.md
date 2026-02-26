@@ -2,7 +2,8 @@
 title: "Redis 활용 이력 적재 RateLimit"
 date: 2025-05-30
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 # 상황

@@ -2,7 +2,8 @@
 title: "mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지"
 date: 2024-11-26
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ### Interceptor 도입 사유

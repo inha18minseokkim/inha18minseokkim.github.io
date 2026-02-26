@@ -2,7 +2,8 @@
 title: "**Lambda Managed Instances: EC2 Power with Serverless Simplicity**"
 date: 2025-12-04
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 lmi와 원래있던람다와 다른점?
 사용자 계정의 vpc > ec2 인스턴스 안에 람다 인스턴스를 돌림. 

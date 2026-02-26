@@ -2,7 +2,8 @@
 title: "20260203 가격 ETF 일부 종목 include_trading_halted=true 오류"
 date: 2026-02-03
 tags: [미지정]
-category: 재테크
+category:
+  - 재테크
 ---
 
 ## 🧾 DeepSearch API 호출 관련 이슈 로그

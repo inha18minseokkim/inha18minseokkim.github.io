@@ -2,7 +2,8 @@
 title: "holding_weight >> null인경우 많음, 부정확한 weight(20250304)"
 date: 2025-03-04
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ```java

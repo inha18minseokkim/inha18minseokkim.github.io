@@ -2,7 +2,8 @@
 title: "mediaion 패턴 도입기 - webclient + openfeign 사용"
 date: 2024-12-17
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 

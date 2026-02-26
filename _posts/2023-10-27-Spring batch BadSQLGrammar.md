@@ -2,7 +2,8 @@
 title: "Spring batch BadSQLGrammar"
 date: 2023-10-27
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ### 경과

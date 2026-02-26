@@ -2,7 +2,8 @@
 title: "mediation 패턴 도입기 - RECYCLE_FACADES"
 date: 2024-11-26
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ### 이슈내용

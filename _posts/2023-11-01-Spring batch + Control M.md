@@ -2,7 +2,8 @@
 title: "Spring batch + Control M"
 date: 2023-11-01
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ### ASIS(카드계 배치 BXM, Spring Legacy 3)

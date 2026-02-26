@@ -6,7 +6,8 @@ tags:
   - 인프라
   - 삽질
   - MacOS
-category: 기술
+category:
+  - 기술
 ---
 사유 : 회사에서는 서피스 ARM LTE 사용, 집에서는 맥북 M1 16기가 사용
 인텔리제이 IDE가 UWP를 지원해서 작업에는 문제가 없지만

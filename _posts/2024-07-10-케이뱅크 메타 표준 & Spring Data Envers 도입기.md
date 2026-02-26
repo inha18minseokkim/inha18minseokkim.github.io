@@ -2,7 +2,8 @@
 title: "케이뱅크 메타 표준 & Spring Data Envers 도입기"
 date: 2024-07-10
 tags: [미지정]
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 ### 이 방법을 개발 한 이유

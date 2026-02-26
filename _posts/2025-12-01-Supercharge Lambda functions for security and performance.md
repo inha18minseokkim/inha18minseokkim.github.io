@@ -2,7 +2,8 @@
 title: "Supercharge Lambda functions for security and performance"
 date: 2025-12-01
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 람다 핸들러 밖에 공통 빼놓으면 재사용 가능(db커넥션같은거)
 

@@ -6,7 +6,8 @@ tags:
   - 동시성
   - 개발
   - 뻘짓
-category: 기술
+category:
+  - 기술
 ---
 
 ### 왜?

@@ -2,7 +2,8 @@
 title: "AWS Reinvent Las Vegas(2025)"
 date: 2025-11-30
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 회사 사내 AI 아이디어 관련 포상으로 상금 400만원과 함께 해외 컨퍼런스 
 월

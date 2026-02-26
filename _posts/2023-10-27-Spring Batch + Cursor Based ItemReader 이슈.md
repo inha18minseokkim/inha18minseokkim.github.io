@@ -2,7 +2,8 @@
 title: "Spring Batch + Cursor Based ItemReader 이슈"
 date: 2023-10-27
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 

@@ -2,7 +2,8 @@
 title: "EKS-IDCkafka-openApi 수신 구조 잡기"
 date: 2024-06-25
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 행 내에서 해당 문제를 해결하기 위해 Kafka를 사용하기로 했음.

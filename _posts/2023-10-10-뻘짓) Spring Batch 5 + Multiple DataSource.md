@@ -2,7 +2,8 @@
 title: "뻘짓) Spring Batch 5 + Multiple DataSource"
 date: 2023-10-10
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 목적

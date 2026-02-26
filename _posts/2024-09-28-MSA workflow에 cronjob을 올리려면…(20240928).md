@@ -2,7 +2,8 @@
 title: "MSA workflow에 cronjob을 올리려면…(20240928)"
 date: 2024-09-28
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 현재 케이뱅크 MSA 파이프라인에서 argo-workflow 부분
 뭐 대충 짜잘한 세팅하고

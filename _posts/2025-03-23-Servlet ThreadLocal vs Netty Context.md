@@ -5,7 +5,8 @@ tags:
   - Webflux
   - JPA
   - Spring
-category: 기술
+category:
+  - 기술
 ---
 
 ## Servlet ThreadLocal

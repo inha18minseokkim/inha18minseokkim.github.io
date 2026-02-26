@@ -2,7 +2,8 @@
 title: "스프링부트 배치) ResourcelessJobRepository (Spring batch 5.2.0-M2)"
 date: 2025-02-11
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 [Spring Batch 5.2.0-M2 is available now!](https://spring.io/blog/2024/10/11/spring-batch-5-2-0-m2-is-available-now)
 Spring batch 4 까지는 인메모리 HashMap 형태로 JobRepository 를 만드는것을 지원하였지만, 5 부터는 ResourcelessJobRepository를 다시 지원한다는 제보를 들었다.

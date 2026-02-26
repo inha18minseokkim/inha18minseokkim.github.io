@@ -2,7 +2,8 @@
 title: "Langchain Tool > MCP 프로토콜 활용(Langchain MCP Adapters)"
 date: 2025-05-16
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 Langchain과 Langraph로 간단한 함수 매핑을 만들면서 도구를 연결하기 상당히 귀찮았음.
 Langchain MCP Adapters를 활용해서 매핑해봄

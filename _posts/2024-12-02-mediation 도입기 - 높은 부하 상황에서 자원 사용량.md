@@ -2,7 +2,8 @@
 title: "mediation 도입기 - 높은 부하 상황에서 자원 사용량"
 date: 2024-12-02
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ### 상황

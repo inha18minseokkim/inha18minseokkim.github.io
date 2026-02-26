@@ -4,7 +4,8 @@ date: 2025-02-03
 tags:
   - Spring
   - JPA
-category: 기술
+category:
+  - 기술
 ---
 
 ```java

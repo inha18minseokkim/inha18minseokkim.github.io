@@ -2,7 +2,8 @@
 title: "mediation 패턴 도입기 - Reactor에 대한 오해와 실수"
 date: 2024-12-09
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 

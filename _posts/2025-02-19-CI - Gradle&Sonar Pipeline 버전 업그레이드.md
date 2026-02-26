@@ -2,7 +2,8 @@
 title: "CI - Gradle&Sonar Pipeline 버전 업그레이드"
 date: 2025-02-19
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ## 왜?

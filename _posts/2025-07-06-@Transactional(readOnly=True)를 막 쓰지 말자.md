@@ -4,7 +4,8 @@ date: 2025-07-06
 tags:
   - Spring
   - Spring-Data
-category: 기술
+category:
+  - 기술
 ---
 
 # @Transactional(readOnly = true) 완벽 가이드: 언제 사용하고 언제 사용하지 말아야 할까?

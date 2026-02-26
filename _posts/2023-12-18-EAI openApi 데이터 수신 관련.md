@@ -2,7 +2,8 @@
 title: "EAI openApi 데이터 수신 관련"
 date: 2023-12-18
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 Coffee Talk 에서 EAI openApi 받아오는것 관련해서 몇가지 사유 알았음

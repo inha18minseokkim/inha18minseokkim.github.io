@@ -4,7 +4,8 @@ date: 2024-10-02
 tags:
   - Docker
   - MacOS
-category: 기술
+category:
+  - 기술
 ---
 [minikube service 외부 접속 안되는 이유](https://mythpoy.tistory.com/50)
 도커 드라이버 덕분에 Minikube tunnel, service 등 이상한 로직을 발라야 해서 안되는데

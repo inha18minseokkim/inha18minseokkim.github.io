@@ -2,7 +2,8 @@
 title: "CI) Sonarqube + Python 연동 문제 해결 : Sonar Scanner Image"
 date: 2025-03-17
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 ## ASIS

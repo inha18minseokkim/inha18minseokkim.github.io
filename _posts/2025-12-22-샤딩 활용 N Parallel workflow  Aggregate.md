@@ -2,7 +2,8 @@
 title: "샤딩 활용 N Parallel workflow > Aggregate"
 date: 2025-12-22
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 

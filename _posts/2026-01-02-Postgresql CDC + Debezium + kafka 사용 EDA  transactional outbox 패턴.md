@@ -2,7 +2,8 @@
 title: "Postgresql CDC + Debezium + kafka 사용 EDA > transactional outbox 패턴"
 date: 2026-01-02
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 

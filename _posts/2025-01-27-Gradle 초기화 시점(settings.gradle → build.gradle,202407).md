@@ -2,7 +2,8 @@
 title: "Gradle 초기화 시점(settings.gradle → build.gradle,202407)"
 date: 2025-01-27
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 현시점 최선(202407)

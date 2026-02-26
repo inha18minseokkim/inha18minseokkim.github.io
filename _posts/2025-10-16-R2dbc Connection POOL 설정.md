@@ -2,7 +2,8 @@
 title: "R2dbc Connection POOL 설정"
 date: 2025-10-16
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 # 문제상황

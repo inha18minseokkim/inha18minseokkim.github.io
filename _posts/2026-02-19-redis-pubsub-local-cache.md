@@ -2,7 +2,8 @@
 title: "Redis pub/sub 활용해서 Local Cache 동기화 - 기본"
 date: 2026-02-19
 tags: [Redis, Cache, Kotlin, Spring]
-category: 기술
+category:
+  - 기술
 ---
 
 [**Advanced data modeling for Amazon ElastiCache**](https://www.notion.so/Advanced-data-modeling-for-Amazon-ElastiCache-2be2f38ca96880b39862ff8add014ca9?pvs=21)

@@ -2,7 +2,8 @@
 title: "ETF Data Categorizing 관련"
 date: 2025-03-06
 tags: [미지정]
-category: 재테크
+category:
+  - 재테크
 ---
 
 ## 요건

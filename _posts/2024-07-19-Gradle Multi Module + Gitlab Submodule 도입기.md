@@ -2,7 +2,8 @@
 title: "Gradle Multi Module + Gitlab Submodule 도입기"
 date: 2024-07-19
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 

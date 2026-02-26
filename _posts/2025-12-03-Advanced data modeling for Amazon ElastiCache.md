@@ -2,7 +2,8 @@
 title: "**Advanced data modeling for Amazon ElastiCache **"
 date: 2025-12-03
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ### low latency, high throughput

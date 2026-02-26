@@ -2,7 +2,8 @@
 title: "Python + Argo Event (결과 : 원하는대로 안됨)"
 date: 2025-01-14
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 한 4달전쯤에 KEDA 대신에 Argo Event를 사용하여 이벤트 기반으로 파드를 기동시켜보기로 했지만, KEDA는 컨슈머그룹상의 LAG를 이벤트로 보는 반면, Argo Event의 EventSource는 레코드 자체를 이벤트로 consume 하여 서로 다른 목적임을 확인하였다.

@@ -2,7 +2,8 @@
 title: "Redis pub/sub 활용해서 Local Cache 동기화 - 기본"
 date: 2025-12-11
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 해당 세션을 보고 하나씩 따라해보는 중이다.

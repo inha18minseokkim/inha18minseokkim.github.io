@@ -2,7 +2,8 @@
 title: "Spring batch 아키텍쳐 논의/삽질"
 date: 2023-11-02
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 [Spring Batch 5.0.1(Spring 3.1.3)]({% post_url 2023-10-08-Spring Batch 5.0.1(Spring 3.1.3) %})
 [Spring batch BadSQLGrammar]({% post_url 2023-10-27-Spring batch BadSQLGrammar %})

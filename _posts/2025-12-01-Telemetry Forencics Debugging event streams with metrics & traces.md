@@ -2,7 +2,8 @@
 title: "Telemetry Forencics: Debugging event streams with metrics & traces"
 date: 2025-12-01
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 buildup session
 1

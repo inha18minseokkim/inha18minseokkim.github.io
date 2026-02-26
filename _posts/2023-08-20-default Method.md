@@ -3,7 +3,8 @@ title: default Method
 date: 2023-08-20
 tags:
   - Java
-category: 기술
+category:
+  - 기술
 ---
 인터페이스에서 구현된 함수의 대안
 

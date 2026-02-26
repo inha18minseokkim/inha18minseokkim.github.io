@@ -2,7 +2,8 @@
 title: "argo-workflow <> jflow 연동 개선건(20241231)"
 date: 2024-12-31
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 ### ASIS

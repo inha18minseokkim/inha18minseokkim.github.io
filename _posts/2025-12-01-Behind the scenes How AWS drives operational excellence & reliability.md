@@ -2,7 +2,8 @@
 title: "**Behind the scenes: How AWS drives operational excellence & reliability**"
 date: 2025-12-01
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 카페에서 뭐 이벤트 한다고 뿌림 > 커피 살려고 했다 > 커피머신 고장나서 못팜 ㅅㄱ 흔한 패턴
 

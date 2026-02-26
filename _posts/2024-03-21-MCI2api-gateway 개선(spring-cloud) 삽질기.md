@@ -8,7 +8,8 @@ tags:
   - 아키텍처
   - 개발
   - 케이뱅크
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 ![이미지](/assets/images/Pasted%20image%2020260226115739.png)

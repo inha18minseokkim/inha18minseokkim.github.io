@@ -2,7 +2,8 @@
 title: "Reflection 활용 가능"
 date: 2023-11-07
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 FlatFileItemReader 구현 중 연합인포맥스에서 파일 데이터 수신 시 | 로 구분된 데이터 가져올 때 Column 정보를 제공해 주는 상황에서 문제생김
 static String Array를 사용하여 제공해줬지만 코드 가독성이 좋지 못함

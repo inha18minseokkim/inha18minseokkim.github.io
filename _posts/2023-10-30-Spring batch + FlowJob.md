@@ -4,7 +4,8 @@ date: 2023-10-30
 tags:
   - Spring
   - Batch
-category: 기술
+category:
+  - 기술
 ---
 
 ### SimpleJob

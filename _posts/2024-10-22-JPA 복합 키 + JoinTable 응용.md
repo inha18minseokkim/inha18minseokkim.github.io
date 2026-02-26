@@ -5,7 +5,8 @@ tags:
   - Spring
   - JPA
   - Spring-Data
-category: 기술
+category:
+  - 기술
 ---
 기존에 테이블에 pk가 여러개여야 하는 경우 다음과 같이 테이블을 짰다.
 시퀀스 식별자를 하나 둠. id

@@ -2,7 +2,8 @@
 title: "Keep Alive + Content Length를 잘못 세팅하면 벌어지는 일"
 date: 2025-02-02
 tags: [HTTP, 백엔드, 삽질, MSA, Spring]
-category: 기술
+category:
+  - 기술
 ---
 
 갑자기 생각나서 글 써봄 (20250202)

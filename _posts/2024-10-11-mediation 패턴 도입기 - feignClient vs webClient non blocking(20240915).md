@@ -2,7 +2,8 @@
 title: "mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)"
 date: 2024-10-11
 tags: [미지정]
-category: 기타
+category:
+  - 기타
 ---
 
 이 포스팅 이후 아쉬운 내용들을 해결해보고자 작성시작함.

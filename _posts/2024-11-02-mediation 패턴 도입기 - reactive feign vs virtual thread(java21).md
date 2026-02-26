@@ -2,7 +2,8 @@
 title: "mediation 패턴 도입기 - reactive feign vs virtual thread(java21)"
 date: 2024-11-02
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 
 

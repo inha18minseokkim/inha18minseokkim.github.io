@@ -4,7 +4,8 @@ date: 2024-04-29
 tags:
   - JPA
   - QueryDSL
-category: 기술
+category:
+  - 기술
 ---
 
 리팩토링 수행 간 문제 인식. 아마 마이그레이션을 할 때 한번 씩 생길 수 있을 문제인것같음.

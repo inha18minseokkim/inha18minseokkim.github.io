@@ -2,7 +2,8 @@
 title: "**Inference on AWS Trainium and Amazon EKS using vLLM**"
 date: 2025-12-02
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 tranium 칩 새로 나옴 ec2 tranium instance 사용하면됨
 

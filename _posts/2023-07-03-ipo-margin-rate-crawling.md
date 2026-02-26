@@ -2,7 +2,8 @@
 title: "공모주 증거금율 크롤링"
 date: 2023-07-03
 tags: [삽질, 공모주, 크롤링, Python, OpenDart, 케이뱅크]
-category: 재테크
+category:
+  - 재테크
 ---
 증거금율은 대체로 100%, 50%(거~의 50%)
 

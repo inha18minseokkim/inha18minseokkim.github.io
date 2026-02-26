@@ -2,7 +2,8 @@
 title: "argo-workflow+ 케이뱅크 jflow"
 date: 2024-09-28
 tags: [미지정]
-category: 실무경험
+category:
+  - 실무경험
 ---
 
 ### 문제상황

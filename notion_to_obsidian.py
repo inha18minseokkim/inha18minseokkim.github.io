@@ -480,7 +480,7 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
         md_body = render_blocks(content_ids, blocks, depth=0)
 
         category = _get_category(title, post_slug)
-        front_matter = f'---\ntitle: "{title}"\ndate: {date_str}\ntags: [미지정]\ncategory: {category}\n---\n'
+        front_matter = f'---\ntitle: "{title}"\ndate: {date_str}\ntags: [미지정]\ncategory:\n  - {category}\n---\n'
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(front_matter + md_body)

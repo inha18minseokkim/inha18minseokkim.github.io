@@ -4,7 +4,8 @@ date: 2023-12-05
 tags:
   - Java
   - Spring
-category: 기술
+category:
+  - 기술
 ---
 Bxm 프레임워크 쓰다가 에러를 발견하고 비슷한 이슈를 김영한 아저씨 강의에서 봐서 간단하게 끄적임
 

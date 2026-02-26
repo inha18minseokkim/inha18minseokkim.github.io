@@ -2,7 +2,8 @@
 title: "**Building on AWS resilience: Innovations for critical success**"
 date: 2025-12-03
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 Region must be isolated
   - 38개 리전있는데 그냥 독립적으로 움직인다고 생각해야함

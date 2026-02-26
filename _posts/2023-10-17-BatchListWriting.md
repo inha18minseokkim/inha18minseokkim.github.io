@@ -4,7 +4,8 @@ date: 2023-10-17
 tags:
   - Spring
   - Batch
-category: 기술
+category:
+  - 기술
 ---
 Chunk 프로세스에서 리스트를 Write 하고 싶다..
 

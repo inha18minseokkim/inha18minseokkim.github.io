@@ -2,7 +2,8 @@
 title: "Jflow - Control M AWS 연동"
 date: 2025-07-16
 tags: [미지정]
-category: 기술
+category:
+  - 기술
 ---
 행의 Control M 과 AWS 솔루션을 연결해보자
 

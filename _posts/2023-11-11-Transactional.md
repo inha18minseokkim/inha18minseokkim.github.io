@@ -5,7 +5,8 @@ tags:
   - Spring
   - JPA
   - Spring-Data
-category: 기술
+category:
+  - 기술
 ---
 트랜잭션을 처리하는 객체와 비즈니스 로직을 완벽하게 분리 가능
 
