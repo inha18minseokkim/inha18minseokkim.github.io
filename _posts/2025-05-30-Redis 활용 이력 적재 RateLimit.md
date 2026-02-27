@@ -1,9 +1,13 @@
 ---
-title: "Redis 활용 이력 적재 RateLimit"
+title: Redis 활용 이력 적재 RateLimit
 date: 2025-05-30
-tags: [미지정]
-category:
+tags:
   - 기술
+  - 개발
+  - 아키텍처
+category:
+  - 실무경험
+  - 주식둘러보기
 ---
 
 # 상황
@@ -154,3 +158,4 @@ override fun addHitHistory(criteria: HitHistoryAddCriteria): HitHistoryAddResult
     }
 ```
 
+[[2025-04-01-RateLimiting을 응용하여 이력 적재 속도를 조절해보자]]

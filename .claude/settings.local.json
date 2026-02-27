@@ -28,7 +28,8 @@
       "Bash(test:*)",
       "Bash(find C:\\\\Users\\\\Surface\\\\Documents\\\\minseokkim\\\\_posts:*)",
       "Bash(xargs -0 grep \"^tags:\")",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(powershell:*)"
     ]
   }
 }

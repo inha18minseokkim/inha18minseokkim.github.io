@@ -7,7 +7,7 @@ tags:
   - 개발
   - Redis
 category:
-  - 재테크
+  - 기술
 ---
 
 ## 조건
