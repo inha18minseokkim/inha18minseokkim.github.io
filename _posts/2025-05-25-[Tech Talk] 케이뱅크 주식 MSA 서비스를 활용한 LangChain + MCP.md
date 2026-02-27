@@ -1,9 +1,13 @@
 ---
 title: "[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP"
 date: 2025-05-25
-tags: [미지정]
+tags:
+  - 케이뱅크
+  - AI/ML
+  - LangChain
+  - RAG
 category:
-  - 재테크
+  - 발표자료
 ---
 
 # LangChain?
