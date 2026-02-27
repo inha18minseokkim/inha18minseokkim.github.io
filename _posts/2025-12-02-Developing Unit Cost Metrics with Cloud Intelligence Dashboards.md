@@ -1,10 +1,13 @@
 ---
 title: "**Developing Unit Cost Metrics with Cloud Intelligence Dashboards**"
 date: 2025-12-02
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
+AWS re:Invent 2025 세션 노트 정리.
 **결론**
 "클라우드 인텔리전스 대시보드를 활용한 단위 비용 지표 개발" 과제를 완료하신 것을 축하드립니다! 유니콘 렌털스(Unicorn Rentals)가 의미 있는 단위 경제성을 통해 AWS 비용을 비즈니스 성장에 맞춰 조정하는 과제를 해결하는 데 중요한 발걸음을 내딛으셨습니다.[**당신이 이룬 것**](https://catalog.workshops.aws/event/dashboard/en-US/workshop/summary#what-you've-accomplished)
 이 실습 세션을 통해 완벽한 단위 비용 분석 솔루션을 처음부터 구축해 보았습니다. 다음 내용을 학습했습니다.

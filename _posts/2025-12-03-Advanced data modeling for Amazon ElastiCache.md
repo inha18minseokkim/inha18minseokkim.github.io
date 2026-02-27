@@ -1,11 +1,13 @@
 ---
 title: "**Advanced data modeling for Amazon ElastiCache **"
 date: 2025-12-03
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
-
+AWS re:Invent 2025 세션 노트 정리.
 ### low latency, high throughput
 
 RDS workload가 점점 많아지면 레플리카를 만들어 계속 읽는데
@@ -148,7 +150,7 @@ FP 낮출수록 메모리 사용량 늘어남
 
 ![](attachment:cfe35314-83bb-4503-8346-7d1d103d244e:image.png)
 
-[임베드]()
+[임베드]
 얘도 100% 맞는건 아닌데 얼추 관계에 대해 맞출 수 있음(위 예시에서는 1% 확률로 False Positive)
 
 

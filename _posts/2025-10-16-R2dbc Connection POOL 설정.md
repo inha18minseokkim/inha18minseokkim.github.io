@@ -1,11 +1,13 @@
 ---
 title: "R2dbc Connection POOL 설정"
 date: 2025-10-16
-tags: [미지정]
+tags:
+  - DB
+  - 개발
 category:
-  - 기타
+  - 기술
 ---
-
+DB 관련 개발 내용 정리.
 # 문제상황
 
 Postgresql 시퀀스 nextval을 호출하는데 자꾸 20씩 증가한다. INCREMENT BY 1 CACHE 20 이고 r2dbc Connection pool을 1로 조정해도 계속 20씩 증가함.
@@ -62,25 +64,25 @@ asis)
 
 ```sql
 @Bean
-override fun connectionFactory(): ConnectionFactory{
-	return PostgresqlConnectionConfiguration.builder()
+override fun connectionFactory: ConnectionFactory{
+	return PostgresqlConnectionConfiguration.builder
 	.host(host)
-	.port(port.toInt())
+	.port(port.toInt)
 	.database(name)
 	.username(user)
 	.password(password)
-	.codecRegister(EnumCodec.builder().build())
+	.codecRegister(EnumCodec.builder.build)
 	.connectTimeout(Duration.ofSeconds(CONNECT_TIMEOUT_SECONDS))
-	.build()
-	.let {PostgresqlConnectionFactory() }
+	.build
+	.let {PostgresqlConnectionFactory }
 }
 @Bean
 fun connectionPool(connectionFactory: ConnectionFactory): ConnectionPool {
-	return ConnectionPoolConfiguration.builder()
+	return ConnectionPoolConfiguration.builder
 	.initialSize(INITIAL_SIZE)
 	.maxSize(MAX_SIZE)
 	.connectionFactory(connectionFactory)
-	.build()
+	.build
 	.let {ConnectionPool(it)}
 }
 ```
@@ -88,17 +90,17 @@ fun connectionPool(connectionFactory: ConnectionFactory): ConnectionPool {
 tobe)
 
 ```sql
-    override fun connectionFactory(): ConnectionFactory {
+    override fun connectionFactory: ConnectionFactory {
 
         val connectionFactory = ConnectionFactories.get(
-            builder()
+            builder
                 .option(DRIVER, "pool")
                 .option(HOST, host)
                 .option(USER, userName)
                 .option(PORT, port)
                 .option(PASSWORD, passWord)
                 .option(DATABASE, db)
-                .build())
+                .build)
 
         val configuration = ConnectionPoolConfiguration.builder(connectionFactory)
             .maxIdleTime(Duration.ofSeconds(maxIdleTime))
@@ -106,7 +108,7 @@ tobe)
             .maxLifeTime(Duration.ofMinutes(maxLife))
             .initialSize(initialSize)
             .maxSize(maxSize)
-            .build()
+            .build
 
         return ConnectionPool(configuration)
     }

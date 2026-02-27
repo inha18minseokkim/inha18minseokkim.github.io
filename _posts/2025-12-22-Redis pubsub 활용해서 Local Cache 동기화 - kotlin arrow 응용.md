@@ -1,7 +1,10 @@
 ---
 title: "Redis pub/sub 활용해서 Local Cache 동기화 - kotlin arrow 응용"
 date: 2025-12-22
-tags: [미지정]
+tags:
+  - 캐싱
+  - 개발
+  - 인프라
 category:
   - 기술
 ---
@@ -21,30 +24,30 @@ suspend inline fun <Error: ApplicationError, reified A : Any> cacheEither(
     cacheKey: String,
     key: String,
     type: Class<A>,
-    @BuilderInference crossinline block: suspend Raise<Error>.() -> A,
+    @BuilderInference crossinline block: suspend Raise<Error>. -> A,
 ): Either<Error, A> {
     val localCache = cacheManager.getCache(cacheKey)
     require(localCache != null)
 
     return when (cacheKey != null) {
         true -> localCache.get(cacheKey, type)
-            .toOption()
+            .toOption
             .fold(
                 ifEmpty = {
                     fold<Error, A, Either<Error, A>>(
                         block = { block.invoke(this) },
                         catch = { throw it },
-                        recover = { it.left() },
-                        transform = { it.right() },
+                        recover = { it.left },
+                        transform = { it.right },
                     ).onRight { localCache.set(key, it) }
                 },
-                ifSome = { it.right() },
+                ifSome = { it.right },
             )
         false -> fold<Error, A, Either<Error, A>>(
             block = { block.invoke(this) },
             catch = { throw it },
-            recover = { it.left() },
-            transform = { it.right() },
+            recover = { it.left },
+            transform = { it.right },
         )
     }
 }
@@ -61,12 +64,12 @@ keys 에 있는 값들 __redis__:invalidate 채널에다가 pub 해서 invalidat
 suspend inline fun <Error: ApplicationError, reified A : Any> localCachePubEvictEither(
     redisManager: RedisManager,
     keys: List<String?>,
-    @BuilderInference crossinline block: suspend Raise<Error>.() -> A,
+    @BuilderInference crossinline block: suspend Raise<Error>. -> A,
 ): Either<Error, A> = fold<Error, A, Either<Error, A>>(
     block = { block.invoke(this) },
     catch = { throw it },
-    recover = { it.left() },
-    transform = { it.right() }
+    recover = { it.left },
+    transform = { it.right }
 ).onRight{
     keys.mapNotNull { it }
         .forEach {
@@ -84,7 +87,7 @@ service
 ```kotlin
 suspend fun getUser(id: Long): Either<ApplicationError, UserDto> = coroutineScope {
     transactionEither(transactionManager, coroutineContext) {
-        tryCatchAsync { userReader.findById(id).bind() }.await()
+        tryCatchAsync { userReader.findById(id).bind }.await
     }
 }
 ```
@@ -93,21 +96,21 @@ infra
 
 ```kotlin
 suspend fun findById(id: Long): Either<ApplicationError, UserDto> =
-    cacheEither(cacheManager,CacheKey.USER.key, id.toString() , UserDto::class.java){
+    cacheEither(cacheManager,CacheKey.USER.key, id.toString , UserDto::class.java){
         userRepository.findById(id)
             ?.let { userMapper.toDomain(it) }
-            .toOption()
-            .toEither { ApplicationError() }
+            .toOption
+            .toEither { ApplicationError }
             .mapLeft {
                 log.error("[UserReader][getUser] 뭔가 잘못됨 : $it")
                 throw it
-            }.bind()
+            }.bind
 }
 
 suspend fun save(user: UserDto): Either<ApplicationError, UserDto> {
     val keys = listOf("${CacheKey.USER.key}:${user.id}")
     return localCachePubEvictEither(redisManager,keys){
-        user.toEntity().let {
+        user.toEntity.let {
             userRepository.save(it)
         }.let { userMapper.toDomain(it) }
     }

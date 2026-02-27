@@ -1,11 +1,14 @@
 ---
 title: "뻘짓) Spring Batch 5 + Multiple DataSource"
 date: 2023-10-10
-tags: [미지정]
+tags:
+  - Spring Batch
+  - 개발
+  - Java
 category:
   - 기술
 ---
-
+Spring Batch 관련 개발 내용 정리.
 목적
   - 그냥 개인이 스프링 배치 프로그램을 만드는데 Job을 돌리는데 귀찮음
   - 그래서 갑자기 생각이 듦. 배치 관련 메타데이터를 인메모리 처리해버리면 그냥 런자체는 편하게 할 수 있지 않을까
@@ -76,8 +79,8 @@ public class DataSourceConfiguration {
     @Primary
     @Bean(value = "dataSource")
     @ConfigurationProperties(prefix = "spring.datasource.batch-properties")
-    public DataSource datasource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    public DataSource datasource {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource;
         return dataSource;
     }
 
@@ -88,8 +91,8 @@ public class DataSourceConfiguration {
     //@Primary
     @Bean(value = "secondDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.work-properties")
-    public DataSource workDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    public DataSource workDataSource {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource;
         return dataSource;
     }
     @Bean("secondPlatformTransactionManager")
@@ -108,11 +111,11 @@ public class JobRepositoryConfiguration {
     @Bean
     public JobRepository jobRepository(@Qualifier("dataSource") DataSource dataSource,
                                        PlatformTransactionManager transactionManager) throws Exception {
-        JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
+        JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean;
         jobRepositoryFactoryBean.setDataSource(dataSource);
         jobRepositoryFactoryBean.setTransactionManager(transactionManager);
         jobRepositoryFactoryBean.setIsolationLevelForCreate("ISOLATION_DEFAULT");
-        return jobRepositoryFactoryBean.getObject();
+        return jobRepositoryFactoryBean.getObject;
     }
 }
 ```
@@ -127,34 +130,34 @@ public class DatabaseConfigUtils {
     public static final String REPOSITORY_PACKAGE = BASE_PACKAGE + ".Repository";
 
 
-    private DatabaseConfigUtils() {
+    private DatabaseConfigUtils {
         throw new IllegalStateException("Utility class");
     }
 
 
     public static LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(
             String persistenceUnitName, DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean;
         emf.setPersistenceUnitName(persistenceUnitName);
         emf.setDataSource(dataSource);
-        emf.setJpaVendorAdapter(jpaVendorAdapters());
+        emf.setJpaVendorAdapter(jpaVendorAdapters);
         emf.setPackagesToScan(ENTITY_PACKAGE);
-        emf.setJpaProperties(jpaProperties());
+        emf.setJpaProperties(jpaProperties);
 
         return emf;
     }
 
     public static JpaTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager;
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
-        jpaTransactionManager.setJpaDialect(new HibernateJpaDialect());
+        jpaTransactionManager.setJpaDialect(new HibernateJpaDialect);
 
         return jpaTransactionManager;
 
     }
 
-    static Properties jpaProperties() {
-        Properties properties = new Properties();
+    static Properties jpaProperties {
+        Properties properties = new Properties;
         System.out.println("@@@@@@@@@@@@@@@");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "false");
@@ -185,8 +188,8 @@ public class DatabaseConfigUtils {
         return properties;
     }
 
-    static JpaVendorAdapter jpaVendorAdapters() {
-        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+    static JpaVendorAdapter jpaVendorAdapters {
+        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter;
         hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL57Dialect");
         //hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
 

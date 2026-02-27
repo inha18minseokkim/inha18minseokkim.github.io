@@ -1,7 +1,9 @@
 ---
 title: "Jflow - Control M AWS 연동"
 date: 2025-07-16
-tags: [미지정]
+tags:
+  - 인프라
+  - 개발
 category:
   - 기술
 ---

@@ -1,11 +1,13 @@
 ---
 title: "argo-workflow <> jflow 연동 개선건(20241231)"
 date: 2024-12-31
-tags: [미지정]
+tags:
+  - 인프라
+  - 개발
 category:
-  - 기타
+  - 기술
 ---
-
+Argo Workflow(jflow)를 활용한 워크플로우 구성 정리.
 ### ASIS
 
 

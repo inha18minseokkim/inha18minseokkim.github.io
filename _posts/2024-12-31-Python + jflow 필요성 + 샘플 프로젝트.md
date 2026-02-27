@@ -1,11 +1,14 @@
 ---
 title: "Python + jflow 필요성 + 샘플 프로젝트"
 date: 2024-12-31
-tags: [미지정]
+tags:
+  - Python
+  - 인프라
+  - 개발
 category:
   - 기술
 ---
-
+Python과 Argo Workflow(jflow)를 활용한 파이프라인 구성 정리.
 ## 개선 사항
 
 1. 가벼운 작업 하나 돌리는데 spring application을 굳이 띄워야하나

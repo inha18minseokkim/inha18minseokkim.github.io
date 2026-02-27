@@ -1,11 +1,13 @@
 ---
 title: "argo-workflow+ 케이뱅크 jflow"
 date: 2024-09-28
-tags: [미지정]
+tags:
+  - 인프라
+  - 개발
 category:
   - 실무경험
 ---
-
+Argo Workflow(jflow)를 활용한 워크플로우 구성 정리.
 ### 문제상황
 
 

@@ -1,7 +1,9 @@
 ---
 title: "MSA workflow에 cronjob을 올리려면…(20240928)"
 date: 2024-09-28
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
 category:
   - 기술
 ---

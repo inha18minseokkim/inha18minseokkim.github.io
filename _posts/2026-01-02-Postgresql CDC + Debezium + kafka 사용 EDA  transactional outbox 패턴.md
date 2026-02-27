@@ -1,13 +1,14 @@
 ---
 title: "Postgresql CDC + Debezium + kafka 사용 EDA > transactional outbox 패턴"
 date: 2026-01-02
-tags: [미지정]
+tags:
+  - Kafka
+  - 개발
+  - 인프라
 category:
-  - 기타
+  - 기술
 ---
-
-
-
+PostgreSQL CDC + Debezium + Kafka를 활용한 EDA 구현 정리.
 # 동기
 
 Event Driven을 공부하면서 위와 같은 공부를 좀 해봄

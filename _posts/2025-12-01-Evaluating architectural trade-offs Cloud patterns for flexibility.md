@@ -1,10 +1,13 @@
 ---
 title: "Evaluating architectural trade-offs: Cloud patterns for flexibility"
 date: 2025-12-01
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
+AWS re:Invent 2025 세션 노트 정리.
 어떤게 모던한 어플리케이션일까
 운영코스트 줄이고 복잡도 낮게
 스케일가능 가용성 좋아야하고

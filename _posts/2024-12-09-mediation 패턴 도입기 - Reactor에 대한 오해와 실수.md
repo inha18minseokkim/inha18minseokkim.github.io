@@ -1,12 +1,14 @@
 ---
 title: "mediation 패턴 도입기 - Reactor에 대한 오해와 실수"
 date: 2024-12-09
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 실무경험
 ---
-
-
+Mediation 패턴 구현 시 Reactor/WebFlux 기반 논블로킹 처리 정리.
 현재 구조를 보면 
 
 ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/90c7d20a-5a39-4a58-bce0-5bd750472dc6/image.png)
@@ -39,8 +41,8 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 //케이뱅크 공통 헤더를 각 업무단에 propagate 하기 위한 인터셉터
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
-		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = requestAttributes.getRequest();
+		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes;
+		HttpServletRequest request = requestAttributes.getRequest;
 			requestTemplate.header("Log-level",request.getHeader("Log-level"));
 			requestTemplate.header("rcvSrvcCd",request.getHeader("rcvSrvcCd"));
 			requestTemplate.header("mciIntfId",request.getHeader("mciIntfId"));
@@ -61,7 +63,7 @@ RequestContextHolder를 보면 ThreadLocal로 컨텍스트가 관리되고 있�
 public abstract class RequestContextHolder {
 
 	private static final boolean jsfPresent =
-			ClassUtils.isPresent("jakarta.faces.context.FacesContext", RequestContextHolder.class.getClassLoader());
+			ClassUtils.isPresent("jakarta.faces.context.FacesContext", RequestContextHolder.class.getClassLoader);
 
 	private static final ThreadLocal<RequestAttributes> requestAttributesHolder =
 			new NamedThreadLocal<>("Request attributes");
@@ -103,22 +105,22 @@ public interface ListedStockService {
 ```java
 @GetMapping("/v1/detail/price")
     public Mono<GetListedStockPriceDetailResponse> getListedStockPriceDetail(GetListedStockPriceDetailRequest request){
-        Mono<GetListedStockResponse> listedStock = listedStockService.getListedStock(request.itemCodeNumber());
-        Mono<GetListedStockLatestPriceResponse> latestPrice = listedStockService.getListedStockLatestPrice(request.itemCodeNumber());
-        Mono<GetListedStockPricesResponse> prices = listedStockService.getListedStockPrices(request.itemCodeNumber(),GetListedStockPricesRequest.builder()
-                .baseDateTime(request.baseDateTime())
+        Mono<GetListedStockResponse> listedStock = listedStockService.getListedStock(request.itemCodeNumber);
+        Mono<GetListedStockLatestPriceResponse> latestPrice = listedStockService.getListedStockLatestPrice(request.itemCodeNumber);
+        Mono<GetListedStockPricesResponse> prices = listedStockService.getListedStockPrices(request.itemCodeNumber,GetListedStockPricesRequest.builder
+                .baseDateTime(request.baseDateTime)
                 .deltaDay(360L)
-                .build());
+                .build);
 
         return
                 Mono.deferContextual(context -> {
-                    String kbankStandardHeader = context.get("kbank_standard_header").toString();
+                    String kbankStandardHeader = context.get("kbank_standard_header").toString;
                     return Mono.zip(listedStock,latestPrice,prices)
-                            .map(it -> GetListedStockPriceDetailResponse.builder()
-                                    .stockKoreanName(it.getT1().stockKoreanName())
-                                    .itemCodeNumber(it.getT1().itemCodeNumber())
-                                    .latestPrice(it.getT2().closePrice())
-                                    .latestRatio(it.getT2().changeRate())
+                            .map(it -> GetListedStockPriceDetailResponse.builder
+                                    .stockKoreanName(it.getT1.stockKoreanName)
+                                    .itemCodeNumber(it.getT1.itemCodeNumber)
+                                    .latestPrice(it.getT2.closePrice)
+                                    .latestRatio(it.getT2.changeRate)
 ```
 
 

@@ -1,10 +1,14 @@
 ---
 title: "Kafka with Kbank MSA + 표준 스케줄러"
 date: 2024-07-11
-tags: [미지정]
+tags:
+  - Kafka
+  - KEDA
+  - 인프라
 category:
   - 기술
 ---
+Kafka와 KEDA를 활용한 인프라 구성 정리.
 [[Kubernetes] Keda 란?](https://velog.io/@jihwankim94/Kubernetes-Keda-란)
 
 ## ASIS 문제점

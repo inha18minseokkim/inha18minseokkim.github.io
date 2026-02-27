@@ -1,11 +1,14 @@
 ---
 title: "Mybatis QueryDSL 혼용 in Spring boot"
 date: 2024-02-07
-tags: [미지정]
+tags:
+  - DB
+  - 개발
+  - Java
 category:
   - 기술
 ---
-
+Mybatis와 QueryDSL 혼용 관련 개발 정리.
 ```java
 public interface BaseProductReader {
     List<FindBaseProductWithFilterOutDto> findBaseProductWithFilter(FindBaseProductWithFilterInDto in);
@@ -28,15 +31,15 @@ public class BaseProductReaderImpl implements BaseProductReader {
         JPAQueryFactory query = new JPAQueryFactory(em);
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
 
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        if(in.getCategoryCode() != null) booleanBuilder.and(baseProduct.categoryCode.eq(in.getCategoryCode()));
-        if(in.getItemCode() != null) booleanBuilder.and(baseProduct.itemCode.eq(in.getItemCode()));
+        BooleanBuilder booleanBuilder = new BooleanBuilder;
+        if(in.getCategoryCode != null) booleanBuilder.and(baseProduct.categoryCode.eq(in.getCategoryCode));
+        if(in.getItemCode != null) booleanBuilder.and(baseProduct.itemCode.eq(in.getItemCode));
 
         List<BaseProduct> results = query.selectFrom(baseProduct)
                 .where(
                         booleanBuilder
-                ).fetch();
-        return results.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
+                ).fetch;
+        return results.stream.map(element -> mapper.from(element)).collect(Collectors.toList);
     }
 }
 ```
@@ -112,26 +115,26 @@ class BaseProductReaderMyBatisImplTest {
     @Autowired
     BaseProductReaderImpl jpaImpl;
     @Test
-    void 입출력테스트() {
+    void 입출력테스트 {
 
         List<FindBaseProductWithFilterOutDto> results = myBatisImpl.findBaseProductWithFilter(FindBaseProductWithFilterInDto
-                .builder()
+                .builder
                         .categoryCode("100")
-                .build());
+                .build);
         log.info("결과 : {}" ,results);
-        Assertions.assertThat(results.stream().map(element->element.getCategoryCode()).toList())
+        Assertions.assertThat(results.stream.map(element->element.getCategoryCode).toList)
                 .doesNotContain("200");
     }
     @Test
-    void 비교테스트() {
+    void 비교테스트 {
         List<FindBaseProductWithFilterOutDto> myBatisResults = myBatisImpl.findBaseProductWithFilter(FindBaseProductWithFilterInDto
-                .builder()
+                .builder
                 .categoryCode("100")
-                .build());
+                .build);
         List<FindBaseProductWithFilterOutDto> jpaResults = jpaImpl.findBaseProductWithFilter(FindBaseProductWithFilterInDto
-                .builder()
+                .builder
                 .categoryCode("100")
-                .build());
+                .build);
         Assertions.assertThat(myBatisResults).isEqualTo(jpaResults);
 
     }

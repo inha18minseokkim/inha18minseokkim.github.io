@@ -1,10 +1,13 @@
 ---
 title: "Telemetry Forencics: Debugging event streams with metrics & traces"
 date: 2025-12-01
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
+AWS re:Invent 2025 세션 노트 정리.
 buildup session
 1
 dynamodb > sqs 넣을 때
@@ -386,7 +389,7 @@ def send_batch(stream_name, batch_id, records_per_batch):
         record_data = {
             'batch_id': batch_id,
             'record_id': i,
-            'timestamp': int(time.time() * 1000),
+            'timestamp': int(time.time * 1000),
             'data': f'record_{batch_id}_{i}'
         }
         
@@ -423,7 +426,7 @@ Amazon Kinesis Data Streams는 파티셔닝 메커니즘을 사용하여 수신 
 # REPLACE WITH THIS (Distributed):
 records.append({
     'Data': json.dumps(record_data),
-    'PartitionKey': str(uuid.uuid4())  # Random distribution
+    'PartitionKey': str(uuid.uuid4)  # Random distribution
 })`
 **전체 코드:**
 **2단계: 변경 사항 배포**

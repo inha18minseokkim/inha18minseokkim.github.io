@@ -1,11 +1,14 @@
 ---
 title: "failing offset 문제와 데이터 수신 및 적재용으로 kafka 구성에 대해"
 date: 2024-08-13
-tags: [미지정]
+tags:
+  - Kafka
+  - 개발
+  - 이슈정리
 category:
   - 기술
 ---
-
+Kafka failing offset 이슈 해결 경험 정리.
 # 현상
 
 kafka를 통해 데이터를 Sub 하는 경우 적재는 정상인데 특정 Offset 구간에서 계속 반복, 에러는 아니지만 작업하고 WARN 메세지로 group id의 파트가 더 이상 아니므로 마지막 오프셋에서 시작한다 함.
@@ -42,10 +45,10 @@ public class ListedStockPriceListener {
     @KafkaListener(topics = "ListedStockPrice",groupId = "ListedStockPrice")
     @Transactional
     public void listen(ConsumerRecord<String, OpenApiResponseDto> data) throws IOException {
-        JsonNode jsonNode = objectMapper.readValue(data.value().responseBodyArr(), JsonNode.class);
+        JsonNode jsonNode = objectMapper.readValue(data.value.responseBodyArr, JsonNode.class);
         JsonNode detail = jsonNode.get("detail");
         log.info("{}",detail);
-        TypeReference<List<ListedStockPriceOriginalDto>> typeReference = new TypeReference<>() {
+        TypeReference<List<ListedStockPriceOriginalDto>> typeReference = new TypeReference<> {
         };
         List<ListedStockPriceOriginalDto> listedStockPriceOriginalDtos = objectMapper.convertValue(jsonNode.get("data"), typeReference);
         List<ListedStockPrice> listedStockPrices = transformer.convertToListedStockPrice(listedStockPriceOriginalDtos);

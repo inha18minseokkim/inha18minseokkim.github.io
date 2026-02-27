@@ -1,7 +1,9 @@
 ---
 title: "AWS Reinvent Las Vegas(2025)"
 date: 2025-11-30
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
   - 기술
 ---

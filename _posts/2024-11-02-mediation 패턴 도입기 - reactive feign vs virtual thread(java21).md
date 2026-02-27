@@ -1,12 +1,14 @@
 ---
 title: "mediation 패턴 도입기 - reactive feign vs virtual thread(java21)"
 date: 2024-11-02
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
   - 기술
 ---
-
-
+Mediation 패턴 구현 시 FeignClient vs WebClient 비교 정리.
 [Thread Per Request VS WebFlux VS VirtualThreads](https://medium.com/@sridharrajdevelopment/thread-per-request-vs-virtualthreads-vs-webflux-33c9089d22fb)
 [Using Virtual Threads (Project Loom) with Spring WebFlux/Reactor/Reactive libraries](https://stackoverflow.com/questions/75314973/using-virtual-threads-project-loom-with-spring-webflux-reactor-reactive-librar)
 
@@ -38,7 +40,7 @@ category:
   - 이건 실험 해보긴해야함. 내부망에서 실험해볼 예정. 맥미니는 무서워
 5. mediation의 경우 Network I/O만 있기 때문에 jdbc나 한정된 자원에 접근할 때 발생하는 synchronized 가 없을것이라 생각중임. 따라서 pinning issue는 발생하지 않을 것.
 6. 그럼에도 불구하고 결국 api-gateway(db로깅중)> medaition > endpoint service > db에서 db가 하나기 때문에 드라마틱한 성능 향상을 기대하긴 어렵긴함. 
-  - 왜냐하면 N개의 뒷 서비스를 콜해서 mediation에서 조합하는데 mediation 이 병목이 될 것을 우려할게 아니라 DB가 병목이 될걸 두려워해야하는 상황임 ㅋㅋ
+  - 왜냐하면 N개의 뒷 서비스를 콜해서 mediation에서 조합하는데 mediation 이 병목이 될 것을 우려할게 아니라 DB가 병목이 될걸 두려워해야하는 상황임 
 
 7. 그럼에도 불구하고 언젠가는 업무가 확대되어 db가 분리될 것을 생각하면..일단 준비는 해놓자.
 

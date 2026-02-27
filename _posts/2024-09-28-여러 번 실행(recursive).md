@@ -1,10 +1,14 @@
 ---
 title: "여러 번 실행(recursive)"
 date: 2024-09-28
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 기술
 ---
+상속 구조 및 재귀 패턴 관련 설계 정리.
 요청받은 이유:
 1분 5분에 한 번 잡을 실행할 일이 있는데
 jflow에서 runJobParam.sh를 1분/5분에 한 번 씩 호출해서 job submit을 하면 workflow에 로그쌓이는 속도나 퍼포먼스 측면에서 별로 안좋다고 해서

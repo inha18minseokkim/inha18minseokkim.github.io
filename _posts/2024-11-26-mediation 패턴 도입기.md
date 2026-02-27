@@ -1,10 +1,14 @@
 ---
 title: "mediation 패턴 도입기"
 date: 2024-11-26
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 실무경험
 ---
+Mediation 패턴 구현 과정 정리.
 [mediation 패턴 도입기 - 짬통은 어디에?]({% post_url 2024-10-10-mediation 패턴 도입기 - 짬통은 어디에 %})
 [mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)]({% post_url 2024-10-11-mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915) %})
 [mediation 패턴 도입기 - reactive feign vs virtual thread(java21)]({% post_url 2024-11-02-mediation 패턴 도입기 - reactive feign vs virtual thread(java21) %})

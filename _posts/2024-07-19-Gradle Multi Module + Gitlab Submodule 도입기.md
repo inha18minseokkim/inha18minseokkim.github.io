@@ -1,12 +1,13 @@
 ---
 title: "Gradle Multi Module + Gitlab Submodule 도입기"
 date: 2024-07-19
-tags: [미지정]
+tags:
+  - CI/CD
+  - 개발
 category:
-  - 기타
+  - 기술
 ---
-
-
+CI/CD 파이프라인 구성 및 최적화 정리.
 ## ASIS 문제점
 
 project - Argo CD 1대 1 매핑이라 pod 하나에 프로젝트 하나임

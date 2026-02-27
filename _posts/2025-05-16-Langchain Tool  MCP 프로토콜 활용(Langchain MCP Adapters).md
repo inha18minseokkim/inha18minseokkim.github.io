@@ -1,7 +1,9 @@
 ---
 title: "Langchain Tool > MCP 프로토콜 활용(Langchain MCP Adapters)"
 date: 2025-05-16
-tags: [미지정]
+tags:
+  - AI/ML
+  - 기술
 category:
   - 기술
 ---
@@ -19,9 +21,9 @@ import requests
 listed_stock_mcp = FastMCP("listed_stock")
 
 def to_query_params(request: dict) -> str:
-    return "&".join(f"{k}={v}" for k, v in request.items() if v is not None)
+    return "&".join(f"{k}={v}" for k, v in request.items if v is not None)
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_past_financial_statements(itms_cd_nbr: str, target_financial_statement: str):
     """
     과거 재무제표를 조회한다.
@@ -32,9 +34,9 @@ def get_listed_stock_past_financial_statements(itms_cd_nbr: str, target_financia
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v1/{itms_cd_nbr}/financial/statement/past/{target_financial_statement}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_financial_ratio(itms_cd_nbr: str):
     """
     재무비율을 조회한다.
@@ -44,9 +46,9 @@ def get_listed_stock_financial_ratio(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v1/financial/ratio/{itms_cd_nbr}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_financial_statement(itms_cd_nbr: str):
     """
     최신 재무제표를 조회한다.
@@ -55,9 +57,9 @@ def get_listed_stock_financial_statement(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v1/financial/statement/latest/{itms_cd_nbr}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_v2(itms_cd_nbr: str):
     """
     상장주식 상세정보 (v2)를 조회한다.
@@ -66,9 +68,9 @@ def get_listed_stock_v2(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_summary_v2(itms_cd_nbr: str):
     """
     상장주식 요약정보 (v2)를 조회한다.
@@ -77,9 +79,9 @@ def get_listed_stock_summary_v2(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/summary"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_latest_price(itms_cd_nbr: str):
     """
     최신 가격 정보를 조회한다.
@@ -88,19 +90,19 @@ def get_latest_price(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/price/latest"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
-def get_latest_prices():
+@listed_stock_mcp.tool
+def get_latest_prices:
     """
     모든 종목의 최신 가격 정보를 조회한다.
 
     """
     return requests.get(
         "http://localhost:38080/listed-stock-service/listed-stock/v2/prices/latest"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_price_difference(itms_cd_nbr: str, fromPriceBaseDt: str):
     """
     fromPriceBaseDt 와 최신 가격 차이를 조회한다.
@@ -112,9 +114,9 @@ def get_price_difference(itms_cd_nbr: str, fromPriceBaseDt: str):
     query_string = to_query_params(request)
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/price/difference?{query_string}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_prices(itms_cd_nbr: str, priceBaseDt: str, deltaDay: int):
     """
     특정 종목의 가격 정보를 기간별로 조회한다.
@@ -127,7 +129,7 @@ def get_prices(itms_cd_nbr: str, priceBaseDt: str, deltaDay: int):
     query_string = to_query_params(request)
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/prices?{query_string}"
-    ).json()
+    ).json
 
 
 from mcp.server.fastmcp import FastMCP
@@ -140,9 +142,9 @@ import requests
 listed_stock_mcp = FastMCP("listed_stock")
 
 def to_query_params(request: dict) -> str:
-    return "&".join(f"{k}={v}" for k, v in request.items() if v is not None)
+    return "&".join(f"{k}={v}" for k, v in request.items if v is not None)
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_past_financial_statements(itms_cd_nbr: str, target_financial_statement: str):
     """
     과거 재무제표를 조회한다.
@@ -153,9 +155,9 @@ def get_listed_stock_past_financial_statements(itms_cd_nbr: str, target_financia
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v1/{itms_cd_nbr}/financial/statement/past/{target_financial_statement}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_financial_ratio(itms_cd_nbr: str):
     """
     재무비율을 조회한다.
@@ -165,9 +167,9 @@ def get_listed_stock_financial_ratio(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v1/{itms_cd_nbr}/financial/ratio"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_financial_statement(itms_cd_nbr: str):
     """
     최신 재무제표를 조회한다.
@@ -176,9 +178,9 @@ def get_listed_stock_financial_statement(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v1/{itms_cd_nbr}/financial/statement/latest"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_v2(itms_cd_nbr: str):
     """
     상장주식 상세정보 (v2)를 조회한다.
@@ -187,9 +189,9 @@ def get_listed_stock_v2(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_listed_stock_summary_v2(itms_cd_nbr: str):
     """
     상장주식 요약정보 (v2)를 조회한다.
@@ -198,9 +200,9 @@ def get_listed_stock_summary_v2(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/summary"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_latest_price(itms_cd_nbr: str):
     """
     최신 가격 정보를 조회한다.
@@ -209,19 +211,19 @@ def get_latest_price(itms_cd_nbr: str):
     """
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/price/latest"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
-def get_latest_prices():
+@listed_stock_mcp.tool
+def get_latest_prices:
     """
     모든 종목의 최신 가격 정보를 조회한다.
 
     """
     return requests.get(
         "http://localhost:38080/listed-stock-service/listed-stock/v2/prices/latest"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_price_difference(itms_cd_nbr: str, fromPriceBaseDt: str):
     """
     fromPriceBaseDt 와 최신 가격 차이를 조회한다.
@@ -233,9 +235,9 @@ def get_price_difference(itms_cd_nbr: str, fromPriceBaseDt: str):
     query_string = to_query_params(request)
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/price/difference?{query_string}"
-    ).json()
+    ).json
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_prices(itms_cd_nbr: str, priceBaseDt: str, deltaDay: int):
     """
     특정 종목의 가격 정보를 기간별로 조회한다.
@@ -248,11 +250,11 @@ def get_prices(itms_cd_nbr: str, priceBaseDt: str, deltaDay: int):
     query_string = to_query_params(request)
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/{itms_cd_nbr}/prices?{query_string}"
-    ).json()
+    ).json
 
 
 
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_rank(order_code: str, limitLength: int):
     """
     랭킹 데이터를 조회한다.
@@ -264,12 +266,12 @@ def get_rank(order_code: str, limitLength: int):
     query_string = to_query_params(request)
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/rank/{order_code}?{query_string}"
-    ).json()
+    ).json
 
 
 if __name__ == "__main__":
     listed_stock_mcp.run(transport="stdio")
-@listed_stock_mcp.tool()
+@listed_stock_mcp.tool
 def get_rank(order_code: str, limitLength: int):
     """
     랭킹 데이터를 조회한다.
@@ -281,7 +283,7 @@ def get_rank(order_code: str, limitLength: int):
     query_string = to_query_params(request)
     return requests.get(
         f"http://localhost:38080/listed-stock-service/listed-stock/v2/rank/{order_code}?{query_string}"
-    ).json()
+    ).json
 
 
 if __name__ == "__main__":
@@ -307,7 +309,7 @@ server_params = StdioServerParameters(
 print("A")
 async with stdio_client(server_params) as (read, write):
     async with ClientSession(read, write) as session:
-        await session.initialize()
+        await session.initialize
         print("session initialized")
         tools = await load_mcp_tools(session)
         print("mcp tool loaded")

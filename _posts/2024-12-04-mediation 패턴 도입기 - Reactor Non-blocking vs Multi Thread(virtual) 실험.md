@@ -1,12 +1,14 @@
 ---
 title: "mediation 패턴 도입기 - Reactor Non-blocking vs Multi Thread(virtual) 실험"
 date: 2024-12-04
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 실무경험
 ---
-
-
+Mediation 패턴 구현 시 Reactor/WebFlux 기반 논블로킹 처리 정리.
 ### 시나리오
 
 1. jdk17 + Multi Thread
@@ -19,7 +21,7 @@ category:
   - Reactor면 스레드 이름이 boundedElastic으로 뜸.
   - 근데 virtual thread를 enable 하니 loomBoundedElastic으로 바뀌네?
   - 그래서 혹시 몰라서 선택지에 넣어봄
-> Since 3.6.0 [`boundedElastic()`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html#boundedElastic--) can run tasks on `VirtualThread`s if the application runs on a Java 21+ runtime and the [`DEFAULT_BOUNDED_ELASTIC_ON_VIRTUAL_THREADS`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html#DEFAULT_BOUNDED_ELASTIC_ON_VIRTUAL_THREADS) system property is set to `true`.
+> Since 3.6.0 [`boundedElastic`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html#boundedElastic--) can run tasks on `VirtualThread`s if the application runs on a Java 21+ runtime and the [`DEFAULT_BOUNDED_ELASTIC_ON_VIRTUAL_THREADS`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html#DEFAULT_BOUNDED_ELASTIC_ON_VIRTUAL_THREADS) system property is set to `true`.
   - 이거랑 관련있는듯.
   - 근데 실제로 3.6.0 이상으로 reactor를 하면 논블로킹 처리 시 boundedElastic 할당되어있는 스레드를 사용하는게 아니라 그 스레드를 버추얼로 만들어서 loomBoundedElastic을 사용하도록 되어있다.
     - [What new is coming in reactor-core 3.6.0?](https://spring.io/blog/2023/10/31/what-new-is-coming-in-reactor-core-3-6-0)

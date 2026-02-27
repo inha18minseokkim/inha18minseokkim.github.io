@@ -1,11 +1,14 @@
 ---
 title: "mediation 도입기 - 높은 부하 상황에서 자원 사용량"
 date: 2024-12-02
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 실무경험
 ---
-
+Mediation 패턴 구현 과정 정리.
 ### 상황
 
 현재 TPS 200정도 쏘니깐 cpu 사용률이 70~90 사이로 왔다갔다 함. api 호출 유형을 늘리면 100% 넘어가서 죽지도 살지도 않아버릴 때가 있음.
@@ -24,7 +27,7 @@ category:
 
 ```java
  HttpURLConnection convertAndSend(Request request, Request.Options options) throws IOException {
-            URL url = new URL(request.url());
+            URL url = new URL(request.url);
             HttpURLConnection connection = this.getConnection(url);
             if (connection instanceof HttpsURLConnection) {
 ```

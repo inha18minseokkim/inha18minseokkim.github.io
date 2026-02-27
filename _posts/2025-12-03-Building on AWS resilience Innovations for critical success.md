@@ -1,7 +1,9 @@
 ---
 title: "**Building on AWS resilience: Innovations for critical success**"
 date: 2025-12-03
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
   - 기술
 ---

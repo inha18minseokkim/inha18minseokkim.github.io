@@ -1,9 +1,11 @@
 ---
 title: "Mastering Fluent-bit: Performance at Scale"
 date: 2025-12-04
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
 fluentbit는 사이드카로 ecs컨테이너 환경에서 워크샵 진행
 

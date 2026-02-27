@@ -1,11 +1,14 @@
 ---
 title: "Gradle 초기화 시점(settings.gradle → build.gradle,202407)"
 date: 2025-01-27
-tags: [미지정]
+tags:
+  - CI/CD
+  - 개발
+  - Java
 category:
-  - 기타
+  - 기술
 ---
-
+Gradle 설정 관련 개발 환경 구성 정리.
 현시점 최선(202407)
 [Gitlab SAML 환경에서 clone (1)]({% post_url 2025-01-27-Gitlab SAML 환경에서 clone (1) %})
 1. gitlab-ci 스크립트 뜯어봤는데 현재 submodule clone 하는 스크립트가 구성되어있지않음
@@ -20,7 +23,7 @@ settings.gradle에 git clone 스크립트 추가
 ```groovy
 pluginManagement {
 	var commonModule = new File(rootDir,"./listed-stock-common/build.gradle")
-	if(!commonModule.exists()) {
+	if(!commonModule.exists) {
 			exec {
 				commandLine 'sh', './init-modules.sh'
 			}

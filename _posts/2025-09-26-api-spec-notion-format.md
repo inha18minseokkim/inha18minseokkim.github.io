@@ -1,11 +1,13 @@
 ---
 title: "api-spec-notion-format"
 date: 2025-09-26
-tags: [미지정]
+tags:
+  - 개발
+  - 기획
 category:
-  - 기타
+  - 실무경험
 ---
-
+API 명세 및 설계 관련 정리.
 # 주식 투자 게임 API 명세서
 
 

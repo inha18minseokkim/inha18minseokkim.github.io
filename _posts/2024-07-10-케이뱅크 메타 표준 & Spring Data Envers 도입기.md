@@ -1,11 +1,13 @@
 ---
 title: "케이뱅크 메타 표준 & Spring Data Envers 도입기"
 date: 2024-07-10
-tags: [미지정]
+tags:
+  - 개발
+  - Java
 category:
   - 실무경험
 ---
-
+Spring/Java 관련 개발 내용 정리.
 ### 이 방법을 개발 한 이유
 
 
@@ -13,23 +15,23 @@ category:
 @Override
 @Transactional
 public SetMemberPushInfoResult setMemberPushInfo(SetMemberPushInfoCriteria criteria) {
-    GetMemberInfoResult memberDto = memberService.getMember(GetMemberCriteria.builder().customerId(criteria.customerId()).build());
-    Member member = memberRepository.findById(memberDto.customerId()).orElseThrow();
+    GetMemberInfoResult memberDto = memberService.getMember(GetMemberCriteria.builder.customerId(criteria.customerId).build);
+    Member member = memberRepository.findById(memberDto.customerId).orElseThrow;
 
-    Optional<Push> push = pushRepository.findById(PushId.builder().member(member).stockPushAlertTypeCode(criteria.stockPushAlertTypeCode().getCodeNumber()).build());
-    if(push.isEmpty())
-        pushRepository.save(Push.builder()
+    Optional<Push> push = pushRepository.findById(PushId.builder.member(member).stockPushAlertTypeCode(criteria.stockPushAlertTypeCode.getCodeNumber).build);
+    if(push.isEmpty)
+        pushRepository.save(Push.builder
                 .member(member)
-                .stockPushAlertTypeCode(criteria.stockPushAlertTypeCode().getCodeNumber())
-                .assetManagementPushAlertYn(criteria.assetManagementPushAlertYn()).build()
+                .stockPushAlertTypeCode(criteria.stockPushAlertTypeCode.getCodeNumber)
+                .assetManagementPushAlertYn(criteria.assetManagementPushAlertYn).build
         );
     else
-        push.get().setAssetManagementPushAlertYn(criteria.assetManagementPushAlertYn());
+        push.get.setAssetManagementPushAlertYn(criteria.assetManagementPushAlertYn);
 
-    PushHistory historyResult = pushHistoryRepository.save(PushHistory.builder()
+    PushHistory historyResult = pushHistoryRepository.save(PushHistory.builder
             .member(member)
-            .stockPushAlertTypeCode(criteria.stockPushAlertTypeCode().getCodeNumber())
-            .assetManagementPushAlertYn(criteria.assetManagementPushAlertYn()).build()
+            .stockPushAlertTypeCode(criteria.stockPushAlertTypeCode.getCodeNumber)
+            .assetManagementPushAlertYn(criteria.assetManagementPushAlertYn).build
     );
 
     return mapper.toSetMemberPushInfoResult(historyResult);
@@ -77,7 +79,7 @@ data class StockRevision(
         @RevisionTimestamp
         @Column(name = "amnn_base_seq_nbr")
         val timestamp: Long = 0L
-) : TimeStamp(), Serializable
+) : TimeStamp, Serializable
 ```
 
 revision 테이블에 대한 명세도 메타표준을 따라야 하기 때문에 컬럼 이름을 바꿔줘야 한다. 
@@ -115,12 +117,12 @@ public class FinancialStatement extends TimeStamp implements Serializable {
     private String koreanName; //회계한글명
     @Column(name="val_amt")
     private Double value; //가액금액
-    public static FinancialStatement emptyEntity() {
+    public static FinancialStatement emptyEntity {
         return FinancialStatement
-                .builder().build();
+                .builder.build;
     }
-    public Long getLongValue() {
-        return value == null ? null : value.longValue();
+    public Long getLongValue {
+        return value == null ? null : value.longValue;
     }
 }
 ```

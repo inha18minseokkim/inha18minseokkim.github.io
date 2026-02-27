@@ -1,11 +1,14 @@
 ---
 title: "Raptor RAG 활용 공시 문서 압축 요약"
 date: 2026-01-26
-tags: [미지정]
+tags:
+  - AI/ML
+  - 주식서비스
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
-
+AI/ML을 활용한 금융 데이터 처리 및 RAG 구현 정리.
 ![](attachment:7bbae049-4b0a-470c-bf1e-98060ab92796:image.png)
 
 상당히 큰 문서, 어떻게 하면 간단하게 장문의 문서의 요약을 쉽게 할 수 있을까 라는 생각

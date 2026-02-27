@@ -1,9 +1,11 @@
 ---
 title: "**Low-cost logging and observability with Amazon OpenSearch Service**"
 date: 2025-12-02
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
 
 Reduce storage to optimize costs

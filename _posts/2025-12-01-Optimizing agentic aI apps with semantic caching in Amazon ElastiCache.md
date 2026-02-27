@@ -1,10 +1,13 @@
 ---
 title: "Optimizing agentic aI apps with semantic caching in Amazon ElastiCache"
 date: 2025-12-01
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
   - 기술
 ---
+AWS re:Invent 2025 세션 노트 정리.
 Friction
 Scale, Speed, Cost 이게 큰 문제
 

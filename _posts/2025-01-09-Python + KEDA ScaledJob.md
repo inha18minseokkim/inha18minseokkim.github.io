@@ -1,11 +1,14 @@
 ---
 title: "Python + KEDA ScaledJob"
 date: 2025-01-09
-tags: [미지정]
+tags:
+  - KEDA
+  - Kubernetes
+  - 인프라
 category:
   - 기술
 ---
-
+KEDA를 활용한 Kubernetes 오토스케일링 구현 정리.
 ![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/d20f12b3-95fe-4fb1-b8d5-f81520a190d6/image.png)
 
 일단 로컬로 POC할 때는 이런식으로 프로젝트 하위에 scaled-job 폴더를 만들어서 여기다가 yaml 설정을 때려넣었다.

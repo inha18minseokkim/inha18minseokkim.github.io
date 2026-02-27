@@ -1,11 +1,14 @@
 ---
 title: "CI - Gradle&Sonar Pipeline 버전 업그레이드"
 date: 2025-02-19
-tags: [미지정]
+tags:
+  - CI/CD
+  - 개발
+  - Java
 category:
-  - 기타
+  - 기술
 ---
-
+Gradle과 Sonar Pipeline 버전 업그레이드 관련 CI 구성 정리.
 ## 왜?
 
 

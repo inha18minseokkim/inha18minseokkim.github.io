@@ -1,7 +1,9 @@
 ---
 title: "**Inference on AWS Trainium and Amazon EKS using vLLM**"
 date: 2025-12-02
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
   - 기술
 ---

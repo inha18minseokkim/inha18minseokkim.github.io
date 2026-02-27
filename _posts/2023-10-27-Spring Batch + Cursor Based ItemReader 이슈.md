@@ -1,12 +1,14 @@
 ---
 title: "Spring Batch + Cursor Based ItemReader 이슈"
 date: 2023-10-27
-tags: [미지정]
+tags:
+  - Spring Batch
+  - 개발
+  - Java
 category:
   - 기술
 ---
-
-
+Spring Batch 관련 개발 내용 정리.
 ### 문제상황
 
 Spring batch 를 팀원들 각각 구현 후 특정 배치만 돌 때 Bad SQL Grammar 에러(Permission Denied)

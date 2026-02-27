@@ -1,11 +1,14 @@
 ---
 title: "CI) Sonarqube + Python 연동 문제 해결 : Sonar Scanner Image"
 date: 2025-03-17
-tags: [미지정]
+tags:
+  - CI/CD
+  - Python
+  - 개발
 category:
   - 기술
 ---
-
+CI 파이프라인에서 Python Sonarqube 연동 구성 정리.
 ## ASIS
 
 기존 sonar의 경우 gitlab ci pipeline에서 gradle sonar 플러그인을 사용해서 돌고 있었음

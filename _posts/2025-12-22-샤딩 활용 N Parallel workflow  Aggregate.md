@@ -1,12 +1,13 @@
 ---
 title: "샤딩 활용 N Parallel workflow > Aggregate"
 date: 2025-12-22
-tags: [미지정]
+tags:
+  - 개발
+  - 기술
 category:
-  - 기타
+  - 실무경험
 ---
-
-
+개발 관련 내용 정리.
 ![](attachment:edaca24f-9ade-4c35-9a3c-05fa900b0e3b:image.png)
 
 작년에 POC 하다가 이런식으로 

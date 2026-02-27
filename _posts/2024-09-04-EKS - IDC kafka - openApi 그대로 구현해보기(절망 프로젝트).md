@@ -1,10 +1,13 @@
 ---
 title: "EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)"
 date: 2024-09-04
-tags: [미지정]
+tags:
+  - Kafka
+  - 개발
 category:
-  - 기타
+  - 실무경험
 ---
+Kafka 관련 개발 내용 정리.
 괴물 만들기 프로젝트
 비슷하게 맞추기
 1. 집 맥미니에 confluent kafka 7.5.0 설치 (with Kraft)

@@ -1,9 +1,12 @@
 ---
 title: "EKS-IDCkafka-openApi 수신 구조 잡기"
 date: 2024-06-25
-tags: [미지정]
+tags:
+  - Kafka
+  - 개발
+  - 주식서비스
 category:
-  - 기타
+  - 실무경험
 ---
 
 행 내에서 해당 문제를 해결하기 위해 Kafka를 사용하기로 했음.

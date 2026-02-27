@@ -1,11 +1,14 @@
 ---
 title: "mediation 패턴 도입기 - RECYCLE_FACADES"
 date: 2024-11-26
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 실무경험
 ---
-
+Mediation 패턴의 RECYCLE_FACADES 설정 관련 정리.
 ### 이슈내용
 
 
@@ -47,8 +50,8 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 //케이뱅크 공통 헤더를 각 업무단에 propagate 하기 위한 인터셉터
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
-		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = requestAttributes.getRequest();
+		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes;
+		HttpServletRequest request = requestAttributes.getRequest;
 
 ```
 
@@ -56,7 +59,7 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 
 ```java
 @Bean
-TomcatConnectorCustomizer disableFacadeDiscard() {
+TomcatConnectorCustomizer disableFacadeDiscard {
 	return (connector) -> connector.setDiscardFacades(false);
 }
 ```

@@ -1,11 +1,14 @@
 ---
 title: "mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지"
 date: 2024-11-26
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 실무경험
 ---
-
+Mediation 패턴에서 Interceptor, ThreadLocal, ServletContext 활용 정리.
 ### Interceptor 도입 사유
 
 MCI에서 오는 케이뱅크 공통 헤더를 후의 말단 엔드포인트 헤더까지 전달하기 위해(CRUD시 이력 필요)
@@ -20,9 +23,9 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 //케이뱅크 공통 헤더를 각 업무단에 propagate 하기 위한 인터셉터
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
-		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = requestAttributes.getRequest();
-		request.getHeaderNames().asIterator()
+		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes;
+		HttpServletRequest request = requestAttributes.getRequest;
+		request.getHeaderNames.asIterator
 			.forEachRemaining(h -> requestTemplate.header(h, request.getHeader(h)));
 	}
 }
@@ -31,10 +34,10 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 
 ```java
 @Bean
-public OverseasStockService overseasStockService() {
-	return ReactorFeign.builder()
-	.decoder(new ReactorDecoder(jacksonDecoder())
-	.encoder(new JacksonEncoder())
+public OverseasStockService overseasStockService {
+	return ReactorFeign.builder
+	.decoder(new ReactorDecoder(jacksonDecoder)
+	.encoder(new JacksonEncoder)
 	.requesInterceptor(currentRequestHeadersInterceptor)
 	.target(OverseasStockService.class, overseasStockServiceEndpointt);
 }
@@ -46,7 +49,7 @@ public OverseasStockService overseasStockService() {
 
 ```java
 @Bean
-public TomcatConnectorCustomizer disableFacadeDiscard() {
+public TomcatConnectorCustomizer disableFacadeDiscard {
 	return connector -> connector.setDiscardFacades(false);
 }
 ```
@@ -67,10 +70,10 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 //케이뱅크 공통 헤더를 각 업무단에 propagate 하기 위한 인터셉터
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
-		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = requestAttributes.getRequest();
+		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes;
+		HttpServletRequest request = requestAttributes.getRequest;
 		requestTemplate.removeHeader("content-length");
-		request.getHeaderNames().asIterator()
+		request.getHeaderNames.asIterator
 			.forEachRemaining(h -> requestTemplate.header(h, request.getHeader(h)));
 	}
 }
@@ -103,7 +106,7 @@ org.apache.coyote.http11.Http11Processor process
 
 비슷한 증상
 느낌상 동시성 문제인데.. 1개의 호출 > N개의 호출을 reactorFeign 사용하여 비동기호출을 함.
-~~딱 여기서 헤더 세팅을 복사할 때 request.getHeaderNames().asIterator() 이 부분 전후로 동시성문제가 생기는것같음. 복사하고 있을 때 이미 컨텍스트가 끝나버린다던가 하는..~~
+~~딱 여기서 헤더 세팅을 복사할 때 request.getHeaderNames.asIterator 이 부분 전후로 동시성문제가 생기는것같음. 복사하고 있을 때 이미 컨텍스트가 끝나버린다던가 하는..~~
   - 20241210 추가) 이거 iterator라서 생기는 문제 아님. 내가 단단히 Interceptor를 잘못 사용하고 있었음.
 그래서 수동으로 세팅해주니깐 문제가 사라짐.
 
@@ -114,10 +117,10 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 //케이뱅크 공통 헤더를 각 업무단에 propagate 하기 위한 인터셉터
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
-		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes();
-		HttpServletRequest request = requestAttributes.getRequest();
+		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes;
+		HttpServletRequest request = requestAttributes.getRequest;
 //		requestTemplate.removeHeader("content-length");
-//		request.getHeaderNames().asIterator()
+//		request.getHeaderNames.asIterator
 //			.forEachRemaining(h -> requestTemplate.header(h, request.getHeader(h)));
 			requestTemplate.header("Log-level",request.getHeader("Log-level"));
 			requestTemplate.header("rcvSrvcCd",request.getHeader("rcvSrvcCd"));

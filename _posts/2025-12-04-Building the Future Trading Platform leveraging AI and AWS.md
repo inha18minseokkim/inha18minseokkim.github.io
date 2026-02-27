@@ -1,11 +1,13 @@
 ---
 title: "**Building the Future Trading Platform leveraging AI and AWS**"
 date: 2025-12-04
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
   - 실무경험
 ---
-
+AWS re:Invent 2025 세션 노트 정리.
 ![](attachment:c68f7155-c998-4c26-b287-7e182a3b63af:image.png)
 
 브로커 딜러 회사 LPL Financial

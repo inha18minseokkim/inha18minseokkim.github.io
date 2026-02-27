@@ -1,7 +1,10 @@
 ---
 title: "**Vibe data modeling with Amazon DynamoDB**"
 date: 2025-12-02
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
+AWS re:Invent 2025 세션 노트 정리.

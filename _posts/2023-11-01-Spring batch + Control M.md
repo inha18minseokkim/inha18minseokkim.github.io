@@ -1,11 +1,14 @@
 ---
 title: "Spring batch + Control M"
 date: 2023-11-01
-tags: [미지정]
+tags:
+  - Spring Batch
+  - 개발
+  - Java
 category:
   - 기술
 ---
-
+Spring Batch 관련 개발 내용 정리.
 ### ASIS(카드계 배치 BXM, Spring Legacy 3)
 
 1. Control M 상에서 작업경로 설정(/kbksw/swdpt/crdbxm/bat/shl) 후 스크립트 실행 (executeJob.sh)

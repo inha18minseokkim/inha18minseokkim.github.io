@@ -1,12 +1,13 @@
 ---
 title: "JobLauncher Configuration + JobParameter"
 date: 2023-10-12
-tags: [미지정]
+tags:
+  - 개발
+  - 기술
 category:
-  - 기타
+  - 실무경험
 ---
-
-
+개발 관련 내용 정리.
 ```javascript
 @Configuration
 @RequiredArgsConstructor
@@ -22,38 +23,38 @@ public class JobConfiguration {
     private final MultiDimensionalRateRepository repository;
     private static int requestCount = 0;
     @Bean
-    public JobParameters jobParameters() {
-        return new JobParametersBuilder().addString("loanYearMonth",loanYearMonth)
-                .addLocalDateTime("executeDate", LocalDateTime.now())
-                .toJobParameters();
+    public JobParameters jobParameters {
+        return new JobParametersBuilder.addString("loanYearMonth",loanYearMonth)
+                .addLocalDateTime("executeDate", LocalDateTime.now)
+                .toJobParameters;
     }
     @Bean
-    public JobExecution jobExecution() throws Exception {
-        return jobLauncher().run(
+    public JobExecution jobExecution throws Exception {
+        return jobLauncher.run(
                 new JobBuilder("multiDimensionalRateJob",jobRepository)
-                        .start(multiDimensionalRateStep())
-                        .build()
-                ,jobParameters());
+                        .start(multiDimensionalRateStep)
+                        .build
+                ,jobParameters);
     }
     @Bean
-    public JobLauncher jobLauncher() throws Exception {
-        TaskExecutorJobLauncher taskExecutorJobLauncher = new TaskExecutorJobLauncher();
+    public JobLauncher jobLauncher throws Exception {
+        TaskExecutorJobLauncher taskExecutorJobLauncher = new TaskExecutorJobLauncher;
         taskExecutorJobLauncher.setJobRepository(jobRepository);
-        taskExecutorJobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
-        taskExecutorJobLauncher.afterPropertiesSet();
+        taskExecutorJobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor);
+        taskExecutorJobLauncher.afterPropertiesSet;
         return taskExecutorJobLauncher;
     }
     @Bean
-    public Step multiDimensionalRateStep() {
+    public Step multiDimensionalRateStep {
         return new StepBuilder("multiDimensionalRateStep",jobRepository)
                 .<MultiDimensionalRateRequest,List<MultiDimensionalRate>>chunk(100,platformTransactionManager)
-                .reader(requestCodeReader())
-                .processor(compositeProcessor())
-                .writer(itemWriter())
-        .build();
+                .reader(requestCodeReader)
+                .processor(compositeProcessor)
+                .writer(itemWriter)
+        .build;
     }
     @Bean
-    public ItemReader<MultiDimensionalRateRequest> requestCodeReader() {
+    public ItemReader<MultiDimensionalRateRequest> requestCodeReader {
         String sqlStatement = "select" +
                 "\n 100 as numOfRows" +
                 "\n,1 as pageNo" +
@@ -71,35 +72,35 @@ public class JobConfiguration {
                 "  and DebtInfo.debtCode <= 1\n" +
                 "  and IncomeInfo.incomeCode <= 4 and 5";
         log.info(sqlStatement);
-        return new JdbcCursorItemReaderBuilder<MultiDimensionalRateRequest>()
+        return new JdbcCursorItemReaderBuilder<MultiDimensionalRateRequest>
                 .fetchSize(1)
                 .dataSource(dataSource)
                 .rowMapper(new BeanPropertyRowMapper<>(MultiDimensionalRateRequest.class))
                 .sql(sqlStatement)
                 .name("jdbcCursorItemReader")
-                .build();
+                .build;
     }
 
     @Bean
-    public ItemProcessor<MultiDimensionalRateRequest,List<MultiDimensionalRate>> compositeProcessor() {
-        CompositeItemProcessor<MultiDimensionalRateRequest, List<MultiDimensionalRate>> objectObjectCompositeItemProcessor = new CompositeItemProcessor<>();
-        objectObjectCompositeItemProcessor.setDelegates(Arrays.asList(itemReceiveProcessor(),itemConvertProcessor()));
+    public ItemProcessor<MultiDimensionalRateRequest,List<MultiDimensionalRate>> compositeProcessor {
+        CompositeItemProcessor<MultiDimensionalRateRequest, List<MultiDimensionalRate>> objectObjectCompositeItemProcessor = new CompositeItemProcessor<>;
+        objectObjectCompositeItemProcessor.setDelegates(Arrays.asList(itemReceiveProcessor,itemConvertProcessor));
         return objectObjectCompositeItemProcessor;
     }
 
     @Bean
-    public ItemProcessor<MultiDimensionalRateRequest, List<Map.Entry<MultiDimensionalRateRequest,MultiDimensionalRateItem>>> itemReceiveProcessor() {
+    public ItemProcessor<MultiDimensionalRateRequest, List<Map.Entry<MultiDimensionalRateRequest,MultiDimensionalRateItem>>> itemReceiveProcessor {
         return item -> {
             MultiDimensionalRateResponse multiDimensionalRateResponse = receiver.apiReceive(item);
             if(requestCount % 3 == 2){
                 Thread.sleep(500);
             }
             requestCount++;
-            if(!multiDimensionalRateResponse.getHeader().getResultCode().equals("00"))
+            if(!multiDimensionalRateResponse.getHeader.getResultCode.equals("00"))
                 throw new RuntimeException("API 수신 실패" + item);
-            return multiDimensionalRateResponse.getBody().getItems()
-                    .stream().map((element) ->
-                            (Map.Entry<MultiDimensionalRateRequest,MultiDimensionalRateItem>)new AbstractMap.SimpleEntry<MultiDimensionalRateRequest,MultiDimensionalRateItem>(item,element)).toList();
+            return multiDimensionalRateResponse.getBody.getItems
+                    .stream.map((element) ->
+                            (Map.Entry<MultiDimensionalRateRequest,MultiDimensionalRateItem>)new AbstractMap.SimpleEntry<MultiDimensionalRateRequest,MultiDimensionalRateItem>(item,element)).toList;
         };
     }
     private Long parseLong(String target){
@@ -117,35 +118,35 @@ public class JobConfiguration {
         }
     }
     @Bean
-    public ItemProcessor<List<Map.Entry<MultiDimensionalRateRequest,MultiDimensionalRateItem>>,List<MultiDimensionalRate>> itemConvertProcessor() {
-        return item -> item.stream()
+    public ItemProcessor<List<Map.Entry<MultiDimensionalRateRequest,MultiDimensionalRateItem>>,List<MultiDimensionalRate>> itemConvertProcessor {
+        return item -> item.stream
                 .map(
                         (Map.Entry<MultiDimensionalRateRequest,MultiDimensionalRateItem> fromItem) -> {
-                            MultiDimensionalRateRequest key = fromItem.getKey();
-                            MultiDimensionalRateItem value = fromItem.getValue();
-                        return MultiDimensionalRate.builder()
-                        .loadYearMonth(key.getLoanYm())
-                        .creditGrade(parseLong(key.getCbGrd()))
-                        .jobCode(key.getJobCd())
-                        .houseCode(key.getHouseTycd())
-                        .ageCode(Long.parseLong(key.getAge()))
-                        .incomeCode(Long.parseLong(key.getIncome()))
-                        .debtCode(Long.parseLong(key.getDebt()))
-                        .averageLoanRate(parseDouble(value.getAvgLoanRat()))
-                        .averageLoanRate2(parseDouble(value.getAvgLoanRat2()))
-                        .bankName(value.getBankNm())
-                        .loanCount(parseLong(value.getCnt()))
-                        .loanAmount(parseLong(value.getLoanAmt()))
-                        .maxLoanRate(parseDouble(value.getMaxLoanRat()))
-                        .minLoanRate(parseDouble(value.getMinLoanRat()))
-                        .build();})
-                .toList();
+                            MultiDimensionalRateRequest key = fromItem.getKey;
+                            MultiDimensionalRateItem value = fromItem.getValue;
+                        return MultiDimensionalRate.builder
+                        .loadYearMonth(key.getLoanYm)
+                        .creditGrade(parseLong(key.getCbGrd))
+                        .jobCode(key.getJobCd)
+                        .houseCode(key.getHouseTycd)
+                        .ageCode(Long.parseLong(key.getAge))
+                        .incomeCode(Long.parseLong(key.getIncome))
+                        .debtCode(Long.parseLong(key.getDebt))
+                        .averageLoanRate(parseDouble(value.getAvgLoanRat))
+                        .averageLoanRate2(parseDouble(value.getAvgLoanRat2))
+                        .bankName(value.getBankNm)
+                        .loanCount(parseLong(value.getCnt))
+                        .loanAmount(parseLong(value.getLoanAmt))
+                        .maxLoanRate(parseDouble(value.getMaxLoanRat))
+                        .minLoanRate(parseDouble(value.getMinLoanRat))
+                        .build;})
+                .toList;
     }
 
     @Bean
-    public ItemWriter<List<MultiDimensionalRate>> itemWriter() {
+    public ItemWriter<List<MultiDimensionalRate>> itemWriter {
         return chunk -> {
-            List<MultiDimensionalRate> collect = chunk.getItems().stream().flatMap(List::stream).collect(Collectors.toList());
+            List<MultiDimensionalRate> collect = chunk.getItems.stream.flatMap(List::stream).collect(Collectors.toList);
             repository.insertObjectBatch(collect);
         };
     }
@@ -160,12 +161,12 @@ JobExecution 빌드
 
 ```javascript
 @Bean
-    public JobExecution jobExecution() throws Exception {
-        return jobLauncher().run(
+    public JobExecution jobExecution throws Exception {
+        return jobLauncher.run(
                 new JobBuilder("multiDimensionalRateJob",jobRepository)
-                        .start(multiDimensionalRateStep())
-                        .build()
-                ,jobParameters());
+                        .start(multiDimensionalRateStep)
+                        .build
+                ,jobParameters);
     }
 ```
 

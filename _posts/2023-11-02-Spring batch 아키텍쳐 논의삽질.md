@@ -1,10 +1,14 @@
 ---
 title: "Spring batch 아키텍쳐 논의/삽질"
 date: 2023-11-02
-tags: [미지정]
+tags:
+  - Spring Batch
+  - 개발
+  - Java
 category:
   - 기술
 ---
+Spring Batch 관련 개발 내용 정리.
 [Spring Batch 5.0.1(Spring 3.1.3)]({% post_url 2023-10-08-Spring Batch 5.0.1(Spring 3.1.3) %})
 [Spring batch BadSQLGrammar]({% post_url 2023-10-27-Spring batch BadSQLGrammar %})
 [Spring Batch + Cursor Based ItemReader 이슈]({% post_url 2023-10-27-Spring Batch + Cursor Based ItemReader 이슈 %})

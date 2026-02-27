@@ -1,7 +1,10 @@
 ---
 title: "Redis pub/sub 활용해서 Local Cache 동기화 - 기본"
 date: 2025-12-11
-tags: [미지정]
+tags:
+  - 캐싱
+  - 개발
+  - 인프라
 category:
   - 기술
 ---
@@ -46,13 +49,13 @@ Reading messages... (press Ctrl-C to quit or any key to type command)
      * Initializes the Redis subscription when the service starts.
      */
     @PostConstruct
-    fun init() {
+    fun init {
         logger.info("Starting Redis cache invalidation listener on channel: $REDIS_INVALIDATION_CHANNEL")
         
         val topic = ChannelTopic(REDIS_INVALIDATION_CHANNEL)
         
         subscription = reactiveRedisTemplate.listenTo(topic)
-            .map { message -> message.message.toString() }
+            .map { message -> message.message.toString }
             .doOnNext { message -> 
                 logger.info("Received cache invalidation message: $message")
                 invalidateCache(message)
@@ -60,7 +63,7 @@ Reading messages... (press Ctrl-C to quit or any key to type command)
             .doOnError { error ->
                 logger.error("Error in Redis subscription: ${error.message}", error)
             }
-            .subscribe()
+            .subscribe
     }
 
 ```
@@ -72,7 +75,7 @@ private fun invalidateCache(message: String) {
         logger.info("Invalidate Message detected : $message")
         try {
             // Find the matching cache key from the CacheKey enum
-            val matchingCacheKey = CacheKey.values().find { cacheKey ->
+            val matchingCacheKey = CacheKey.values.find { cacheKey ->
                 message.startsWith(cacheKey.key)
             }
 
@@ -84,7 +87,7 @@ private fun invalidateCache(message: String) {
                     val id = message.substring(matchingCacheKey.key.length + 1) // +1 for the colon
                     
                     logger.info("Invalidating cache entry: ${matchingCacheKey.key} with ID: $id")
-//                    cache.invalidate()
+//                    cache.invalidate
                     logger.info("${cache.get("$id")}")
                     logger.info("캐시 삭제 결과 : ${cache.evictIfPresent(id)}")
                     logger.info("Cache entry invalidated successfully")

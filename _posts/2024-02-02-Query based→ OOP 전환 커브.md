@@ -1,11 +1,13 @@
 ---
 title: "Query based→ OOP 전환 커브"
 date: 2024-02-02
-tags: [미지정]
+tags:
+  - 개발
+  - Java
 category:
-  - 기타
+  - 기술
 ---
-
+Spring/Java 관련 개발 내용 정리.
 ```sql
 select #distinct a.region_info_id,c.description,d.description,e.description
     a.base_product_id, b.item_name,
@@ -140,36 +142,36 @@ public List<FindPriceListByGroupRegionCodeOut> findPriceListByGroupRegionCode(Fi
     QUserCode userCode1 = new QUserCode("a");
     QUserCode userCode2 = new QUserCode("b");
     QBaseProduct baseProduct = QBaseProduct.baseProduct;
-    String startDate = LocalDate.parse(in.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
-            .minusDays(in.getRangeForLength().getGapDay()-1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    String startDate = LocalDate.parse(in.getBaseDate, DateTimeFormatter.ofPattern("yyyyMMdd"))
+            .minusDays(in.getRangeForLength.getGapDay-1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
     List<Tuple> results = query.select(
             processedPriceInfo.baseDate,
-            processedPriceInfo.price.avg()
+            processedPriceInfo.price.avg
 
             )
             .from(processedPriceInfo, userGroupCode, userCode2)
             .innerJoin(processedPriceInfo.baseProduct, baseProduct)
             .innerJoin(processedPriceInfo.regionInfo, userCode1)
             .where(
-                    processedPriceInfo.baseRange.eq(in.getRangeForTag())
-                            .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate()))
-                            .and(userGroupCode.id.eq(in.getRegionGroup().getId()))
+                    processedPriceInfo.baseRange.eq(in.getRangeForTag)
+                            .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate))
+                            .and(userGroupCode.id.eq(in.getRegionGroup.getId))
                             .and(userCode1.id.eq(userCode2.codeDetailName.castToNum(Long.class)))
                             .and(userGroupCode.id.eq(userCode2.userGroupCode.id))
             ).groupBy(
                     processedPriceInfo.baseDate
             )
-            .fetch();
+            .fetch;
 
-    return results.stream().map((element) -> FindPriceListByGroupRegionCodeOut.builder()
-            .baseDate(in.getBaseDate())
-            .price(element.get(processedPriceInfo.price.avg()).longValue())
-            .regionGroupInfo(in.getRegionGroup())
-            .baseProduct(in.getTargetProduct())
-            .baseRange(in.getRangeForLength())
-            .build()
-    ).collect(Collectors.toList());
+    return results.stream.map((element) -> FindPriceListByGroupRegionCodeOut.builder
+            .baseDate(in.getBaseDate)
+            .price(element.get(processedPriceInfo.price.avg).longValue)
+            .regionGroupInfo(in.getRegionGroup)
+            .baseProduct(in.getTargetProduct)
+            .baseRange(in.getRangeForLength)
+            .build
+    ).collect(Collectors.toList);
 }
 ```
 
@@ -219,23 +221,23 @@ JPA + QueryDSL
 
   log.info("사용자 처리 : {}",memberInfo);
   //여기가 맞나? 사용자 없으면 저장 다른 서비스로 분리해야할듯
-  Optional<MemberInfo> memberInfoOp = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(memberInfo.getCustomerId(), memberInfo.getBusinessCode());
-  if(memberInfoOp.isEmpty())
+  Optional<MemberInfo> memberInfoOp = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(memberInfo.getCustomerId, memberInfo.getBusinessCode);
+  if(memberInfoOp.isEmpty)
       memberInfoOp = Optional.of(memberInfoRepository.save(
-              MemberInfo.builder().customerId(memberInfo.getCustomerId()).businessCode(memberInfo.getBusinessCode()).isAgree(false).build())
+              MemberInfo.builder.customerId(memberInfo.getCustomerId).businessCode(memberInfo.getBusinessCode).isAgree(false).build)
       );
-  memberInfo = memberInfoOp.get();
+  memberInfo = memberInfoOp.get;
   //이런 코드가 있는 이유 : asis의 요구사항이 TOBE Spring JPA 사상과 맞지 않다
 
   GetProductPriceOut productPrice = productDetailService.getProductPrice(
-          GetProductPriceIn.builder()
-                  .baseDate(in.getBaseDate())
+          GetProductPriceIn.builder
+                  .baseDate(in.getBaseDate)
                   .targetProduct(baseProduct)
-                  .rangeForLength(in.getRangeForLength())
+                  .rangeForLength(in.getRangeForLength)
                   .rangeForTag(BaseRange.DAY)
                   .regionGroup(userGroupCode)
                   .memberInfo(memberInfo)
-                  .build()
+                  .build
   );
   return mapper.from(productPrice);
 }
@@ -262,12 +264,12 @@ public class MemberInfo {
 이런식으로 기존 PK를 고수해야 하는 상황이면 
 
 ```java
-  Optional<MemberInfo> memberInfoOp = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(memberInfo.getCustomerId(), memberInfo.getBusinessCode());
-  if(memberInfoOp.isEmpty())
+  Optional<MemberInfo> memberInfoOp = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(memberInfo.getCustomerId, memberInfo.getBusinessCode);
+  if(memberInfoOp.isEmpty)
       memberInfoOp = Optional.of(memberInfoRepository.save(
-              MemberInfo.builder().customerId(memberInfo.getCustomerId()).businessCode(memberInfo.getBusinessCode()).isAgree(false).build())
+              MemberInfo.builder.customerId(memberInfo.getCustomerId).businessCode(memberInfo.getBusinessCode).isAgree(false).build)
       );
-  memberInfo = memberInfoOp.get();
+  memberInfo = memberInfoOp.get;
 ```
 
 수동으로 select 후 메모리에 올려서 JPA에 활용해야 한다.

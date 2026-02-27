@@ -1,11 +1,13 @@
 ---
 title: "**Building resilient deployment pipelines with Amazon ECS**"
 date: 2025-12-04
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
-
+AWS re:Invent 2025 세션 노트 정리.
 ![](attachment:19c9172d-8403-4d29-aa67-cdb86f90844a:image.png)
 
 

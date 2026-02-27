@@ -1,10 +1,13 @@
 ---
 title: "**Lambda Managed Instances: EC2 Power with Serverless Simplicity**"
 date: 2025-12-04
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
-  - 기타
+  - 기술
 ---
+AWS re:Invent 2025 세션 노트 정리.
 lmi와 원래있던람다와 다른점?
 사용자 계정의 vpc > ec2 인스턴스 안에 람다 인스턴스를 돌림. 
 기존 람다는 진짜 light weight & 비용효율이라고 생각하면 얘는 조금 더 관리 잘된느낌?
@@ -44,7 +47,7 @@ function 만들기
 
   - snapstart는 lmi에서 안됨
   - fractional vcpu는 안됨. 정수만 됨.  2:1 기본
-그리고 실행 ㄱㄱ
+그리고 실행 진행합니다
 
 지금 람다에서 쓸수있는 이벤트 소스 다 매핑해서 사용가능
 
@@ -91,7 +94,7 @@ concurrency 실행 가능
 
 ![](attachment:dcbdb0e3-5ca6-4c50-9e36-a7d716907024:image.png)
 
-아 당연히 ec2 비용이랑 람다 호출비용 같이 듦 ㅎㅎ
+아 당연히 ec2 비용이랑 람다 호출비용 같이 듦 
   - 호출비용은 드는데 람다 런타임 비용은 안듦 이게 ec2 비용이라 보면될듯
 
 

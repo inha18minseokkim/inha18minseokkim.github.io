@@ -1,7 +1,10 @@
 ---
 title: "Python + Argo Event (결과 : 원하는대로 안됨)"
 date: 2025-01-14
-tags: [미지정]
+tags:
+  - Python
+  - 인프라
+  - 개발
 category:
   - 기술
 ---

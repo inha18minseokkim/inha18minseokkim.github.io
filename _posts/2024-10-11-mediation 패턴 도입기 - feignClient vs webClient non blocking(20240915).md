@@ -1,9 +1,12 @@
 ---
 title: "mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)"
 date: 2024-10-11
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
-  - 기타
+  - 실무경험
 ---
 
 이 포스팅 이후 아쉬운 내용들을 해결해보고자 작성시작함.
@@ -46,34 +49,34 @@ public interface ListedStockService {
 ```java
     @GetMapping("/v1/detail")
     public ResponseEntity<GetListedStockPriceDetailResponse> getListedStockPriceDetail(GetListedStockPriceDetailRequest request) throws InterruptedException, ExecutionException {
-        AtomicReference<GetListedStockPriceDetailResponse.GetListedStockPriceDetailResponseBuilder> builder = new AtomicReference<>(GetListedStockPriceDetailResponse.builder());
+        AtomicReference<GetListedStockPriceDetailResponse.GetListedStockPriceDetailResponseBuilder> builder = new AtomicReference<>(GetListedStockPriceDetailResponse.builder);
 
         CompletableFuture.allOf(
-                CompletableFuture.supplyAsync(() ->{
-                GetListedStockResponse response = listedStockService.getListedStock(request.itemCodeNumber());
-                builder.set(builder.get().stockKoreanName(response.stockKoreanName())
-                        .itemCodeNumber(response.itemCodeNumber())
-                        .representativeName(response.representativeName())
-                        .establishDate(response.establishDate())
-                        .companyDetail(response.companyDetail())
-                        .companyScale(response.companyScale())
-                        .businessRegistrationNumber(response.businessRegistrationNumber())
-                        .corporationNumber(response.corporationNumber())
-                        .telephoneNumber(response.telephoneNumber())
-                        .landAddress(response.landAddress())
-                        .industryName(response.industryName())
-                        .businessScope(response.businessScope()));
+                CompletableFuture.supplyAsync( ->{
+                GetListedStockResponse response = listedStockService.getListedStock(request.itemCodeNumber);
+                builder.set(builder.get.stockKoreanName(response.stockKoreanName)
+                        .itemCodeNumber(response.itemCodeNumber)
+                        .representativeName(response.representativeName)
+                        .establishDate(response.establishDate)
+                        .companyDetail(response.companyDetail)
+                        .companyScale(response.companyScale)
+                        .businessRegistrationNumber(response.businessRegistrationNumber)
+                        .corporationNumber(response.corporationNumber)
+                        .telephoneNumber(response.telephoneNumber)
+                        .landAddress(response.landAddress)
+                        .industryName(response.industryName)
+                        .businessScope(response.businessScope));
                 return response;
                 }),
-                CompletableFuture.supplyAsync(() -> {
-                    GetListedStockLatestPriceResponse response = listedStockService.getListedStockLatestPrice(request.itemCodeNumber());
-                    builder.set(builder.get()
-                            .latestPrice(response.closePrice())
-                            .latestRatio(response.changeRate())
-                            .marketPriceTotal(response.marketPriceTotal())
-                            .changeRate(response.changeRate())
-                            .closePrice(response.closePrice())
-                            .volume(response.volume())
+                CompletableFuture.supplyAsync( -> {
+                    GetListedStockLatestPriceResponse response = listedStockService.getListedStockLatestPrice(request.itemCodeNumber);
+                    builder.set(builder.get
+                            .latestPrice(response.closePrice)
+                            .latestRatio(response.changeRate)
+                            .marketPriceTotal(response.marketPriceTotal)
+                            .changeRate(response.changeRate)
+                            .closePrice(response.closePrice)
+                            .volume(response.volume)
                     );
                     return response;
                 }),
@@ -116,27 +119,27 @@ public interface ListedStockService {
 ```java
 @GetMapping("/v1/detail/price")
     public ResponseEntity<GetListedStockPriceDetailResponse> getListedStockPriceDetail(GetListedStockPriceDetailRequest request){
-        Mono<GetListedStockResponse> listedStock = listedStockService.getListedStock(request.itemCodeNumber());
-        Mono<GetListedStockLatestPriceResponse> latestPrice = listedStockService.getListedStockLatestPrice(request.itemCodeNumber());
-        Mono<GetListedStockPricesResponse> prices = listedStockService.getListedStockPrices(request.itemCodeNumber(),GetListedStockPricesRequest.builder()
-                .baseDateTime(request.baseDateTime())
+        Mono<GetListedStockResponse> listedStock = listedStockService.getListedStock(request.itemCodeNumber);
+        Mono<GetListedStockLatestPriceResponse> latestPrice = listedStockService.getListedStockLatestPrice(request.itemCodeNumber);
+        Mono<GetListedStockPricesResponse> prices = listedStockService.getListedStockPrices(request.itemCodeNumber,GetListedStockPricesRequest.builder
+                .baseDateTime(request.baseDateTime)
                 .deltaDay(360L)
-                .build());
+                .build);
 
-        return ResponseEntity.ok().body(
+        return ResponseEntity.ok.body(
                 Mono.zip(listedStock,latestPrice,prices)
-                        .map(it -> GetListedStockPriceDetailResponse.builder()
-                                .stockKoreanName(it.getT1().stockKoreanName())
-                                .itemCodeNumber(it.getT1().itemCodeNumber())
-                                .latestPrice(it.getT2().closePrice())
-                                .latestRatio(it.getT2().changeRate())
-                                .pricesCount(it.getT3().list().stream().count())
-                                .prices(it.getT3().list().stream().map(mapper::toSubResponse).collect(Collectors.toList()))
-                                .previousDayMinPrice(it.getT2().lowPrice())
-                                .previousDayMaxPrice(it.getT2().highPrice())
-                                .yearlyMinPrice(it.getT3().minPrice())
-                                .yearlyMaxPrice(it.getT3().maxPrice())
-                                .build()).block()
+                        .map(it -> GetListedStockPriceDetailResponse.builder
+                                .stockKoreanName(it.getT1.stockKoreanName)
+                                .itemCodeNumber(it.getT1.itemCodeNumber)
+                                .latestPrice(it.getT2.closePrice)
+                                .latestRatio(it.getT2.changeRate)
+                                .pricesCount(it.getT3.list.stream.count)
+                                .prices(it.getT3.list.stream.map(mapper::toSubResponse).collect(Collectors.toList))
+                                .previousDayMinPrice(it.getT2.lowPrice)
+                                .previousDayMaxPrice(it.getT2.highPrice)
+                                .yearlyMinPrice(it.getT3.minPrice)
+                                .yearlyMaxPrice(it.getT3.maxPrice)
+                                .build).block
         );
     }
 ```

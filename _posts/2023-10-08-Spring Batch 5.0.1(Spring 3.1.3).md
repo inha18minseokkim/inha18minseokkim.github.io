@@ -1,7 +1,10 @@
 ---
 title: "Spring Batch 5.0.1(Spring 3.1.3)"
 date: 2023-10-08
-tags: [미지정]
+tags:
+  - Spring Batch
+  - 개발
+  - Java
 category:
   - 기술
 ---
@@ -50,7 +53,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
                 .start(dailyReceiveStep(jobRepository,dailyAnnounceApiReceiveTasklet,transactionManager))
                 .next(dailyPaidIncreaseReceiveStep(jobRepository, paidIncreaseReceiveTasklet, transactionManager))
                 .next(dailyFreeIssueReceiveStep(jobRepository,freeIssueReceiveTasklet,transactionManager))
-                .build();
+                .build;
         return exampleJob;
     }
 
@@ -63,7 +66,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
         String endDate = applicationArguments.getOptionValues("endDate").get(0);
         log.info(String.format("%s ~ %s dailyReceiveStep 실행",beginDate,endDate));
         return new StepBuilder("dailyReceiveStep",jobRepository)
-                .tasklet(defaultTasklet,transactionManager).build();
+                .tasklet(defaultTasklet,transactionManager).build;
     }
 
     @Bean
@@ -75,7 +78,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
         String endDate = applicationArguments.getOptionValues("endDate").get(0);
         log.info(String.format("%s ~ %s dailyPaidIncreaseReceiveStep 실행",beginDate,endDate));
         return new StepBuilder("dailyPaidIncreaseReceiveStep",jobRepository)
-                .tasklet(defaultTasklet,transactionManager).build();
+                .tasklet(defaultTasklet,transactionManager).build;
     }
 
     @Bean
@@ -87,7 +90,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
         String endDate = applicationArguments.getOptionValues("endDate").get(0);
         log.info(String.format("%s ~ %s dailyFreeIssueReceiveStep 실행",beginDate,endDate));
         return new StepBuilder("dailyFreeIssueReceiveStep",jobRepository)
-                .tasklet(defaultTasklet,transactionManager).build();
+                .tasklet(defaultTasklet,transactionManager).build;
     }
 
 }

@@ -1,7 +1,10 @@
 ---
 title: "mediation 패턴 도입기 - openfeign + kotlin 코루틴 조합. 꼭 써야할까?"
 date: 2024-12-22
-tags: [미지정]
+tags:
+  - 개발
+  - 아키텍처
+  - Java
 category:
   - 기술
 ---
@@ -52,15 +55,15 @@ suspend fun getListedStockPriceDetail(request: GetListedStockPriceDetailRequest)
             itemCodeNumber = listedStock.itemCodeNumber,
             latestPrice = latestPrice.closePrice,
             latestRatio = latestPrice.changeRate,
-            pricesCount = prices.list.stream().count(),
-            prices = prices.list.stream().map {
+            pricesCount = prices.list.stream.count,
+            prices = prices.list.stream.map {
                 GetListedStockPriceDetailResponse.PriceElement(
                         baseDate = it.baseDate,
                         closePrice = it.closePrice,
                         changePrice = it.changePrice,
                         changeRate = it.changeRate
                 )
-            }.toList(),
+            }.toList,
             previousDayMinPrice = latestPrice.lowPrice,
             previousDayMaxPrice = latestPrice.highPrice,
             yearlyMinPrice = prices.minPrice,
@@ -91,23 +94,23 @@ suspend fun getListedStockPriceDetail(request: GetListedStockPriceDetailRequest)
     val latestPrice = listedStockService.getListedStockLatestPrice(request.itemCodeNumber)
     val prices = listedStockService.getListedStockPrices(request.itemCodeNumber, GetListedStockPricesRequest(request.baseDateTime, 360L))
     return GetListedStockPriceDetailResponse(
-            stockKoreanName = listedStock.await().stockKoreanName,
-            itemCodeNumber = listedStock.await().itemCodeNumber,
-            latestPrice = latestPrice.await().closePrice,
-            latestRatio = latestPrice.await().changeRate,
-            pricesCount = prices.await().list.stream().count(),
-            prices = prices.await().list.stream().map {
+            stockKoreanName = listedStock.await.stockKoreanName,
+            itemCodeNumber = listedStock.await.itemCodeNumber,
+            latestPrice = latestPrice.await.closePrice,
+            latestRatio = latestPrice.await.changeRate,
+            pricesCount = prices.await.list.stream.count,
+            prices = prices.await.list.stream.map {
                 GetListedStockPriceDetailResponse.PriceElement(
                         baseDate = it.baseDate,
                         closePrice = it.closePrice,
                         changePrice = it.changePrice,
                         changeRate = it.changeRate
                 )
-            }.toList(),
-            previousDayMinPrice = latestPrice.await().lowPrice,
-            previousDayMaxPrice = latestPrice.await().highPrice,
-            yearlyMinPrice = prices.await().minPrice,
-            yearlyMaxPrice = prices.await().maxPrice
+            }.toList,
+            previousDayMinPrice = latestPrice.await.lowPrice,
+            previousDayMaxPrice = latestPrice.await.highPrice,
+            yearlyMinPrice = prices.await.minPrice,
+            yearlyMaxPrice = prices.await.maxPrice
     )
 }
 ```

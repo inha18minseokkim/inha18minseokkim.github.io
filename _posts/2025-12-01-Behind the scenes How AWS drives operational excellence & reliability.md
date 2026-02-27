@@ -1,7 +1,9 @@
 ---
 title: "**Behind the scenes: How AWS drives operational excellence & reliability**"
 date: 2025-12-01
-tags: [미지정]
+tags:
+  - AWS
+  - 기술
 category:
   - 기술
 ---
