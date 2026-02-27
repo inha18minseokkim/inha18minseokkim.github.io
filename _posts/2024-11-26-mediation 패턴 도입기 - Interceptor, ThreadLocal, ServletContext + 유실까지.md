@@ -1,10 +1,11 @@
 ---
-title: "mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지"
+title: mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지
 date: 2024-11-26
 tags:
   - 개발
   - 아키텍처
   - Java
+  - BFF
 category:
   - 실무경험
 ---

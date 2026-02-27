@@ -1,10 +1,12 @@
 ---
-title: "mediation 패턴 도입기 - reactive feign vs virtual thread(java21)"
+title: mediation 패턴 도입기 - reactive feign vs virtual thread(java21)
 date: 2024-11-02
 tags:
   - 개발
   - 아키텍처
   - Java
+  - BFF
+  - Webflux
 category:
   - 기술
 ---

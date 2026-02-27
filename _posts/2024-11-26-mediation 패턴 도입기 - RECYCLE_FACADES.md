@@ -1,10 +1,11 @@
 ---
-title: "mediation 패턴 도입기 - RECYCLE_FACADES"
+title: mediation 패턴 도입기 - RECYCLE_FACADES
 date: 2024-11-26
 tags:
   - 개발
   - 아키텍처
   - Java
+  - BFF
 category:
   - 실무경험
 ---

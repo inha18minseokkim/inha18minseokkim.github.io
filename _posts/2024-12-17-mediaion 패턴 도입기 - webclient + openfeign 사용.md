@@ -1,10 +1,12 @@
 ---
-title: "mediaion 패턴 도입기 - webclient + openfeign 사용"
+title: mediaion 패턴 도입기 - webclient + openfeign 사용
 date: 2024-12-17
 tags:
   - 개발
   - 아키텍처
   - Java
+  - Webflux
+  - BFF
 category:
   - 기술
 ---

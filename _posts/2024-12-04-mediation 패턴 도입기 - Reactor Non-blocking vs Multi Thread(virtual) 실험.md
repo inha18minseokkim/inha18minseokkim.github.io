@@ -1,10 +1,12 @@
 ---
-title: "mediation 패턴 도입기 - Reactor Non-blocking vs Multi Thread(virtual) 실험"
+title: mediation 패턴 도입기 - Reactor Non-blocking vs Multi Thread(virtual) 실험
 date: 2024-12-04
 tags:
   - 개발
   - 아키텍처
   - Java
+  - BFF
+  - Webflux
 category:
   - 실무경험
 ---

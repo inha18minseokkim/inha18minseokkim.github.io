@@ -1,10 +1,11 @@
 ---
-title: "mediation 패턴 도입기 - 짬통은 어디에?"
+title: mediation 패턴 도입기 - 짬통은 어디에?
 date: 2024-10-10
 tags:
   - 개발
   - 아키텍처
   - Java
+  - BFF
 category:
   - 실무경험
 ---

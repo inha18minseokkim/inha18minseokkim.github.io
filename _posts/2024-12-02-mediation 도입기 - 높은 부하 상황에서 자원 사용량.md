@@ -1,10 +1,12 @@
 ---
-title: "mediation 도입기 - 높은 부하 상황에서 자원 사용량"
+title: mediation 도입기 - 높은 부하 상황에서 자원 사용량
 date: 2024-12-02
 tags:
   - 개발
   - 아키텍처
   - Java
+  - Webflux
+  - BFF
 category:
   - 실무경험
 ---
