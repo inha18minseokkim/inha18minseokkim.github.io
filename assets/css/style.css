@@ -644,8 +644,13 @@ html.light .icon-moon { display: block; }
   padding: 3rem 0 6rem;
 }
 
+.post-page > .container {
+  max-width: 1020px;
+}
+
 .post-layout {
   display: flex;
+  flex-direction: row;
   gap: 2.5rem;
   align-items: flex-start;
 }
@@ -653,14 +658,33 @@ html.light .icon-moon { display: block; }
 .post-main {
   flex: 1;
   min-width: 0;
+  order: 2;
 }
 
 .post-sidebar {
   width: 140px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 5rem;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .post-sidebar .category-btn {
   text-decoration: none;
+}
+
+.post-sidebar .category-sidebar-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .post-header {

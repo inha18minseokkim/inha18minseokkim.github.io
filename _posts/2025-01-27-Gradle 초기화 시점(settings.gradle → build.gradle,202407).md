@@ -1,34 +1,55 @@
 ---
-title: "Gradle 초기화 시점(settings.gradle → build.gradle,202407)"
+title: Gradle 초기화 시점(settings.gradle → build.gradle)
 date: 2025-01-27
-tags: [미지정]
+tags:
+  - Gradle
+  - CI/CD
+  - Git
+  - 케이뱅크
 category:
-  - 기타
+  - 실무경험
+  - MSA표준
 ---
 
-현시점 최선(202407)
-[Gitlab SAML 환경에서 clone (1)]({% post_url 2025-01-27-Gitlab SAML 환경에서 clone (1) %})
-1. gitlab-ci 스크립트 뜯어봤는데 현재 submodule clone 하는 스크립트가 구성되어있지않음
-2. 그래서 임시로 dockerfile 내부에서 clone 후 gradle build 하는 방식을 사용
-3. SAML SSO를 사용하고 프로젝트가 private이기 때문에 docker 내부에서 kbank git으로 찌르는건 가능하지만 SSO id pw 인증 불가
-4. 
-[build.gradle Settings.gradle (1)]({% post_url 2025-01-27-build.gradle Settings.gradle (1) %})
-[https://docs.gradle.org/current/userguide/userguide.html](https://docs.gradle.org/current/userguide/userguide.html)
+GitLab CI 환경에서 Git Submodule을 사용할 때 발생하는 문제와 Gradle 빌드 라이프사이클을 활용한 해결 방법을 정리한다. (2024년 7월 기준)
 
-settings.gradle에 git clone 스크립트 추가
+---
+
+## 문제 상황
+
+| 항목 | 상황 |
+|------|------|
+| 환경 | GitLab + SAML SSO + Private Repository |
+| 이슈 | gitlab-ci 스크립트에 submodule clone 기능 미구성 |
+| 제약 | SRE팀에서 CI 스크립트 수정 불가 (당시 기준) |
+
+**관련 문서:**
+- [Gitlab SAML 환경에서 clone (1)]({% post_url 2025-01-27-Gitlab SAML 환경에서 clone (1) %})
+- [build.gradle Settings.gradle (1)]({% post_url 2025-01-27-build.gradle Settings.gradle (1) %})
+- [Gradle User Guide](https://docs.gradle.org/current/userguide/userguide.html)
+
+---
+
+## 해결 방법: settings.gradle에서 서브모듈 클론
+
+### 핵심 아이디어
+
+`settings.gradle`은 `build.gradle`보다 **먼저 실행**되므로, 이 시점에 서브모듈을 클론하면 빌드 시 소스코드가 준비된 상태가 된다.
+
+### settings.gradle 설정
 
 ```groovy
 pluginManagement {
-	var commonModule = new File(rootDir,"./listed-stock-common/build.gradle")
-	if(!commonModule.exists()) {
-			exec {
-				commandLine 'sh', './init-modules.sh'
-			}
-	}
+    var commonModule = new File(rootDir, "./listed-stock-common/build.gradle")
+    if (!commonModule.exists()) {
+        exec {
+            commandLine 'sh', './init-modules.sh'
+        }
+    }
 }
-...
 ```
 
+### init-modules.sh 스크립트
 
 ```shell
 git config --global credential.helper store
@@ -39,41 +60,53 @@ git submodule init
 git submodule update --remote --recursive
 ```
 
-이렇게 셋팅해놓으면 docker build 이미지에서 bootrun > gradle task가 돌기 전에 git 서브모듈repo를 땡겨오고 compileJava 부터 시작
-  - 처음에는 settings.gradle에 해당 스크립트 적지 않고 Dockerfile에서 실행하려 했음. 
-    - 이미지 배포 까지는 성공하지만 추후에 들어가는 sonarQube 파이프라인에서는 도커이미지 내에서 실행하는것이 아니라 그냥 gradle sonar 커맨드를 실행해버려서 또 프로젝트를 땡기지못함(다시말하지만 이 시점에서 sre가 ci 스크립트를 못 바꿔줌)
-    - gradle sonar를 실행하면 compileJava부터 실행되는데 해당 시점에 서브모듈들이 체크아웃되지 않은 상황이라 실패
+---
 
-처음에는 settings.gradle에 해당 스크립트 적지 않고 Dockerfile에서 실행하려 했음. 
-  - 이미지 배포 까지는 성공하지만 추후에 들어가는 sonarQube 파이프라인에서는 도커이미지 내에서 실행하는것이 아니라 그냥 gradle sonar 커맨드를 실행해버려서 또 프로젝트를 땡기지못함(다시말하지만 이 시점에서 sre가 ci 스크립트를 못 바꿔줌)
-  - gradle sonar를 실행하면 compileJava부터 실행되는데 해당 시점에 서브모듈들이 체크아웃되지 않은 상황이라 실패
+## 왜 Dockerfile이 아닌 settings.gradle인가?
 
-이미지 배포 까지는 성공하지만 추후에 들어가는 sonarQube 파이프라인에서는 도커이미지 내에서 실행하는것이 아니라 그냥 gradle sonar 커맨드를 실행해버려서 또 프로젝트를 땡기지못함(다시말하지만 이 시점에서 sre가 ci 스크립트를 못 바꿔줌)
-gradle sonar를 실행하면 compileJava부터 실행되는데 해당 시점에 서브모듈들이 체크아웃되지 않은 상황이라 실패
+처음에는 Dockerfile에서 서브모듈을 클론하려 했으나 실패했다.
 
-그리고 IDE상에서 편의를 위해 버튼 딸깍으로 gitlab 모듈 업데이트 하는 스크립트 하나 짬
+| 방식 | Docker 이미지 빌드 | SonarQube 파이프라인 |
+|------|-------------------|---------------------|
+| Dockerfile에서 클론 | 성공 | **실패** |
+| settings.gradle에서 클론 | 성공 | 성공 |
 
-```shell
+**실패 원인:**
+- SonarQube 파이프라인은 Docker 이미지 내부가 아닌 **호스트에서 직접** `gradle sonar` 실행
+- 이 시점에 서브모듈이 체크아웃되지 않아 `compileJava` 실패
+
+---
+
+## FAQ: compileJava에 dependsOn을 걸면 안 되나?
+
+**안 된다.**
+
+Gradle 빌드 라이프사이클상 `compileJava` 실행 시점에는 이미 `compileClasspath`와 소스코드 메타정보가 수집된 상태다.
+
+![Gradle Build Lifecycle](/assets/images/Pasted%20image%2020260228171246_52d065e4.png)
+
+> 빌드 버튼을 누른 직후 파일을 추가해도 반영되지 않는 것과 같은 원리
+
+**참고:** [Gradle Build Lifecycle](https://docs.gradle.org/current/userguide/build_lifecycle.html)
+
+---
+
+## IDE 편의 기능: 서브모듈 업데이트 Task
+
+```groovy
 task cloneSubmodule {
-	exec {
-		commandLine 'git','submodule','update','--remote','--init','--recursive'
-	}
+    exec {
+        commandLine 'git', 'submodule', 'update', '--remote', '--init', '--recursive'
+    }
 }
 ```
 
+IDE에서 버튼 클릭으로 서브모듈을 업데이트할 수 있다.
 
+---
 
-### 그럼 그냥 위 task를 compileJava에 dependOn을 걸면 안되나?
+## 향후 계획
 
-안됨.
-compileJava 하는 시점에 compileClassPath나 소스코드 메타정보를 다 긁어가서 include 서브모듈 하는 시점에 소스코드를 넣어야함!! 우리가  빌드 버튼 누르고 바로 파일을 추가해도 안되는것처럼
-[Build Lifecycle](https://docs.gradle.org/current/userguide/build_lifecycle.html)
+SRE팀과 협의하여 GitLab CI에 서브모듈 기능을 정식으로 추가하고, 위 임시 코드는 제거할 예정이다.
 
-![](/assets/images/Pasted%20image%2020260228171246_52d065e4.png)
-
-
-
-### 앞으로 할일
-
-SRE 선생님과 함께  서브모듈 기능을 gitlab ci에 추가하는것 협의 보고  위 코드는 없애도록 할 것.
-안되는게 많다보니 이상한코드가 점점 늘어나는 것 같다.
+> 제약이 많다 보니 우회 코드가 늘어나는 상황. 근본적인 해결이 필요하다.
