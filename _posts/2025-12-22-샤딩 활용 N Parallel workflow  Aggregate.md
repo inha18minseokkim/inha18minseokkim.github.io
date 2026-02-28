@@ -8,7 +8,7 @@ category:
   - 실무경험
 ---
 개발 관련 내용 정리.
-![](attachment:edaca24f-9ade-4c35-9a3c-05fa900b0e3b:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301003546.png)
 
 작년에 POC 하다가 이런식으로 
 
@@ -57,5 +57,4 @@ spec:
 
 
 
-
-![](attachment:878f5437-0294-4d85-b0eb-86516a3b550a:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301003552.png)

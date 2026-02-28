@@ -3,6 +3,7 @@ title: Netty에서 PhantomReference 통한 GC
 date: 2025-02-16
 tags:
   - Webflux
+  - Java
 category:
   - 기술
 ---
@@ -75,7 +76,7 @@ phantomly reachable : strongly reachable 객체, softly reachable 객체, weakly
 unreachable : root set으로부터 시작되는 참조 사슬로 참조되지 않는 객체
 (정석) GC에 의한 척결 대상
 
-![](attachment:15f0016e-7a9e-4dae-96e0-dec420c3e1b6:image.png)
+![[Pasted image 20260301004026.png]]
 
 
 ### ***Phantomly Reference - 사용하기 위함 보다는 올바르게 삭제하고 삭제 이후 작업을 조작하기 위함이다.***
