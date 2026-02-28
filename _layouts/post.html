@@ -3,28 +3,157 @@ layout: default
 ---
 <article class="post-page">
   <div class="container">
-    <header class="post-header">
-      <div class="post-meta">
-        <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
-          {{ page.date | date: "%Y. %m. %d" }}
-        </time>
-        {% if page.tags %}
-        <div class="post-tags">
-          {% for tag in page.tags %}
-          <span class="tag">{{ tag }}</span>
-          {% endfor %}
+    <div class="post-layout">
+
+      <!-- 카테고리 사이드바 -->
+      <aside class="category-sidebar post-sidebar" id="postCategorySidebar">
+        <p class="category-sidebar-title">카테고리</p>
+        <div id="postCategoryTree"></div>
+      </aside>
+
+      <!-- 메인 콘텐츠 -->
+      <div class="post-main">
+        <header class="post-header">
+          <div class="post-meta">
+            <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
+              {{ page.date | date: "%Y. %m. %d" }}
+            </time>
+            {% if page.tags %}
+            <div class="post-tags">
+              {% for tag in page.tags %}
+              <span class="tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          <h1 class="post-title">{{ page.title }}</h1>
+        </header>
+
+        <div class="post-content">
+          {{ content }}
         </div>
-        {% endif %}
+
+        <div class="post-footer">
+          <a href="{{ '/' | relative_url }}" class="back-link">← 목록으로</a>
+        </div>
       </div>
-      <h1 class="post-title">{{ page.title }}</h1>
-    </header>
 
-    <div class="post-content">
-      {{ content }}
-    </div>
-
-    <div class="post-footer">
-      <a href="{{ '/' | relative_url }}" class="back-link">← 목록으로</a>
     </div>
   </div>
 </article>
+
+<script>
+(function() {
+  // 현재 포스트의 카테고리
+  const currentCategory = {{ page.categories | jsonify }} || ['기타'];
+  const currentCatPath = currentCategory.join(',');
+
+  // 모든 포스트 데이터
+  const allPosts = [
+    {% for post in site.posts %}
+    {
+      title: {{ post.title | jsonify }},
+      url: {{ post.url | relative_url | jsonify }},
+      category: {{ post.categories | jsonify }} || ['기타'],
+      date: {{ post.date | date: "%Y.%m.%d" | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+
+  // 카테고리 트리 빌드
+  const TOP_ORDER = ['기술', '실무경험', '재테크', '기타'];
+  const treeRoot = { label: '', path: '', children: new Map(), posts: [] };
+
+  allPosts.forEach(post => {
+    const parts = post.category.length ? post.category : ['기타'];
+    let node = treeRoot;
+    parts.forEach((label, i) => {
+      const path = parts.slice(0, i + 1).join(',');
+      if (!node.children.has(label)) {
+        node.children.set(label, { label, path, children: new Map(), posts: [] });
+      }
+      node = node.children.get(label);
+    });
+    node.posts.push(post);
+  });
+
+  function safeId(key) {
+    return 'pc-' + (key || 'all').replace(/[^a-zA-Z0-9가-힣]/g, '_');
+  }
+
+  // 현재 카테고리의 조상 경로인지 확인
+  function isAncestorOrSelf(nodePath, currentPath) {
+    if (!nodePath) return true;
+    const nParts = nodePath.split(',');
+    const cParts = currentPath.split(',');
+    return nParts.length <= cParts.length && nParts.every((s, i) => s === cParts[i]);
+  }
+
+  // 사이드바 렌더링
+  function renderNode(node, depth) {
+    const hasCh = node.children.size > 0;
+    const subClass = depth > 1 ? ' cat-sub' : '';
+    const isExpanded = isAncestorOrSelf(node.path, currentCatPath);
+    const isActive = node.path === currentCatPath;
+    const expandedClass = isExpanded && hasCh ? ' expanded' : '';
+    const activeClass = isActive ? ' active' : '';
+
+    const arrow = hasCh
+      ? '<span class="cat-arrow">▶</span>'
+      : '<span class="cat-indent"></span>';
+
+    const sorted = [...node.children.values()]
+      .sort((a, b) => a.label.localeCompare(b.label, 'ko'));
+
+    const count = countPosts(node);
+
+    return `<div class="cat-group${expandedClass}" data-path="${node.path}" data-depth="${depth}">
+      <a href="/?cat=${encodeURIComponent(node.path)}" class="category-btn${subClass}${activeClass}">
+        ${arrow}<span class="cat-label">${node.label}</span>
+        <span class="category-count">${count}</span>
+      </a>
+      ${hasCh ? `<div class="cat-children">${sorted.map(c => renderNode(c, depth + 1)).join('')}</div>` : ''}
+    </div>`;
+  }
+
+  function countPosts(node) {
+    let count = node.posts.length;
+    node.children.forEach(child => {
+      count += countPosts(child);
+    });
+    return count;
+  }
+
+  function buildSidebar() {
+    const sidebar = document.getElementById('postCategoryTree');
+    let html = `<a href="/" class="category-btn">
+      <span class="cat-indent"></span><span class="cat-label">전체</span>
+      <span class="category-count">${allPosts.length}</span>
+    </a>`;
+
+    TOP_ORDER.forEach(top => {
+      if (treeRoot.children.has(top)) html += renderNode(treeRoot.children.get(top), 1);
+    });
+    treeRoot.children.forEach((node, label) => {
+      if (!TOP_ORDER.includes(label)) html += renderNode(node, 1);
+    });
+
+    sidebar.innerHTML = html;
+
+    // 클릭 이벤트 (화살표로 확장/축소)
+    sidebar.querySelectorAll('.cat-group').forEach(group => {
+      const btn = group.querySelector(':scope > .category-btn');
+      const arrow = btn.querySelector('.cat-arrow');
+      if (arrow) {
+        arrow.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          group.classList.toggle('expanded');
+        });
+      }
+    });
+  }
+
+  buildSidebar();
+})();
+</script>

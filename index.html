@@ -379,8 +379,35 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // ── URL 파라미터로 카테고리 선택 ─────────────────────────────────────────
+  function initFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const catParam = params.get('cat');
+    if (catParam) {
+      selectedCatPath = catParam;
+    }
+  }
+
   // ── 초기화 ────────────────────────────────────────────────────────────────
+  initFromUrl();
   buildSidebar();
+
+  // URL 파라미터로 선택된 카테고리가 있으면 해당 버튼 활성화
+  if (selectedCatPath) {
+    sidebar.querySelectorAll('.category-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.cat === selectedCatPath) {
+        btn.classList.add('active');
+        // 상위 그룹들 expand
+        let group = btn.closest('.cat-group');
+        while (group) {
+          group.classList.add('expanded');
+          group = group.parentElement.closest('.cat-group');
+        }
+      }
+    });
+  }
+
   applyFilter();
 });
 </script>
