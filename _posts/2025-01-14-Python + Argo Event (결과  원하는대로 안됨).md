@@ -1,7 +1,11 @@
 ---
 title: "Python + Argo Event (결과 : 원하는대로 안됨)"
 date: 2025-01-14
-tags: [미지정]
+tags:
+  - argo
+  - EDA
+  - MSA
+  - KEDA
 category:
   - 기술
 ---
