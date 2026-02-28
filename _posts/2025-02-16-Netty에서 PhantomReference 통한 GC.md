@@ -76,7 +76,7 @@ phantomly reachable : strongly reachable 객체, softly reachable 객체, weakly
 unreachable : root set으로부터 시작되는 참조 사슬로 참조되지 않는 객체
 (정석) GC에 의한 척결 대상
 
-![[Pasted image 20260301004026.png]]
+![이미지](/assets/images/Pasted%20image%2020260301004026.png)
 
 
 ### ***Phantomly Reference - 사용하기 위함 보다는 올바르게 삭제하고 삭제 이후 작업을 조작하기 위함이다.***
