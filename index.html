@@ -23,15 +23,6 @@ layout: default
       <div class="posts-main">
         <h2 class="section-title">전체 글</h2>
 
-        <!-- 검색창 -->
-        <div class="search-box">
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
-          </svg>
-          <input type="text" id="searchInput" class="search-input" placeholder="제목, 내용으로 검색...">
-          <button class="search-clear-btn" id="searchClearBtn">✕</button>
-        </div>
-
         <!-- 태그 필터 -->
         <div class="tag-filter">
           <button class="tag-filter-btn active" data-tag="all">전체</button>
@@ -100,8 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const filterStatus   = document.getElementById('filterStatus');
   const dateClearBtn   = document.getElementById('dateClearBtn');
   const sidebar        = document.getElementById('categorySidebar');
-  const searchInput    = document.getElementById('searchInput');
-  const searchClearBtn = document.getElementById('searchClearBtn');
+  const searchInput    = document.getElementById('headerSearchInput');
 
   let selectedTags    = new Set();
   let dateFrom        = null;
@@ -277,7 +267,6 @@ document.addEventListener('DOMContentLoaded', function() {
     filterStatus.textContent = parts.length ? `${parts.join(' · ')}: ${cnt}개의 글` : '';
     allTagBtn.classList.toggle('active', parts.length === 0);
     dateClearBtn.style.display = (dateFrom && dateTo) ? 'inline-block' : 'none';
-    searchClearBtn.style.display = searchQuery ? 'flex' : 'none';
   }
 
   // ── Flatpickr ─────────────────────────────────────────────────────────────
@@ -329,19 +318,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── 검색 ──────────────────────────────────────────────────────────────────
   let searchTimeout = null;
-  searchInput.addEventListener('input', function() {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
-      searchQuery = this.value.toLowerCase().trim();
-      applyFilter();
-    }, 200); // 200ms 디바운스
-  });
-
-  searchClearBtn.addEventListener('click', function() {
-    searchInput.value = '';
-    searchQuery = '';
-    applyFilter();
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchQuery = this.value.toLowerCase().trim();
+        applyFilter();
+      }, 200); // 200ms 디바운스
+    });
+  }
 
   // ── 초기화 ────────────────────────────────────────────────────────────────
   buildSidebar();
