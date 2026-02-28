@@ -1,7 +1,10 @@
 ---
-title: "Gradle + Spring 멀티 모듈"
+title: Gradle + Spring 멀티 모듈
 date: 2024-05-07
-tags: [미지정]
+tags:
+  - Spring
+  - Java
+  - CI/CD
 category:
   - 기술
 ---

@@ -1,7 +1,12 @@
 ---
-title: "Argo Workflow + JFlow 연동 시 로그 문제 해결"
+title: Argo Workflow + JFlow 연동 시 로그 문제 해결
 date: 2024-12-31
-tags: [Kubernetes, Argo, 인프라, 개발]
+tags:
+  - Kubernetes
+  - Argo
+  - 인프라
+  - 개발
+  - CI/CD
 category:
   - 기술
 ---
