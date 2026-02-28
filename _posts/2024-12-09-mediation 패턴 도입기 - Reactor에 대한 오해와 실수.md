@@ -1,9 +1,15 @@
 ---
 title: "mediation 패턴 도입기 - Reactor에 대한 오해와 실수"
 date: 2024-12-09
-tags: [미지정]
+tags:
+  - BFF
+  - 아키텍처
+  - CI/CD
+  - MSA
 category:
-  - 기타
+  - 실무경험
+  - MSA표준
+  - BFF
 ---
 
 

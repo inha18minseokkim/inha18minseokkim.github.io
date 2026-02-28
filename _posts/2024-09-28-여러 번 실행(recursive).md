@@ -1,9 +1,16 @@
 ---
 title: "여러 번 실행(recursive)"
 date: 2024-09-28
-tags: [미지정]
+tags:
+  - argo
+  - workflow
+  - CI/CD
+  - 인프라
+  - job
+  - MSA
 category:
-  - 기타
+  - 실무경험
+  - MSA표준
 ---
 요청받은 이유:
 1분 5분에 한 번 잡을 실행할 일이 있는데

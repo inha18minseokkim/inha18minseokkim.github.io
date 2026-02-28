@@ -1,9 +1,15 @@
 ---
 title: "mediation 패턴 도입기 - 짬통은 어디에?"
 date: 2024-10-10
-tags: [미지정]
+tags:
+  - BFF
+  - 아키텍처
+  - CI/CD
+  - MSA
 category:
-  - 기타
+  - 실무경험
+  - MSA표준
+  - BFF
 ---
 
 ## 라우팅의 문제 - 레거시에서 바라보는 업무 분류와 MSA 환경에서의 업무 분류의 차이

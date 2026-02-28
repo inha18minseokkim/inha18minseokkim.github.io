@@ -1,9 +1,16 @@
 ---
 title: "Python + jflow 필요성 + 샘플 프로젝트"
 date: 2024-12-31
-tags: [미지정]
+tags:
+  - argo
+  - workflow
+  - CI/CD
+  - 인프라
+  - job
+  - MSA
 category:
-  - 기술
+  - 실무경험
+  - MSA표준
 ---
 
 ## 개선 사항

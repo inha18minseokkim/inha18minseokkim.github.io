@@ -2,14 +2,15 @@
 title: Argo Workflow + JFlow 연동 시 로그 문제 해결
 date: 2024-12-31
 tags:
-  - Kubernetes
-  - Argo
-  - 인프라
-  - 개발
+  - argo
+  - workflow
   - CI/CD
-  - 케이뱅크
+  - 인프라
+  - job
+  - MSA
 category:
-  - 기술
+  - 실무경험
+  - MSA표준
 ---
 
 JFlow에서 Argo Workflow를 실행할 때 발생하는 **로그 사이즈 폭증 문제**와 **실제 작업 로그가 안 보이는 문제**를 해결한 경험을 정리한다.

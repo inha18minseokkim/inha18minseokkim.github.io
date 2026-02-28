@@ -1,9 +1,15 @@
 ---
 title: "mediaion 패턴 도입기 - webclient + openfeign 사용"
 date: 2024-12-17
-tags: [미지정]
+tags:
+  - BFF
+  - 아키텍처
+  - CI/CD
+  - MSA
 category:
-  - 기술
+  - 실무경험
+  - MSA표준
+  - BFF
 ---
 
 

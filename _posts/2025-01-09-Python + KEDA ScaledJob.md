@@ -1,9 +1,16 @@
 ---
 title: "Python + KEDA ScaledJob"
 date: 2025-01-09
-tags: [미지정]
+tags:
+  - EDA
+  - KEDA
+  - CI/CD
+  - 인프라
+  - job
+  - MSA
 category:
-  - 기술
+  - 실무경험
+  - MSA표준
 ---
 
 ![](/assets/images/Pasted%20image%2020260228171334_78286dff.png)
