@@ -23,6 +23,15 @@ layout: default
       <div class="posts-main">
         <h2 class="section-title">전체 글</h2>
 
+        <!-- 검색창 -->
+        <div class="search-box">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="제목, 내용으로 검색...">
+          <button class="search-clear-btn" id="searchClearBtn">✕</button>
+        </div>
+
         <!-- 태그 필터 -->
         <div class="tag-filter">
           <button class="tag-filter-btn active" data-tag="all">전체</button>
@@ -46,7 +55,7 @@ layout: default
 
         <ul class="post-list">
           {% for post in site.posts %}
-          <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}" data-category="{{ post.categories | join: ',' | default: '기타' }}">
+          <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}" data-category="{{ post.categories | join: ',' | default: '기타' }}" data-title="{{ post.title | downcase }}" data-excerpt="{{ post.excerpt | strip_html | truncate: 300 | downcase }}">
             <a href="{{ post.url | relative_url }}" class="post-link">
               <div class="post-meta">
                 <time class="post-date">{{ post.date | date: "%Y. %m. %d" }}</time>
@@ -85,17 +94,20 @@ document.addEventListener('DOMContentLoaded', function() {
   tagBtns.sort((a, b) => parseInt(b.dataset.count) - parseInt(a.dataset.count));
   tagBtns.forEach(btn => tagFilter.appendChild(btn));
 
-  const filterBtns   = document.querySelectorAll('.tag-filter-btn');
-  const allTagBtn    = document.querySelector('.tag-filter-btn[data-tag="all"]');
-  const postItems    = document.querySelectorAll('.post-item');
-  const filterStatus = document.getElementById('filterStatus');
-  const dateClearBtn = document.getElementById('dateClearBtn');
-  const sidebar      = document.getElementById('categorySidebar');
+  const filterBtns     = document.querySelectorAll('.tag-filter-btn');
+  const allTagBtn      = document.querySelector('.tag-filter-btn[data-tag="all"]');
+  const postItems      = document.querySelectorAll('.post-item');
+  const filterStatus   = document.getElementById('filterStatus');
+  const dateClearBtn   = document.getElementById('dateClearBtn');
+  const sidebar        = document.getElementById('categorySidebar');
+  const searchInput    = document.getElementById('searchInput');
+  const searchClearBtn = document.getElementById('searchClearBtn');
 
   let selectedTags    = new Set();
   let dateFrom        = null;
   let dateTo          = null;
   let selectedCatPath = null; // null=전체 | "기술" | "기술,Spring" | ...
+  let searchQuery     = '';
 
   // ── 유틸 ──────────────────────────────────────────────────────────────────
   // data-category 값("재테크,주식")을 HTML id에 안전하게 변환
@@ -224,13 +236,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ── 태그 + 날짜 매칭 ──────────────────────────────────────────────────────
+  // ── 태그 + 날짜 + 검색어 매칭 ────────────────────────────────────────────
   function tagDateMatch(item) {
     const tags   = item.dataset.tags ? item.dataset.tags.split(',') : [];
     const tagOk  = selectedTags.size === 0 || tags.some(t => selectedTags.has(t));
     const d      = new Date(item.dataset.date);
     const dateOk = (!dateFrom && !dateTo) || (dateFrom && dateTo && d >= dateFrom && d <= dateTo);
-    return tagOk && dateOk;
+
+    // 검색어 매칭 (제목 + 내용)
+    let searchOk = true;
+    if (searchQuery) {
+      const title   = item.dataset.title || '';
+      const excerpt = item.dataset.excerpt || '';
+      searchOk = title.includes(searchQuery) || excerpt.includes(searchQuery);
+    }
+
+    return tagOk && dateOk && searchOk;
   }
 
   // ── 필터 적용 ─────────────────────────────────────────────────────────────
@@ -244,17 +265,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updateCategoryCounts(tagDateMatch);
 
-    const tagPart  = selectedTags.size > 0
+    const tagPart    = selectedTags.size > 0
       ? [...selectedTags].map(t => `"${t}"`).join(', ') + ' 태그' : '';
-    const datePart = (dateFrom && dateTo)
+    const datePart   = (dateFrom && dateTo)
       ? `${fp.formatDate(dateFrom, 'Y.m.d')} ~ ${fp.formatDate(dateTo, 'Y.m.d')}` : '';
-    const catPart  = selectedCatPath
+    const catPart    = selectedCatPath
       ? selectedCatPath.split(',').join(' > ') : '';
-    const parts    = [catPart, tagPart, datePart].filter(Boolean);
+    const searchPart = searchQuery ? `"${searchQuery}" 검색` : '';
+    const parts      = [searchPart, catPart, tagPart, datePart].filter(Boolean);
 
     filterStatus.textContent = parts.length ? `${parts.join(' · ')}: ${cnt}개의 글` : '';
     allTagBtn.classList.toggle('active', parts.length === 0);
     dateClearBtn.style.display = (dateFrom && dateTo) ? 'inline-block' : 'none';
+    searchClearBtn.style.display = searchQuery ? 'block' : 'none';
   }
 
   // ── Flatpickr ─────────────────────────────────────────────────────────────
@@ -302,6 +325,22 @@ document.addEventListener('DOMContentLoaded', function() {
       else                       { selectedTags.add(tag);    this.classList.add('active');    }
       applyFilter();
     });
+  });
+
+  // ── 검색 ──────────────────────────────────────────────────────────────────
+  let searchTimeout = null;
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      searchQuery = this.value.toLowerCase().trim();
+      applyFilter();
+    }, 200); // 200ms 디바운스
+  });
+
+  searchClearBtn.addEventListener('click', function() {
+    searchInput.value = '';
+    searchQuery = '';
+    applyFilter();
   });
 
   // ── 초기화 ────────────────────────────────────────────────────────────────
