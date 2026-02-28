@@ -1,11 +1,12 @@
 ---
-title: "mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)"
+title: mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)
 date: 2024-10-11
 tags:
   - BFF
   - 아키텍처
   - CI/CD
   - MSA
+  - Webflux
 category:
   - 실무경험
   - MSA표준

@@ -1,9 +1,12 @@
 ---
-title: "스프링부트 배치) 공통 메타 DB + Multiple DataSource(20250120)"
+title: 스프링부트 배치) 공통 메타 DB + Multiple DataSource(20250120)
 date: 2025-01-20
-tags: [미지정]
+tags:
+  - Spring
+  - Batch
 category:
-  - 기타
+  - 실무경험
+  - MSA표준
 ---
 
 재작년에 혹시몰라 가볍게 작성했는데 실제로 필요할 것 같음.

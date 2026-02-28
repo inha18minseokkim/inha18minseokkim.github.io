@@ -1,10 +1,11 @@
 ---
-title: "뻘짓) Spring Batch 5 + Multiple DataSource"
+title: 뻘짓) Spring Batch 5 + Multiple DataSource
 date: 2023-10-10
 tags:
-  - Spring Batch
   - 개발
   - Java
+  - Spring
+  - Batch
 category:
   - 기술
 ---

@@ -1,11 +1,12 @@
 ---
-title: "mediation 패턴 도입기 - RECYCLE_FACADES"
+title: mediation 패턴 도입기 - RECYCLE_FACADES
 date: 2024-11-26
 tags:
   - BFF
   - 아키텍처
   - CI/CD
   - MSA
+  - Webflux
 category:
   - 실무경험
   - MSA표준
