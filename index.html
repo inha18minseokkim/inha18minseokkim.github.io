@@ -24,11 +24,22 @@ layout: default
         <h2 class="section-title">전체 글</h2>
 
         <!-- 태그 필터 -->
-        <div class="tag-filter">
-          <button class="tag-filter-btn active" data-tag="all">전체</button>
-          {% for tag in site.tags %}
-          <button class="tag-filter-btn" data-tag="{{ tag[0] }}" data-count="{{ tag[1] | size }}">{{ tag[0] }}</button>
-          {% endfor %}
+        <div class="tag-filter-wrapper">
+          <div class="tag-filter-header">
+            <button class="tag-toggle-btn" id="tagToggleBtn">
+              <span class="tag-toggle-icon">▶</span> 태그 필터
+            </button>
+            <div class="tag-sort-btns">
+              <button class="tag-sort-btn active" data-sort="count">인기순</button>
+              <button class="tag-sort-btn" data-sort="name">이름순</button>
+            </div>
+          </div>
+          <div class="tag-filter collapsed" id="tagFilterContent">
+            <button class="tag-filter-btn active" data-tag="all">전체</button>
+            {% for tag in site.tags %}
+            <button class="tag-filter-btn" data-tag="{{ tag[0] }}" data-count="{{ tag[1] | size }}">{{ tag[0] }}</button>
+            {% endfor %}
+          </div>
         </div>
 
         <!-- 날짜 범위 필터 -->
@@ -79,11 +90,51 @@ layout: default
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // 태그 버튼을 언급 횟수 내림차순으로 정렬
-  const tagFilter = document.querySelector('.tag-filter');
-  const tagBtns = Array.from(tagFilter.querySelectorAll('.tag-filter-btn[data-count]'));
-  tagBtns.sort((a, b) => parseInt(b.dataset.count) - parseInt(a.dataset.count));
-  tagBtns.forEach(btn => tagFilter.appendChild(btn));
+  // ── 태그 토글 & 정렬 ────────────────────────────────────────────────────────
+  const tagFilter      = document.querySelector('.tag-filter');
+  const tagToggleBtn   = document.getElementById('tagToggleBtn');
+  const tagFilterContent = document.getElementById('tagFilterContent');
+  const tagSortBtns    = document.querySelectorAll('.tag-sort-btn');
+  const tagBtns        = Array.from(tagFilter.querySelectorAll('.tag-filter-btn[data-count]'));
+
+  // 초기 정렬: 인기순
+  function sortTagsByCount() {
+    tagBtns.sort((a, b) => parseInt(b.dataset.count) - parseInt(a.dataset.count));
+    tagBtns.forEach(btn => tagFilter.appendChild(btn));
+  }
+
+  function sortTagsByName() {
+    tagBtns.sort((a, b) => a.dataset.tag.localeCompare(b.dataset.tag, 'ko'));
+    tagBtns.forEach(btn => tagFilter.appendChild(btn));
+  }
+
+  sortTagsByCount(); // 초기 정렬
+
+  // 토글 버튼 클릭
+  tagToggleBtn.addEventListener('click', function() {
+    const isCollapsed = tagFilterContent.classList.contains('collapsed');
+    if (isCollapsed) {
+      tagFilterContent.classList.remove('collapsed');
+      this.classList.add('expanded');
+    } else {
+      tagFilterContent.classList.add('collapsed');
+      this.classList.remove('expanded');
+    }
+  });
+
+  // 정렬 버튼 클릭
+  tagSortBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      tagSortBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
+      if (this.dataset.sort === 'count') {
+        sortTagsByCount();
+      } else if (this.dataset.sort === 'name') {
+        sortTagsByName();
+      }
+    });
+  });
 
   const filterBtns     = document.querySelectorAll('.tag-filter-btn');
   const allTagBtn      = document.querySelector('.tag-filter-btn[data-tag="all"]');

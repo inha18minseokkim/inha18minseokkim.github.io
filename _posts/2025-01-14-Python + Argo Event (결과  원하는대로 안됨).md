@@ -10,7 +10,7 @@ category:
   - 기술
 ---
 
-한 4달전쯤에 KEDA 대신에 Argo Event를 사용하여 이벤트 기반으로 파드를 기동시켜보기로 했지만, KEDA는 컨슈머그룹상의 LAG를 이벤트로 보는 반면, Argo Event의 EventSource는 레코드 자체를 이벤트로 consume 하여 서로 다른 목적임을 확인하였다.
+	한 4달전쯤에 KEDA 대신에 Argo Event를 사용하여 이벤트 기반으로 파드를 기동시켜보기로 했지만, KEDA는 컨슈머그룹상의 LAG를 이벤트로 보는 반면, Argo Event의 EventSource는 레코드 자체를 이벤트로 consume 하여 서로 다른 목적임을 확인하였다.
   - 재정리) KEDA(Kubernetes Event Driven Autoscaler)의 문제는 1 : n 을 지원하지 않음.
     - 즉 trigger가 kafka topic 일때 N개의 토픽중 하나라도 조건을 만족하면(lagThreshold) HPA 되도록 설정은 할 수 있지만, 그 토픽에 관한 메타정보를 넘겨받는 구조는 아니다(workload manipulation을 지원하지 않는다는 KEDA 개발자의 친절한 피셜)
     - 파일을 n개 만들면 되긴 하지만 현재 yml 리소스 배포 정책상 1프로젝트 1파일이라 별도의 Kubernetes Object yml 파일을 배포할 수 있는 방법이 없다.

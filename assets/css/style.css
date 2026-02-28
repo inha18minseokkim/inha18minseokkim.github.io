@@ -254,11 +254,90 @@ html.light .icon-moon { display: block; }
 /* ============================================
    Tag Filter
    ============================================ */
+.tag-filter-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.tag-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.tag-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tag-toggle-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: rgba(124, 111, 255, 0.08);
+}
+
+.tag-toggle-icon {
+  font-size: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.tag-toggle-btn.expanded .tag-toggle-icon {
+  transform: rotate(90deg);
+}
+
+.tag-sort-btns {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.tag-sort-btn {
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.3rem 0.65rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tag-sort-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.tag-sort-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
 .tag-filter {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  overflow: hidden;
+  max-height: 500px;
+  transition: max-height 0.3s ease, opacity 0.2s ease, margin 0.2s ease;
+}
+
+.tag-filter.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
 }
 
 .tag-filter-btn {
