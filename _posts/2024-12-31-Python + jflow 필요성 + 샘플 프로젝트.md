@@ -1,14 +1,11 @@
 ---
 title: "Python + jflow 필요성 + 샘플 프로젝트"
 date: 2024-12-31
-tags:
-  - Python
-  - 인프라
-  - 개발
+tags: [미지정]
 category:
   - 기술
 ---
-Python과 Argo Workflow(jflow)를 활용한 파이프라인 구성 정리.
+
 ## 개선 사항
 
 1. 가벼운 작업 하나 돌리는데 spring application을 굳이 띄워야하나
@@ -27,7 +24,7 @@ Python과 Argo Workflow(jflow)를 활용한 파이프라인 구성 정리.
 ### 데모 개발
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/ba70c4ef-1576-42aa-ab17-7760628bf0ea/image.png)
+![](/assets/images/Pasted%20image%2020260228171331_c0e63ea7.png)
 
 간단하게 디렉터리를 나눔
 
@@ -119,12 +116,12 @@ spec:
 
 만약 jflow에서 모든것이 다 처리가 가능하면 argo-workflow가 굳이 필요하진 않을 듯 함.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/778a68f7-157b-4298-9eb7-fcc9b293097a/image.png)
+![](/assets/images/Pasted%20image%2020260228171332_133af6e7.png)
 
 자바 파이썬 모두 같은 실행환경에서 실행 가능.
 dockerized 된 환경에서 파이썬 스크립트 실행
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/58b3fda6-34f9-452e-98fd-5249178f26a3/image.png)
+![](/assets/images/Pasted%20image%2020260228171333_f3a38ba1.png)
 
 윈도우 cmd 스크립트 예시
 

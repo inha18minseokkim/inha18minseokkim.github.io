@@ -1,15 +1,12 @@
 ---
 title: "Python + KEDA ScaledJob"
 date: 2025-01-09
-tags:
-  - KEDA
-  - Kubernetes
-  - 인프라
+tags: [미지정]
 category:
   - 기술
 ---
-KEDA를 활용한 Kubernetes 오토스케일링 구현 정리.
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/d20f12b3-95fe-4fb1-b8d5-f81520a190d6/image.png)
+
+![](/assets/images/Pasted%20image%2020260228171334_78286dff.png)
 
 일단 로컬로 POC할 때는 이런식으로 프로젝트 하위에 scaled-job 폴더를 만들어서 여기다가 yaml 설정을 때려넣었다.
 
@@ -70,17 +67,17 @@ python_dat_load 컨슈머 그룹으로 ListedStockPrice 토픽을 바라보면�
 
 실시간으로 레코드 pub
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/5f960a73-f840-4009-babc-6dab58fe583c/image.png)
+![](/assets/images/Pasted%20image%2020260228171335_62178625.png)
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/7f221a2c-daa2-496a-8aff-ebab325c0457/image.png)
+![](/assets/images/Pasted%20image%2020260228171336_002ed633.png)
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/03e453ce-5355-4f28-84a7-72129ffbde52/image.png)
+![](/assets/images/Pasted%20image%2020260228171337_c597225e.png)
 
 lagThreshold가 1보다 크면 무조건 파드 1개가 뜸.
 스프링 KafkaItemReader와 차이가 있다면 자바스프링은 main 함수 기동 시 관련된 모든 클래스,빈을 메모리에 올리지만 파이썬의 경우 파이썬 스크립트 파일과 관련된 import만 메모리에 올리는 식의 인터프리터 언어다 보니 상당히 빠르고 가볍다.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/9efa5361-517f-47d4-a493-3f3f3942709c/image.png)
+![](/assets/images/Pasted%20image%2020260228171338_9de0e5f9.png)
 
 consumer group에 파이썬 consumer가 붙은 모습

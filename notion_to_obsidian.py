@@ -16,14 +16,102 @@ import sys
 import re
 import json
 import urllib.request
+import urllib.parse
+import hashlib
 import os
 from pathlib import Path
 from datetime import datetime, timezone
 
 SPLITBEE_API = "https://notion-api.splitbee.io/v1/page/"
+ASSETS_DIR = "assets/images"
 
 # page_id → post_slug (변환된 페이지 캐시)
 _slug_cache: dict = {}
+
+# 이미지 다운로드 옵션
+_download_images: bool = False
+_current_output_dir: str = ""
+
+# S3 URL 패턴
+S3_URL_PATTERNS = [
+    r'https://prod-files-secure\.s3\.us-west-2\.amazonaws\.com/',
+    r'https://s3\.us-west-2\.amazonaws\.com/secure\.notion-static\.com/',
+    r'https://prod-files-secure[^)\s]+\.amazonaws\.com/',
+]
+
+
+def has_s3_links(file_path: str) -> bool:
+    """파일에 S3 이미지 링크가 있는지 확인합니다."""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        for pattern in S3_URL_PATTERNS:
+            if re.search(pattern, content):
+                return True
+        return False
+    except Exception:
+        return False
+
+
+# ─── 이미지 다운로드 ──────────────────────────────────────────────────────────
+
+def download_image(source: str, block_id: str, output_dir: str) -> str:
+    """이미지를 다운로드하고 로컬 경로를 반환합니다. 실패 시 원본 URL 반환."""
+    if not _download_images:
+        return source
+
+    try:
+        # 이미지 파일명 생성
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        url_hash = hashlib.md5(source.encode()).hexdigest()[:8]
+
+        # URL에서 확장자 추출
+        if source.startswith("attachment:"):
+            ext = '.png'
+            parts = source.split(':')
+            if len(parts) >= 3 and '.' in parts[-1]:
+                ext = Path(parts[-1]).suffix
+        else:
+            parsed = urllib.parse.urlparse(source)
+            path = urllib.parse.unquote(parsed.path)
+            filename = Path(path).name
+            ext = Path(filename).suffix if '.' in filename else '.png'
+
+        new_filename = f"Pasted image {timestamp}_{url_hash}{ext}"
+
+        # assets 디렉토리 생성
+        assets_path = Path(output_dir).parent / ASSETS_DIR
+        assets_path.mkdir(parents=True, exist_ok=True)
+
+        dest_path = assets_path / new_filename
+
+        # Notion 이미지 프록시 URL 구성
+        encoded_source = urllib.parse.quote(source, safe='')
+        proxy_url = f"https://stump-blender-387.notion.site/image/{encoded_source}?table=block&id={block_id}"
+
+        # 다운로드 (프록시 URL은 리다이렉트를 따라감)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+        }
+        req = urllib.request.Request(proxy_url, headers=headers)
+        with urllib.request.urlopen(req, timeout=30) as response:
+            content = response.read()
+
+            if len(content) < 100:
+                print(f"    이미지 크기 너무 작음: {len(content)} bytes")
+                return source
+
+            with open(dest_path, 'wb') as f:
+                f.write(content)
+
+            print(f"    이미지 다운로드: {new_filename} ({len(content)} bytes)")
+
+            # URL 인코딩된 로컬 경로 반환
+            return f"/{ASSETS_DIR}/{urllib.parse.quote(new_filename)}"
+
+    except Exception as e:
+        print(f"    이미지 다운로드 실패: {e}")
+        return source
 
 # ─── 카테고리 분류 ────────────────────────────────────────────────────────────
 
@@ -179,7 +267,7 @@ def rich_text_to_md(segments) -> str:
 
 # ─── 블록 → Markdown ──────────────────────────────────────────────────────────
 
-def render_block(bval: dict, blocks: dict, depth: int = 0, number: int = None) -> str:
+def render_block(bval: dict, blocks: dict, depth: int = 0, number: int = None, block_id: str = "") -> str:
     """단일 블록을 마크다운 문자열로 변환합니다."""
     btype = bval.get("type", "")
     props = bval.get("properties", {})
@@ -267,6 +355,9 @@ def render_block(bval: dict, blocks: dict, depth: int = 0, number: int = None) -
             source = bval.get("format", {}).get("display_source", "")
         caption = rich_text_to_md(props.get("caption", []))
         if source:
+            # S3 URL 또는 attachment URL이면 다운로드 시도
+            if (source.startswith("https://") and "amazonaws.com" in source) or source.startswith("attachment:"):
+                source = download_image(source, block_id, _current_output_dir)
             return f"\n![{caption}]({source})\n"
         else:
             return f"\n> [이미지 - 권한 필요]\n"
@@ -366,7 +457,8 @@ def render_blocks(block_ids: list, blocks: dict, depth: int = 0) -> str:
 
         md = render_block(
             bval, blocks, depth,
-            number=numbered_counter if btype in ("numbered_list_item", "numbered_list") else None
+            number=numbered_counter if btype in ("numbered_list_item", "numbered_list") else None,
+            block_id=bid
         )
         if md is not None:
             parts.append(md)
@@ -434,7 +526,7 @@ def sanitize_filename(title: str) -> str:
     return name or "Untitled"
 
 
-def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bool = False, recursive: bool = False):
+def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bool = False, recursive: bool = False, update_images: bool = False):
     """페이지를 마크다운으로 변환합니다. recursive=True 이면 child page 및 본문 내 Notion 링크도 DFS로 처리합니다."""
     if visited is None:
         visited = set()
@@ -464,9 +556,20 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
     root_val = blocks.get(page_id, {}).get("value", {})
     content_ids = root_val.get("content", [])
 
-    # 동일 파일 존재 시 스킵 (--rewrite 시 덮어쓰기)
+    # --update-images 모드: S3 링크가 있는 파일만 덮어쓰기
     skip_write = False
-    if output_path.exists():
+    if update_images:
+        if output_path.exists():
+            if has_s3_links(str(output_path)):
+                print(f"  S3 링크 발견 → 덮어쓰기: {filename}")
+            else:
+                print(f"  S3 링크 없음 → 스킵: {filename}")
+                skip_write = True
+        else:
+            print(f"  파일 없음 → 스킵: {filename}")
+            skip_write = True
+    # 일반 모드: 동일 파일 존재 시 스킵 (--rewrite 시 덮어쓰기)
+    elif output_path.exists():
         if rewrite:
             output_path.unlink()
             print(f"  덮어쓰기: {filename}")
@@ -476,6 +579,10 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
 
     if not skip_write:
         print(f"  제목: {title} ({date_str})")
+
+        # 이미지 다운로드를 위해 현재 출력 디렉토리 설정
+        global _current_output_dir
+        _current_output_dir = output_dir
 
         md_body = render_blocks(content_ids, blocks, depth=0)
 
@@ -519,26 +626,45 @@ def convert_page(page_id: str, output_dir: str, visited: set = None, rewrite: bo
             print(f"  [DEBUG]   {bid[:8]} parent={pid[:8] if len(pid) > 8 else pid} included={bid in child_page_bids} '{ptitle}'")
 
         for bid in child_page_bids:
-            convert_page(bid, output_dir, visited, rewrite=rewrite, recursive=True)
+            convert_page(bid, output_dir, visited, rewrite=rewrite, recursive=True, update_images=update_images)
 
 
 # ─── 진입점 ──────────────────────────────────────────────────────────────────
 
 def main():
+    global _download_images
+
     args = sys.argv[1:]
     skip = "--skip" in args
     recursive = "--recursive" in args
-    args = [a for a in args if a not in ("--skip", "--recursive")]
+    download_imgs = "--download-images" in args
+    update_imgs = "--update-images" in args
+    args = [a for a in args if a not in ("--skip", "--recursive", "--download-images", "--update-images")]
 
     if len(args) < 2:
-        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url> [--recursive] [--skip]")
-        print("예시:   python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456")
-        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --recursive")
-        print("        python notion_to_obsidian.py ./_posts https://stump-blender-387.notion.site/abc123def456 --recursive --skip")
+        print("사용법: python notion_to_obsidian.py <output_dir> <notion_url> [옵션]")
+        print()
+        print("옵션:")
+        print("  --recursive       하위 페이지도 함께 변환")
+        print("  --skip            이미 존재하는 파일 스킵")
+        print("  --download-images S3 이미지를 로컬로 다운로드")
+        print("  --update-images   기존 파일 중 S3 링크가 있는 것만 이미지 다운로드 후 덮어쓰기")
+        print()
+        print("예시:")
+        print("  python notion_to_obsidian.py ./_posts https://... --recursive --download-images")
+        print("  python notion_to_obsidian.py ./_posts https://... --recursive --update-images")
         sys.exit(1)
 
     output_dir = args[0]
     url = args[1]
+
+    # 이미지 다운로드 옵션 설정
+    # --update-images는 자동으로 이미지 다운로드 활성화
+    _download_images = download_imgs or update_imgs
+    if update_imgs:
+        print("이미지 업데이트 모드: S3 링크가 있는 기존 파일만 처리")
+    elif _download_images:
+        print("이미지 다운로드 모드 활성화")
 
     try:
         page_id = extract_page_id(url)
@@ -547,7 +673,7 @@ def main():
         print(f"오류: {e}")
         sys.exit(1)
 
-    convert_page(page_id, output_dir, rewrite=not skip, recursive=recursive)
+    convert_page(page_id, output_dir, rewrite=not skip, recursive=recursive, update_images=update_imgs)
     print("\n완료!")
 
 

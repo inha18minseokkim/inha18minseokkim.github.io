@@ -1,12 +1,9 @@
 ---
 title: "스프링부트 배치) 공통 메타 DB + Multiple DataSource(20250120)"
 date: 2025-01-20
-tags:
-  - Spring Batch
-  - 개발
-  - DB
+tags: [미지정]
 category:
-  - 기술
+  - 기타
 ---
 
 재작년에 혹시몰라 가볍게 작성했는데 실제로 필요할 것 같음.
@@ -35,7 +32,7 @@ category:
   - 조직,업무 특성상 정기작업은 was처럼 실시간 처리를 요하지는 않다보니 이런 요건은 MSA보다는 잘 관리된 모노환경이 오히려 적합할 수 있다는 생각이 요즘 강하게 듦. (높은 격리수준으로 인한 안정성에 대한 효용 <<<< 낮은 격리수준이지만 현재 행 내 변경계획 정책 compatibility에 따른 효용)
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/31cf7c9d-c850-4f48-b06f-3160a0d09b7c/image.png)
+![](/assets/images/Pasted%20image%2020260228171319_4191e446.png)
 
 제목 없는 다이어그램.drawio
 
@@ -96,23 +93,23 @@ public class JpaDbProperties {
 ```java
 @Bean(value="dataSource")
 @Primary
-public DataSource dataSource {
-    DataSource dataSource = DataSourceBuilder.create
-            .driverClassName(batchDbProperties.getDriverClassName)
-            .url(batchDbProperties.getUrl)
-            .username(batchDbProperties.getUsername)
-            .password(batchDbProperties.getPassword)
-            .build;
+public DataSource dataSource() {
+    DataSource dataSource = DataSourceBuilder.create()
+            .driverClassName(batchDbProperties.getDriverClassName())
+            .url(batchDbProperties.getUrl())
+            .username(batchDbProperties.getUsername())
+            .password(batchDbProperties.getPassword())
+            .build();
     return dataSource;
 }
 @Bean(value = "businessDataSource")
-public DataSource businessDataSource {
-    return DataSourceBuilder.create
-            .url(jpaDbProperties.getUrl)
-            .driverClassName(jpaDbProperties.getDriverClassName)
-            .username(jpaDbProperties.getUsername)
-            .password(jpaDbProperties.getPassword)
-            .build;
+public DataSource businessDataSource() {
+    return DataSourceBuilder.create()
+            .url(jpaDbProperties.getUrl())
+            .driverClassName(jpaDbProperties.getDriverClassName())
+            .username(jpaDbProperties.getUsername())
+            .password(jpaDbProperties.getPassword())
+            .build();
 }
 ```
 
@@ -128,18 +125,18 @@ public DataSource businessDataSource {
 ```java
 @Bean
 @Primary
-public JobRepository jobRepository throws Exception {
-    JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean;
-    jobRepositoryFactoryBean.setDataSource(dataSource);
-    jobRepositoryFactoryBean.setIncrementerFactory(new DefaultDataFieldMaxValueIncrementerFactory(dataSource));
-    jobRepositoryFactoryBean.setTransactionManager(transactionManager);
+public JobRepository jobRepository() throws Exception {
+    JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
+    jobRepositoryFactoryBean.setDataSource(dataSource());
+    jobRepositoryFactoryBean.setIncrementerFactory(new DefaultDataFieldMaxValueIncrementerFactory(dataSource()));
+    jobRepositoryFactoryBean.setTransactionManager(transactionManager());
     jobRepositoryFactoryBean.setDatabaseType("POSTGRES");
-    jobRepositoryFactoryBean.setJobKeyGenerator(new DefaultJobKeyGenerator);
-    jobRepositoryFactoryBean.setJdbcOperations(new JdbcTemplate(dataSource));
-    jobRepositoryFactoryBean.setConversionService(new DefaultConversionService);
-    jobRepositoryFactoryBean.setSerializer(new DefaultExecutionContextSerializer);
+    jobRepositoryFactoryBean.setJobKeyGenerator(new DefaultJobKeyGenerator());
+    jobRepositoryFactoryBean.setJdbcOperations(new JdbcTemplate(dataSource()));
+    jobRepositoryFactoryBean.setConversionService(new DefaultConversionService());
+    jobRepositoryFactoryBean.setSerializer(new DefaultExecutionContextSerializer());
     jobRepositoryFactoryBean.setIsolationLevelForCreate("ISOLATION_DEFAULT");
-    return jobRepositoryFactoryBean.getObject;
+    return jobRepositoryFactoryBean.getObject();
 }
 ```
 
@@ -156,20 +153,20 @@ public class ListedStockPriceListener implements ApplicationRunner {
 ...........중략
 @Override
 public void run(ApplicationArguments args) throws Exception {
-    TaskExecutorJobLauncher jobLauncher = new TaskExecutorJobLauncher;
+    TaskExecutorJobLauncher jobLauncher = new TaskExecutorJobLauncher();
 
     jobLauncher.setJobRepository(jobRepository);
     jobLauncher.setTaskExecutor(task -> {
         log.info("ListedStockPrice 적재 시작 @@@@@@");
-        task.run;
+        task.run();
     });
-    jobLauncher.run(priceBatchJob,jobParameters);
+    jobLauncher.run(priceBatchJob(),jobParameters());
 }
 @Bean
-public Job priceBatchJob {
+public Job priceBatchJob() {
     return new JobBuilder(jobName, jobRepository)
-            .start(listedStockPriceStep)
-            .build;
+            .start(listedStockPriceStep())
+            .build();
 }
 ```
 
@@ -186,17 +183,17 @@ Spring batch에서 jobRepository의 트랜잭션 관리는 PlatformTransactionMa
 ```java
 @Bean(value="transactionManager")
 @Primary
-public PlatformTransactionManager transactionManager{
-    return new DataSourceTransactionManager(dataSource);
+public PlatformTransactionManager transactionManager(){
+    return new DataSourceTransactionManager(dataSource());
 }
 ```
 
 
 ```java
 @Bean
-public JpaTransactionManager jpaTransactionManager {
-    JpaTransactionManager jpaTransactionManager = new JpaTransactionManager;
-    jpaTransactionManager.setDataSource(businessDataSource);
+public JpaTransactionManager jpaTransactionManager() {
+    JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+    jpaTransactionManager.setDataSource(businessDataSource());
     return jpaTransactionManager;
 }
 ```
@@ -207,15 +204,15 @@ public JpaTransactionManager jpaTransactionManager {
 
 ```java
 @Bean("listedStockPriceStep")
-public Step listedStockPriceStep {
+public Step listedStockPriceStep() {
     log.info("##listedStockPriceStep 기동##");
     return new StepBuilder("listedStockPriceStep",jobRepository)
             .<String, List<ListedStockPrice>>chunk(5,jpaTransactionManager)
-            .reader(priceItemReader)
-            .processor(priceItemProcessor)
+            .reader(priceItemReader())
+            .processor(priceItemProcessor())
             .transactionManager(jpaTransactionManager) //데이터소스 여러개인 경우 여기마저도 수동으로 해야함
-            .writer(priceItemWriter)
-            .build;
+            .writer(priceItemWriter())
+            .build();
 }
 ```
 
@@ -231,15 +228,15 @@ jpa를 사용하지 않는다면 필요하지 않다. 우리가 인터넷에 찾
 
 ```java
 @Bean
-public LocalContainerEntityManagerFactoryBean entityManagerFactory {
-    LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean;
-    factoryBean.setDataSource(businessDataSource);
+public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+    factoryBean.setDataSource(businessDataSource());
     factoryBean.setPackagesToScan("com.kbank.convenience.stock.*"); // JPA 엔티티 패키지 경로
 
-    JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter;
+    JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     factoryBean.setJpaVendorAdapter(vendorAdapter);
 
-    Properties jpaProperties = new Properties;
+    Properties jpaProperties = new Properties();
     jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
     jpaProperties.put("hibernate.hbm2ddl.auto", "none");
     jpaProperties.put("hibernate.show_sql", "true");
@@ -254,10 +251,10 @@ public LocalContainerEntityManagerFactoryBean entityManagerFactory {
 
 ```java
 @Bean
-public ItemWriter<List<ListedStockPrice>> priceItemWriter {
-    JpaItemWriter<ListedStockPrice> itemWriter = new JpaItemWriterBuilder<ListedStockPrice>
+public ItemWriter<List<ListedStockPrice>> priceItemWriter() {
+    JpaItemWriter<ListedStockPrice> itemWriter = new JpaItemWriterBuilder<ListedStockPrice>()
             .entityManagerFactory(entityManagerFactory)
-            .build;
+            .build();
     JpaItemsWriter<ListedStockPrice> listedStockPriceJpaItemsWriter = new JpaItemsWriter<>(itemWriter);
     listedStockPriceJpaItemsWriter.setEntityManagerFactory(entityManagerFactory);
     return listedStockPriceJpaItemsWriter;
@@ -272,7 +269,7 @@ public class JpaItemsWriter<T> extends JpaItemWriter<List<T>> {
     private final JpaItemWriter<T> jpaItemWriter;
     @Override
     public void write(Chunk<? extends List<T>> items) {
-        Chunk<T> toBeWritten = new Chunk<>;
+        Chunk<T> toBeWritten = new Chunk<>();
         for(var item: items){
             toBeWritten.addAll(item);
         }
@@ -283,7 +280,7 @@ public class JpaItemsWriter<T> extends JpaItemWriter<List<T>> {
 ```
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/f874171b-40d8-480e-93b0-05615364b89a/image.png)
+![](/assets/images/Pasted%20image%2020260228171320_37940099.png)
 
 이런 식으로 배치 인스턴스는 배치 db에, 비즈니스 내용은 비즈니스 db에 저장됨. 끝. 
 
@@ -298,4 +295,4 @@ public class JpaItemsWriter<T> extends JpaItemWriter<List<T>> {
 ### 20250211 추가)
 
 해당 포스트는 ResourceLessJobRepository의 등장으로 인메모리로 적재를 한다면 안써도 됨.
-Spring Batch 5.2.0-M2(2024년 11월쯤?) 에 다시 지원한듯 
+Spring Batch 5.2.0-M2(2024년 11월쯤?) 에 다시 지원한듯 ㅋㅋ

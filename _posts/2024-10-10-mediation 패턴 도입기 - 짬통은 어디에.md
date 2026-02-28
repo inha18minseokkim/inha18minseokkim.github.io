@@ -1,15 +1,11 @@
 ---
-title: mediation 패턴 도입기 - 짬통은 어디에?
+title: "mediation 패턴 도입기 - 짬통은 어디에?"
 date: 2024-10-10
-tags:
-  - 개발
-  - 아키텍처
-  - Java
-  - BFF
+tags: [미지정]
 category:
-  - 실무경험
+  - 기타
 ---
-Mediation 패턴 구현 과정 정리.
+
 ## 라우팅의 문제 - 레거시에서 바라보는 업무 분류와 MSA 환경에서의 업무 분류의 차이
 
 현재 공모주, 비상장주식 서비스 개발 후에 상장, 해외주식 서비스까지 오픈된 상황이다.
@@ -49,7 +45,7 @@ MSA쪽 편의서비스의 경우 서브계>편의서비스>주식(STK) 로 MCI�
 우선 라우팅 규칙에 if ~ else 형식이 들어가는 것은 로직이 덕지덕지이긴 했지만 업무가 추가되는 속도가 그렇게 빠르지 않다보니 2순위 문제였긴 했다.
 그렇긴 해도 Mediation 패턴을 도입하면 위 세 가지 문제를 모두 해결할 수 있을 것 같았다.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/64cf8b2f-2ecf-4bf8-918f-28a45ee9042c/image.png)
+![](/assets/images/Pasted%20image%2020260228171256_951173ac.png)
 
 우선 2순위 문제였던 MCI > MSA 라우팅 규칙이 깔끔해졌다
 기존에는 CSVSTK1~ → 공모주, CSVSTK2 → 비상장 으로 라우팅을 하면서 3번은 상장, 4번은 해외 이런식으로 덕지덕지 추가가 되었을 것이다.(if else ~ else ~ else와 같은 패턴 반복)
@@ -57,14 +53,14 @@ MSA쪽 편의서비스의 경우 서브계>편의서비스>주식(STK) 로 MCI�
 mediation 파드에서 라우팅 + 조합을 하기 때문에 말단 서비스들의 로직이 간단해진다.
 저 당시까지만 해도 controller - service - infra 3 레이어 구조를 고수하고 있어서 결국 서비스 레이어에서 다른 서비스들을 호출하면서 흔히 말하는 짬통 서비스가 하나씩 있었는데, 이렇게 되다보니 다른 사람과 협업하는 부분에서 서비스 호출의 depth가 점점 늘어날 수도 있는 상황이었다.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/840b03dd-89dc-4d7c-ab65-0bfe420308bc/image.png)
+![](/assets/images/Pasted%20image%2020260228171257_2f5f6aaa.png)
 
 이런식으로 서비스간의 상호 호출을 규칙없이 허용하다 보면….어떻게 될까.
 
 ## Facade 레이어는 쓰지 않기로 함
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/5458736b-8394-4c2e-a7c4-21634157639c/image.png)
+![](/assets/images/Pasted%20image%2020260228171258_7cd30866.png)
 
 처음에는  controller - service 레이어 사이에 facade 패턴을 넣자고 주장은 했지만, 다른 분들의 거센 반대로 인해 캔슬되었고(당시 공모주 메이트 서비스를 카드 서버에서 MSA로 최초 마이그 중이었는데, 간단한 서비스에 비해 해야할 것이 너무 많아서, 매퍼도 추가해야되고)
 나 또한 근본적으로 파사드 레이어를 중간에 넣는다고 해결되지 않는 것들도 있다고 판단했다.
@@ -73,11 +69,11 @@ mediation 파드에서 라우팅 + 조합을 하기 때문에 말단 서비스�
 ## pod 상호 호출 까지 가능
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/4756e7d0-5a98-4d54-93b8-3344c0363022/image.png)
+![](/assets/images/Pasted%20image%2020260228171259_b28f8740.png)
 
 이런말하기는 부끄럽지만 공모주, 비상장, 국내, 해외, 지수, 환율, 방송, 퀴즈쇼, 수신이벤트, 가상자산 다 한 DB에 들어가있다.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/9ec80fce-30a0-4e62-96b6-1e70f75c637c/image.png)
+![](/assets/images/Pasted%20image%2020260228171300_ace0acf9.png)
 
 백엔드는 MSA 구조가 맞는데 프론트엔드와 DB(물리)는 완전 모놀리틱이다. 아니 모놀리틱도 이정도는 아니다. 그냥 우리집 장난감용 맥미니에 올라가있는 쿠버네티스 - db와 구성이 비슷하다.
 만약 위 db에서 장애가 발생하면 총 8개, 그 이상의 서비스가 모두 안된다. 실제로 비슷한 일이 있었다.
@@ -97,6 +93,6 @@ mediation 파드에서 라우팅 + 조합을 하기 때문에 말단 서비스�
 비상장 주식 알림 서비스에서 공모주 메이트 api를 call
 물론 리스트이므로 mediation 패턴의 경우 N+1 문제와 유사한 문제가 생길 수 있는데,  유의하며 개발해보는걸로 함.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/61d15cdc-e69f-4794-a17c-8c16f3f39d09/image.png)
+![](/assets/images/Pasted%20image%2020260228171302_fd538dd0.png)
 
 깔끔(DB는 안깔끔, 환율 지수는 내 담당이 아니라 못함. + 아직 신규 하위업무가 없어서 필요없을듯)

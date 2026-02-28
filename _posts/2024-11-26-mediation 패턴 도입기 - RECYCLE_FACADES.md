@@ -1,15 +1,11 @@
 ---
-title: mediation 패턴 도입기 - RECYCLE_FACADES
+title: "mediation 패턴 도입기 - RECYCLE_FACADES"
 date: 2024-11-26
-tags:
-  - 개발
-  - 아키텍처
-  - Java
-  - BFF
+tags: [미지정]
 category:
-  - 실무경험
+  - 기타
 ---
-Mediation 패턴의 RECYCLE_FACADES 설정 관련 정리.
+
 ### 이슈내용
 
 
@@ -51,8 +47,8 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 //케이뱅크 공통 헤더를 각 업무단에 propagate 하기 위한 인터셉터
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
-		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes;
-		HttpServletRequest request = requestAttributes.getRequest;
+		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = requestAttributes.getRequest();
 
 ```
 
@@ -60,7 +56,7 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 
 ```java
 @Bean
-TomcatConnectorCustomizer disableFacadeDiscard {
+TomcatConnectorCustomizer disableFacadeDiscard() {
 	return (connector) -> connector.setDiscardFacades(false);
 }
 ```
@@ -79,12 +75,12 @@ discard 하지 않도록 하게 하면 된다.
 톰캣 공식문서 보고 
 [Apache Tomcat 9 (9.0.97) - Changelog](https://tomcat.apache.org/tomcat-9.0-doc/changelog.html#Tomcat_9.0.97_(remm))
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/c0436449-be41-4a21-9424-6cbdba482f6e/image.png)
+![](/assets/images/Pasted%20image%2020260228171304_0c27e9ef.png)
 
 톰캣 9버전부터 RECYCLE_FACADES는 true가 기본값으로 설정되었다고 한다.
   - 그러니깐 RECYCLE_FACADES의 기본값이 true로 바뀜 > Connector의 discardFacades 프로퍼티에 영향 줌 왜냐하면 이 설정을 기본으로 따르도록 하고있음. > 그래서 별설정 안하면 해당 Facade 객체는 자동으로 버려짐 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/4b81570e-d6ae-47d8-a068-2bb55d7794dd/image.png)
+![](/assets/images/Pasted%20image%2020260228171305_e09bdefb.png)
 
 
 

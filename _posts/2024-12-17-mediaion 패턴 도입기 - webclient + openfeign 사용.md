@@ -1,24 +1,21 @@
 ---
-title: mediaion 패턴 도입기 - webclient + openfeign 사용
+title: "mediaion 패턴 도입기 - webclient + openfeign 사용"
 date: 2024-12-17
-tags:
-  - 개발
-  - 아키텍처
-  - Java
-  - Webflux
-  - BFF
+tags: [미지정]
 category:
   - 기술
 ---
-Mediation 패턴 구현 시 FeignClient vs WebClient 비교 정리.
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/744b5011-68df-4691-b88e-beb2ba835678/image.png)
+
+
+
+![](/assets/images/Pasted%20image%2020260228171312_04c59265.png)
 
 아직 reactive support가 공식은 아니지만 비공식 라이브러리를 샤라웃 한 라이브러리가 있어서 일단 이걸로 알아보자.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/802b2827-d04c-40ec-8888-ae629e0f39cc/image.png)
+![](/assets/images/Pasted%20image%2020260228171313_2f2b6729.png)
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/739d59eb-577e-42de-8522-385a1df2c61c/image.png)
+![](/assets/images/Pasted%20image%2020260228171314_f372da21.png)
 
 생각보다 잘 관리되고 있고, 공식문서에서도 사용을 추천하기 때문에 사용하기로 했다.
 
@@ -37,7 +34,7 @@ public class KbankHeaderToContextFilter implements WebFilter {
         return chain.filter(exchange)
                 .contextWrite(e -> {
                     //Webflux 기반 컨트롤러로 들어온 요청의 헤더를 context write 함
-                    Map<String, String> singleValueMap = exchange.getRequest.getHeaders.toSingleValueMap;
+                    Map<String, String> singleValueMap = exchange.getRequest().getHeaders().toSingleValueMap();
                     log.debug("chain Header from stock-gateway {}",singleValueMap.get("kbank_standard_header"));
                     return e.put("kbank_standard_header", singleValueMap.get("kbank_standard_header"));
                 });
@@ -51,23 +48,23 @@ ExchangeFilterFunction.ofRequestProcessor를 사용해서 request를 가로챌 �
 
 ```java
 @Bean
-public WebClient.Builder webClientBuilder {
-    return WebClient.builder
-            .filter(kbankHeaderPropagationFilter
+public WebClient.Builder webClientBuilder() {
+    return WebClient.builder()
+            .filter(kbankHeaderPropagationFilter()
             );
 }
 
-private static ExchangeFilterFunction kbankHeaderPropagationFilter {
+private static ExchangeFilterFunction kbankHeaderPropagationFilter() {
     return ExchangeFilterFunction
             .ofRequestProcessor(
                     request -> Mono.deferContextual(context -> {
                                 //KbankHeaderToContextFilter 에서 ContextWrite 한 헤더 값을 여기서 Context get 함
-                                log.debug("WebClient header from Context {}", context.get("kbank_standard_header").toString);
-                                log.debug("{}", request.url);
+                                log.debug("WebClient header from Context {}", context.get("kbank_standard_header").toString());
+                                log.debug("{}", request.url());
                                 //ClientRequest를 새로 만들어서 헤더값을 propagate 함. 이러면 종단 파드에 헤더 전달 가능.
                                 ClientRequest build = ClientRequest.from(request)
-                                        .header("kbank_standard_header", context.get("kbank_standard_header").toString)
-                                        .build;
+                                        .header("kbank_standard_header", context.get("kbank_standard_header").toString())
+                                        .build();
                                 return Mono.just(build);
                             }
                     )
@@ -75,9 +72,9 @@ private static ExchangeFilterFunction kbankHeaderPropagationFilter {
 }
 
 @Bean
-public ListedStockService listedStockService {
+public ListedStockService listedStockService() {
     return WebReactiveFeign
-            .<ListedStockService>builder(webClientBuilder)
+            .<ListedStockService>builder(webClientBuilder())
             .target(ListedStockService.class,"http://127.0.0.1:8088/listed-stock-service");
 }
 ```

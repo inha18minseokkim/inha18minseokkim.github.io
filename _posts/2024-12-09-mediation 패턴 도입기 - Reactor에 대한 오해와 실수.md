@@ -1,19 +1,15 @@
 ---
-title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
+title: "mediation 패턴 도입기 - Reactor에 대한 오해와 실수"
 date: 2024-12-09
-tags:
-  - 개발
-  - 아키텍처
-  - Java
-  - Webflux
-  - BFF
+tags: [미지정]
 category:
-  - 실무경험
+  - 기타
 ---
-Mediation 패턴 구현 시 Reactor/WebFlux 기반 논블로킹 처리 정리.
+
+
 현재 구조를 보면 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/90c7d20a-5a39-4a58-bce0-5bd750472dc6/image.png)
+![](/assets/images/Pasted%20image%2020260228171308_8649ebed.png)
 
 구조가 이렇게 되어있다.
 stock-gateway는 최대한 많은 요청을 처리하기 위해 Spring Cloud Gateway, netty를 사용함.
@@ -31,7 +27,7 @@ stock-gateway는 최대한 많은 요청을 처리하기 위해 Spring Cloud Gat
 
 케이뱅크 표준헤더를 다음과 같이 Propagate 해야 함.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/87c9f4a2-c616-455e-a31d-4e97aaea966a/image.png)
+![](/assets/images/Pasted%20image%2020260228171310_a23c2ee5.png)
 
 왜냐하면 회사 내부 규칙을 준수하기 위해 호출한 인스턴스 번호, 일자등을 활용해서 guid를 생성하고 테이블 row에 있어야 함.
 그래서 Interceptor를 사용하기로 함. HttpServletRequest를 게이트웨이로 받았음 > 여기 헤더 정보를 stock-mediation에서 각 업무단으로 호출 할 때 헤더를 그대로 전달해주면 됨. 
@@ -43,8 +39,8 @@ public class CurrentRequestHeadersInterceptor implements RequestInterceptor {
 //케이뱅크 공통 헤더를 각 업무단에 propagate 하기 위한 인터셉터
 	@Override
 	public void apply(RequestTemplate requestTemplate) {
-		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes;
-		HttpServletRequest request = requestAttributes.getRequest;
+		ServletRequestAttributes requestAttributes = (ServletRequesAttributes)RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = requestAttributes.getRequest();
 			requestTemplate.header("Log-level",request.getHeader("Log-level"));
 			requestTemplate.header("rcvSrvcCd",request.getHeader("rcvSrvcCd"));
 			requestTemplate.header("mciIntfId",request.getHeader("mciIntfId"));
@@ -65,7 +61,7 @@ RequestContextHolder를 보면 ThreadLocal로 컨텍스트가 관리되고 있�
 public abstract class RequestContextHolder {
 
 	private static final boolean jsfPresent =
-			ClassUtils.isPresent("jakarta.faces.context.FacesContext", RequestContextHolder.class.getClassLoader);
+			ClassUtils.isPresent("jakarta.faces.context.FacesContext", RequestContextHolder.class.getClassLoader());
 
 	private static final ThreadLocal<RequestAttributes> requestAttributesHolder =
 			new NamedThreadLocal<>("Request attributes");
@@ -77,7 +73,7 @@ public abstract class RequestContextHolder {
 갑자기 그런 생각이 들었다. 이거 리액터에서 스레드 관리 이렇게 안하지 않나??
   - 정확하게는 내가 호출 한 스레드와 작업을 할당 받은 스레드가 같은가? 같진 않더라도 ThreadLocal이 전파되는 모 - 자  관계인가 라는 생각이 문득 들었다. 그리고 아니다.
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/8476888e-656b-4d90-bbb9-984678d8ba80/image.png)
+![](/assets/images/Pasted%20image%2020260228171311_2f3f2722.png)
 
 일단 스케줄러 방식이므로 작업을 할당받는 스레드가 다를 수 있으므로 Reactor에서 제시하는 Context를 이으려고 노력해야 한다. 일단 Interceptor는 맞지 않으므로 폐기
 방법은 두 가지가 있다.
@@ -107,22 +103,22 @@ public interface ListedStockService {
 ```java
 @GetMapping("/v1/detail/price")
     public Mono<GetListedStockPriceDetailResponse> getListedStockPriceDetail(GetListedStockPriceDetailRequest request){
-        Mono<GetListedStockResponse> listedStock = listedStockService.getListedStock(request.itemCodeNumber);
-        Mono<GetListedStockLatestPriceResponse> latestPrice = listedStockService.getListedStockLatestPrice(request.itemCodeNumber);
-        Mono<GetListedStockPricesResponse> prices = listedStockService.getListedStockPrices(request.itemCodeNumber,GetListedStockPricesRequest.builder
-                .baseDateTime(request.baseDateTime)
+        Mono<GetListedStockResponse> listedStock = listedStockService.getListedStock(request.itemCodeNumber());
+        Mono<GetListedStockLatestPriceResponse> latestPrice = listedStockService.getListedStockLatestPrice(request.itemCodeNumber());
+        Mono<GetListedStockPricesResponse> prices = listedStockService.getListedStockPrices(request.itemCodeNumber(),GetListedStockPricesRequest.builder()
+                .baseDateTime(request.baseDateTime())
                 .deltaDay(360L)
-                .build);
+                .build());
 
         return
                 Mono.deferContextual(context -> {
-                    String kbankStandardHeader = context.get("kbank_standard_header").toString;
+                    String kbankStandardHeader = context.get("kbank_standard_header").toString();
                     return Mono.zip(listedStock,latestPrice,prices)
-                            .map(it -> GetListedStockPriceDetailResponse.builder
-                                    .stockKoreanName(it.getT1.stockKoreanName)
-                                    .itemCodeNumber(it.getT1.itemCodeNumber)
-                                    .latestPrice(it.getT2.closePrice)
-                                    .latestRatio(it.getT2.changeRate)
+                            .map(it -> GetListedStockPriceDetailResponse.builder()
+                                    .stockKoreanName(it.getT1().stockKoreanName())
+                                    .itemCodeNumber(it.getT1().itemCodeNumber())
+                                    .latestPrice(it.getT2().closePrice())
+                                    .latestRatio(it.getT2().changeRate())
 ```
 
 

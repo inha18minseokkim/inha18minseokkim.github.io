@@ -1,10 +1,7 @@
 ---
 title: "Spring Batch 5.0.1(Spring 3.1.3)"
 date: 2023-10-08
-tags:
-  - Spring Batch
-  - 개발
-  - Java
+tags: [미지정]
 category:
   - 기술
 ---
@@ -53,7 +50,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
                 .start(dailyReceiveStep(jobRepository,dailyAnnounceApiReceiveTasklet,transactionManager))
                 .next(dailyPaidIncreaseReceiveStep(jobRepository, paidIncreaseReceiveTasklet, transactionManager))
                 .next(dailyFreeIssueReceiveStep(jobRepository,freeIssueReceiveTasklet,transactionManager))
-                .build;
+                .build();
         return exampleJob;
     }
 
@@ -66,7 +63,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
         String endDate = applicationArguments.getOptionValues("endDate").get(0);
         log.info(String.format("%s ~ %s dailyReceiveStep 실행",beginDate,endDate));
         return new StepBuilder("dailyReceiveStep",jobRepository)
-                .tasklet(defaultTasklet,transactionManager).build;
+                .tasklet(defaultTasklet,transactionManager).build();
     }
 
     @Bean
@@ -78,7 +75,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
         String endDate = applicationArguments.getOptionValues("endDate").get(0);
         log.info(String.format("%s ~ %s dailyPaidIncreaseReceiveStep 실행",beginDate,endDate));
         return new StepBuilder("dailyPaidIncreaseReceiveStep",jobRepository)
-                .tasklet(defaultTasklet,transactionManager).build;
+                .tasklet(defaultTasklet,transactionManager).build();
     }
 
     @Bean
@@ -90,7 +87,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
         String endDate = applicationArguments.getOptionValues("endDate").get(0);
         log.info(String.format("%s ~ %s dailyFreeIssueReceiveStep 실행",beginDate,endDate));
         return new StepBuilder("dailyFreeIssueReceiveStep",jobRepository)
-                .tasklet(defaultTasklet,transactionManager).build;
+                .tasklet(defaultTasklet,transactionManager).build();
     }
 
 }
@@ -99,7 +96,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
   - 로컬환경에서 테스트 - JobRepository 관리 필요
   - 질문 : 스프링 배치를 실행/관리하는 DataBase가 주제영역별인가? 아니면 주제영역 상관없이 특정 DB에 다 몰아넣고 관제할 것인가?
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/fb597120-f1bb-4194-9277-52ea27bb3b3d/Untitled.png)
+![](/assets/images/Pasted%20image%2020260228171318_09aac5b3.png)
 
     - 이 테이블을 각 주제영역 DB별로 넣는 경우 문제 없음
     - 후자의 경우 각 컨테이너 내지 프로젝트를 만들 때 DataSource, TransactionManager를 두 개를 둬야하는데,, 해당 Configuration 템플릿이 필요함

@@ -1,12 +1,9 @@
 ---
 title: "EKS-IDCkafka-openApi 수신 구조 잡기"
 date: 2024-06-25
-tags:
-  - Kafka
-  - 개발
-  - 주식서비스
+tags: [미지정]
 category:
-  - 실무경험
+  - 기타
 ---
 
 행 내에서 해당 문제를 해결하기 위해 Kafka를 사용하기로 했음.
@@ -39,7 +36,7 @@ elink 신규 설명회에서 배치 기능이 있다고 했는데 확인해 봐�
 
 카프카 스펙은 이렇게 되어있으니 작업 시작
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/b5b24181-70cc-4e8c-8c27-609b556b8242/image.png)
+![](/assets/images/Pasted%20image%2020260228171248_10ade41b.png)
 
 
 [Kafka with Kbank MSA + 표준 스케줄러]({% post_url 2024-07-11-Kafka with Kbank MSA + 표준 스케줄러 %})

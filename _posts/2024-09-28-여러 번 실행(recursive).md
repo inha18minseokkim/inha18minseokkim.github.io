@@ -1,14 +1,10 @@
 ---
 title: "여러 번 실행(recursive)"
 date: 2024-09-28
-tags:
-  - 개발
-  - 아키텍처
-  - Java
+tags: [미지정]
 category:
-  - 기술
+  - 기타
 ---
-상속 구조 및 재귀 패턴 관련 설계 정리.
 요청받은 이유:
 1분 5분에 한 번 잡을 실행할 일이 있는데
 jflow에서 runJobParam.sh를 1분/5분에 한 번 씩 호출해서 job submit을 하면 workflow에 로그쌓이는 속도나 퍼포먼스 측면에서 별로 안좋다고 해서
@@ -64,6 +60,6 @@ spec:
 
 
 
-![](https://prod-files-secure.s3.us-west-2.amazonaws.com/c38aebd7-2834-4fac-b2fc-a2f0c17ce81d/d2cbcaa1-925b-4cae-9ae8-134a673573eb/image.png)
+![](/assets/images/Pasted%20image%2020260228171325_7fba5ada.png)
 
 이런식으로 다섯 번 실행되고 각각 잡마다 interval을 주는 식으로 해야할듯 일단은… 건의해보자
