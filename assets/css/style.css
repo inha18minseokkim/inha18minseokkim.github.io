@@ -220,68 +220,78 @@ html.light .icon-moon { display: block; }
    ============================================ */
 .search-box {
   position: relative;
-  display: flex;
-  align-items: center;
+  max-width: 320px;
   margin-bottom: 1.25rem;
 }
 
 .search-icon {
   position: absolute;
-  left: 1rem;
-  width: 16px;
-  height: 16px;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
   color: var(--text-muted);
   pointer-events: none;
+  opacity: 0.6;
 }
 
 .search-input {
   font-family: inherit;
-  font-size: 0.9rem;
-  padding: 0.7rem 2.5rem 0.7rem 2.8rem;
-  background: var(--surface);
+  font-size: 0.82rem;
+  padding: 8px 32px 8px 34px;
+  background: var(--card);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   width: 100%;
-  max-width: 400px;
   outline: none;
-  transition: all 0.15s ease;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .search-input::placeholder {
   color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.search-input:hover {
+  border-color: var(--text-muted);
 }
 
 .search-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(124, 111, 255, 0.15);
+  background: var(--surface);
+  box-shadow: 0 0 0 2px rgba(124, 111, 255, 0.12);
 }
 
 .search-clear-btn {
   position: absolute;
-  left: 370px;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   display: none;
-  background: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: var(--border);
   border: none;
+  border-radius: 50%;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.85rem;
-  padding: 0.25rem;
+  font-size: 10px;
   line-height: 1;
-  transition: color 0.15s ease;
+  transition: background 0.15s, color 0.15s;
 }
 
 .search-clear-btn:hover {
-  color: var(--text);
+  background: var(--text-muted);
+  color: var(--bg);
 }
 
 @media (max-width: 768px) {
-  .search-input {
+  .search-box {
     max-width: 100%;
-  }
-  .search-clear-btn {
-    left: auto;
-    right: 0.75rem;
   }
 }
 

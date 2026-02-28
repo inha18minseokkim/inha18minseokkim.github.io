@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
     filterStatus.textContent = parts.length ? `${parts.join(' · ')}: ${cnt}개의 글` : '';
     allTagBtn.classList.toggle('active', parts.length === 0);
     dateClearBtn.style.display = (dateFrom && dateTo) ? 'inline-block' : 'none';
-    searchClearBtn.style.display = searchQuery ? 'block' : 'none';
+    searchClearBtn.style.display = searchQuery ? 'flex' : 'none';
   }
 
   // ── Flatpickr ─────────────────────────────────────────────────────────────
