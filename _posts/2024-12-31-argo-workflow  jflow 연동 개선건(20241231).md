@@ -7,6 +7,7 @@ tags:
   - 인프라
   - 개발
   - CI/CD
+  - 케이뱅크
 category:
   - 기술
 ---
