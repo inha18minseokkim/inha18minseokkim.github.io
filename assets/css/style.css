@@ -357,8 +357,8 @@ html.light .icon-moon { display: block; }
 }
 
 .tag-icon {
-  width: 14px;
-  height: 14px;
+  width: 0.78rem;
+  height: 0.78rem;
   vertical-align: middle;
   flex-shrink: 0;
 }
