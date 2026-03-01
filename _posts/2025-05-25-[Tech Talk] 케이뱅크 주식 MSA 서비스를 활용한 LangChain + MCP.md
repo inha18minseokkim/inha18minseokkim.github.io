@@ -25,7 +25,7 @@ category:
 
 순차적으로 o4-mini, o3, GPT-4.1
 
-![](attachment:9c25ca7f-e790-4e5e-8a05-f02c516d457e:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223725.png)
 
 24년 1월 기준으로 학습된 모델이 배포된 모습
 모델들은 다음 데이터들을 처리할 수 없음
@@ -63,7 +63,7 @@ LLM은 범용적인 언어들을 기반으로 만들어진 모델이지만 우�
 
 
 
-![](attachment:89417681-569f-4205-8373-44893e8faaa0:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223731.png)
 
 자매품 유클리드 거리, 맨해튼 거리, 자카드 유사도, 피어슨 상관계수 등..
 
@@ -72,11 +72,11 @@ LLM은 범용적인 언어들을 기반으로 만들어진 모델이지만 우�
 텍스트를 컴퓨터가 이해하고 효율적으로 처리하기 위해 단어를 벡터화 함
 문서를 토큰 단위로 나눠서 임베딩
 
-![](attachment:66986e3b-2761-47fe-9d30-c788f73d5f08:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223737.png)
 
 쿼리를 임베딩 한 것
 
-![](attachment:1786c567-c316-4da4-80b0-aa0ed56bf22e:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223743.png)
 
 
 ### 결론
@@ -87,7 +87,7 @@ LLM은 범용적인 언어들을 기반으로 만들어진 모델이지만 우�
 
 여기서는 좀 더 기능을 잘 만들기 위해 Langchain의 Langgraph 를 사용해볼 예정
 
-![](attachment:66f29676-b505-4284-a61c-9c00a3941638:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223747.png)
 
 
 
@@ -359,7 +359,7 @@ def choose_tool(state: StockQueryState) -> StockQueryState:
 ```
 
 
-![](attachment:083cfc49-1ab0-4ed2-a94f-103882dcdab3:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223800.png)
 
 
 ### 질문에서 선택한 툴에서 필요한 파라미터를 추출하는 기능
@@ -409,7 +409,7 @@ def extract_function_parameter(state: StockQueryState) -> StockQueryState:
 ```
 
 
-![](attachment:6e3a729a-23ae-4897-abd5-0b7f8f3490b3:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223807.png)
 
 
 ### 선택한 툴을 실행하는 함수
@@ -834,10 +834,10 @@ async with stdio_client(server_params) as (read, write):
 
 
 
-![](attachment:151f359e-bc14-4cf5-a0ed-95a2ac82326e:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223823.png)
 
 
-![](attachment:4d683691-0af0-456b-b892-1f9e181087a6:image.png)
+![이미지](/assets/images/Pasted%20image%2020260301223827.png)
 
 
 
