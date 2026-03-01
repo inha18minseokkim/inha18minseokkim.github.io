@@ -29,10 +29,10 @@ Postgresql 시퀀스 nextval을 호출하는데 자꾸 20씩 증가한다. INCRE
 
 커넥션풀 max_size 1 개, initial_size 1 개로 하고 커넥션타임아웃은 충분히 주고 끊기지 않도록 한 다음 계속 sequence generate를 해 보았다.
 
-![[Pasted image 20260301231531.png]]
+![이미지](/assets/images/Pasted%20image%2020260301231531.png)
 
 
-![[Pasted image 20260301231536.png]]
+![이미지](/assets/images/Pasted%20image%2020260301231536.png)
 
 각 호출마다 항상 다른 pid를 가지고 온다
 

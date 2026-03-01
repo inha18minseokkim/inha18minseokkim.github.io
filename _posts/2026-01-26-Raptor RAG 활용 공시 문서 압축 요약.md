@@ -11,17 +11,17 @@ category:
   - AI/ML
 ---
 AI/ML을 활용한 금융 데이터 처리 및 RAG 구현 정리.
-![[Pasted image 20260301231655.png]]
+![이미지](/assets/images/Pasted%20image%2020260301231655.png)
 
 상당히 큰 문서, 어떻게 하면 간단하게 장문의 문서의 요약을 쉽게 할 수 있을까 라는 생각
 Raptor RAG라는 방법론이 있어서 구현해본다
 
 
-![[Pasted image 20260301231700.png]]
+![이미지](/assets/images/Pasted%20image%2020260301231700.png)
 
 
 
-![[Pasted image 20260301231703.png]]
+![이미지](/assets/images/Pasted%20image%2020260301231703.png)
 
 - **Root 노드** (상단 분홍색): 전체 문서의 최상위 요약.
 - **중간 Layer** (연한 노드들): 클러스터 요약들.
@@ -90,7 +90,7 @@ messages = [
 ### 요약 예시
 
 
-![[Pasted image 20260301231711.png]]
+![이미지](/assets/images/Pasted%20image%2020260301231711.png)
 
 
 
