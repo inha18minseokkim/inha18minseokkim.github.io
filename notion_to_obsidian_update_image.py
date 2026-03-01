@@ -82,6 +82,102 @@ def parse_notion_url(url: str) -> tuple:
     return None, None
 
 
+# 전역 페이지 ID 및 블록 캐시 저장
+NOTION_PAGE_ID = None
+BLOCK_FILE_URLS = {}  # block_id -> file_url 매핑
+
+
+def fetch_notion_blocks(page_id: str) -> dict:
+    """Notion 페이지의 블록 정보를 가져와서 이미지 URL 매핑 생성"""
+    global BLOCK_FILE_URLS
+
+    if not NOTION_SITE:
+        return {}
+
+    # page_id에서 하이픈 제거
+    page_id_clean = page_id.replace('-', '')
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    }
+
+    try:
+        # 방법 1: 페이지 HTML에서 이미지 URL 추출
+        page_url = f"https://{NOTION_SITE}/{page_id_clean}"
+        req = urllib.request.Request(page_url, headers=headers)
+
+        with urllib.request.urlopen(req, timeout=30) as response:
+            html = response.read().decode('utf-8')
+
+            # S3 URL 패턴 찾기
+            s3_pattern = r'https://(?:prod-files-secure|s3)[^"\'>\s]+\.(?:png|jpg|jpeg|gif|webp)'
+            s3_urls = re.findall(s3_pattern, html, re.IGNORECASE)
+
+            # 블록 ID와 URL 매핑 시도 (HTML에서 블록 ID 근처의 URL 찾기)
+            block_url_pattern = r'"([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})"[^}]*"(https://[^"]+(?:png|jpg|jpeg|gif|webp)[^"]*)"'
+            matches = re.findall(block_url_pattern, html)
+
+            for block_id, url in matches:
+                BLOCK_FILE_URLS[block_id] = url
+                # 하이픈 없는 버전도 저장
+                BLOCK_FILE_URLS[block_id.replace('-', '')] = url
+
+            # recordMap JSON 찾기 시도
+            record_pattern = r'"recordMap"\s*:\s*(\{[^}]+block[^}]+\})'
+            # 더 간단한 패턴으로 이미지 소스 찾기
+            img_source_pattern = r'"block_id"\s*:\s*"([^"]+)"[^}]*"source"\s*:\s*"([^"]+)"'
+
+            print(f"  HTML 파싱: {len(s3_urls)}개 S3 URL, {len(BLOCK_FILE_URLS)}개 블록 매핑 발견")
+            return BLOCK_FILE_URLS
+
+    except Exception as e:
+        print(f"  HTML 파싱 실패: {e}")
+
+    try:
+        # 방법 2: Notion API 시도 (다른 엔드포인트)
+        api_url = f"https://{NOTION_SITE}/api/v3/getPublicPageData"
+
+        api_headers = {
+            'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        }
+
+        data = json.dumps({
+            "blockId": page_id_clean,
+            "name": "page",
+            "saveParent": False,
+            "showMoveTo": False,
+            "type": "block-space"
+        }).encode('utf-8')
+
+        req = urllib.request.Request(api_url, data=data, headers=api_headers, method='POST')
+
+        with urllib.request.urlopen(req, timeout=30) as response:
+            result = json.loads(response.read().decode('utf-8'))
+
+            # recordMap에서 block 정보 추출
+            record_map = result.get('recordMap', {})
+            blocks = record_map.get('block', {})
+
+            for block_id, block_data in blocks.items():
+                value = block_data.get('value', {})
+                format_data = value.get('format', {})
+
+                if 'display_source' in format_data:
+                    file_url = format_data['display_source']
+                    formatted_id = f"{block_id[:8]}-{block_id[8:12]}-{block_id[12:16]}-{block_id[16:20]}-{block_id[20:]}" if len(block_id) == 32 else block_id
+                    BLOCK_FILE_URLS[formatted_id] = file_url
+                    BLOCK_FILE_URLS[block_id] = file_url
+
+            print(f"  Notion API: {len(BLOCK_FILE_URLS)}개 이미지 블록 발견")
+            return BLOCK_FILE_URLS
+
+    except Exception as e:
+        print(f"  Notion API 호출 실패: {e}")
+        return {}
+
+
 def download_attachment(block_id: str, filename: str, dest_path: str, page_id: str = None) -> bool:
     """Notion attachment 다운로드"""
     if not NOTION_SITE:
@@ -95,7 +191,30 @@ def download_attachment(block_id: str, filename: str, dest_path: str, page_id: s
         'Referer': f'https://{NOTION_SITE}/',
     }
 
-    # 여러 URL 패턴 시도
+    # 1. 먼저 캐시된 블록 URL 확인
+    if block_id in BLOCK_FILE_URLS:
+        cached_url = BLOCK_FILE_URLS[block_id]
+        print(f"    캐시된 URL 발견: {cached_url[:60]}...")
+        try:
+            # S3 URL인 경우 Notion 프록시 사용
+            if 's3' in cached_url or 'amazonaws' in cached_url:
+                encoded_url = urllib.parse.quote(cached_url, safe='')
+                proxy_url = f"https://{NOTION_SITE}/image/{encoded_url}?table=block&id={block_id}"
+                req = urllib.request.Request(proxy_url, headers=headers)
+            else:
+                req = urllib.request.Request(cached_url, headers=headers)
+
+            with urllib.request.urlopen(req, timeout=30) as response:
+                content = response.read()
+                if len(content) > 100:
+                    with open(dest_path, 'wb') as f:
+                        f.write(content)
+                    print(f"    다운로드 완료: {dest_path} ({len(content)} bytes)")
+                    return True
+        except Exception as e:
+            print(f"    캐시 URL 다운로드 실패: {e}")
+
+    # 2. 여러 URL 패턴 시도
     url_patterns = [
         # 패턴 1: 직접 파일 접근
         f"https://{NOTION_SITE}/file/{block_id}/{urllib.parse.quote(filename)}",
@@ -141,10 +260,6 @@ def download_attachment(block_id: str, filename: str, dest_path: str, page_id: s
     print(f"    다운로드 실패: 모든 URL 패턴 실패")
     print(f"    수동 다운로드 필요: Notion 페이지에서 이미지를 직접 저장하세요.")
     return False
-
-
-# 전역 페이지 ID 저장
-NOTION_PAGE_ID = None
 
 
 def generate_image_filename(url: str, original_name: str = None) -> str:
@@ -343,6 +458,10 @@ def main():
             NOTION_PAGE_ID = page_id
             print(f"Notion 사이트: {NOTION_SITE}")
             print(f"페이지 ID: {page_id}")
+
+            # Notion API로 블록 정보 가져오기
+            print(f"Notion 페이지 블록 정보 가져오는 중...")
+            fetch_notion_blocks(page_id)
             print()
         else:
             print(f"경고: Notion URL 파싱 실패: {notion_url}")
