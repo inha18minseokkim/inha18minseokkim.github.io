@@ -1,10 +1,11 @@
 ---
-title: "Elasticache 네트워크 대역 장애"
+title: Elasticache 네트워크 대역 장애
 date: 2025-12-21
 tags:
   - AWS
   - 인프라
   - 캐싱
+  - 이슈정리
 category:
   - 실무경험
 ---
