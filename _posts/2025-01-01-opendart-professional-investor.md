@@ -186,7 +186,7 @@ IFRS 해석위원회 피셜 - 재고자산이나 무형자산으로 분류
 무형자산 > 국고보조금, 영업권, 무형자산 상각비 등 이정도 depth가 암호자산이랑 비슷한 계층인것같아서 기대했지만 아직은 분류한 계정이 없음.
 
 ![이미지](/assets/images/Pasted%20image%2020260219165844.png)
-[D2312355-1.pdf](attachment:9143bb15-450e-42e9-9b89-8bb24c4fc6f6:D2312355-1.pdf)
+
 
 [https://help.jobis.co/hc/ko/articles/360000632222--가상화폐는-무슨-자산으로-분류해야-할까](https://help.jobis.co/hc/ko/articles/360000632222--%EA%B0%80%EC%83%81%ED%99%94%ED%8F%90%EB%8A%94-%EB%AC%B4%EC%8A%A8-%EC%9E%90%EC%82%B0%EC%9C%BC%EB%A1%9C-%EB%B6%84%EB%A5%98%ED%95%B4%EC%95%BC-%ED%95%A0%EA%B9%8C)
 
