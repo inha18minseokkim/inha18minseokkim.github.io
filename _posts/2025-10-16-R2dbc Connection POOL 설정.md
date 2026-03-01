@@ -1,11 +1,15 @@
 ---
-title: "R2dbc Connection POOL 설정"
+title: R2dbc Connection POOL 설정
 date: 2025-10-16
 tags:
   - DB
   - 개발
+  - Java
+  - Kotlin
+  - R2dbc
 category:
   - 기술
+  - DB
 ---
 DB 관련 개발 내용 정리.
 # 문제상황
@@ -17,8 +21,7 @@ Postgresql 시퀀스 nextval을 호출하는데 자꾸 20씩 증가한다. INCRE
 옆에 계시는분이 no cache로 가도 되니깐 no cache로 가야한다고 말씀하심. jpa 에서는 sequenceGenerator가 자동으로 관리해주는데(한번에 nextval 한 번 호출하는게 아니라  20번에 한 번 nextval 호출) r2dbc는 그게 안되기때문에 no cache가 맞다는 주장
 
 ### 반론
-
-
+[[2024-03-04-PostgreSQL 시퀀스 + 캐시 주의점]]
 2023년에 공부했던 내용으로 비추어보았을 때, cache는 db 와 연결되어 있는 세션별로 가지고 있어서 세션이 여러 개인 경우 , 연결이 끊겼다가 다시 연결되는 경우 시퀀스에 단층이 발생할 수 있지만 jdbc든 r2dbc든 물리적으로 db와 연결되어 있는 세션은 하나이기 때문에 시퀀스가 항상 20씩 증가하면 안됨(커넥션풀이 한 개고 연결이 지속되고 있다는 가정하에)
  이건 db 드라이버의 문제이지 r2dbc 자체의 문제는 아니었다고 생각함
 
@@ -26,10 +29,10 @@ Postgresql 시퀀스 nextval을 호출하는데 자꾸 20씩 증가한다. INCRE
 
 커넥션풀 max_size 1 개, initial_size 1 개로 하고 커넥션타임아웃은 충분히 주고 끊기지 않도록 한 다음 계속 sequence generate를 해 보았다.
 
-![](attachment:abbe7d30-e4d1-46ba-882e-f49da16e4b2d:b11104c7-d27a-4333-9a82-0752aed40694.png)
+![[Pasted image 20260301231531.png]]
 
 
-![](attachment:c7091dff-4c4b-4fb3-b7a3-77bb8b6ca658:c4a70a55-d20c-41b5-8dce-ef959e02f644.png)
+![[Pasted image 20260301231536.png]]
 
 각 호출마다 항상 다른 pid를 가지고 온다
 

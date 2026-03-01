@@ -1,25 +1,27 @@
 ---
-title: "Raptor RAG 활용 공시 문서 압축 요약"
+title: Raptor RAG 활용 공시 문서 압축 요약
 date: 2026-01-26
 tags:
   - AI/ML
   - 주식서비스
   - 기술
+  - 기획
 category:
   - 기술
+  - AI/ML
 ---
 AI/ML을 활용한 금융 데이터 처리 및 RAG 구현 정리.
-![](attachment:7bbae049-4b0a-470c-bf1e-98060ab92796:image.png)
+![[Pasted image 20260301231655.png]]
 
 상당히 큰 문서, 어떻게 하면 간단하게 장문의 문서의 요약을 쉽게 할 수 있을까 라는 생각
 Raptor RAG라는 방법론이 있어서 구현해본다
 
 
-![](attachment:fef5ab98-84ef-4ff3-90e8-5d2cff136d5e:image.png)
+![[Pasted image 20260301231700.png]]
 
 
 
-![](attachment:74384357-56b1-4476-b231-ef504cfc223a:image.png)
+![[Pasted image 20260301231703.png]]
 
 - **Root 노드** (상단 분홍색): 전체 문서의 최상위 요약.
 - **중간 Layer** (연한 노드들): 클러스터 요약들.
@@ -88,7 +90,7 @@ messages = [
 ### 요약 예시
 
 
-![](attachment:ef5f6d71-ecd5-4e9a-9840-4e2b4765449f:image.png)
+![[Pasted image 20260301231711.png]]
 
 
 
