@@ -37,7 +37,7 @@ layout: default
           <div class="tag-filter collapsed" id="tagFilterContent">
             <button class="tag-filter-btn active" data-tag="all">전체</button>
             {% for tag in site.tags %}
-            <button class="tag-filter-btn" data-tag="{{ tag[0] }}" data-count="{{ tag[1] | size }}">{{ tag[0] }}</button>
+            <button class="tag-filter-btn" data-tag="{{ tag[0] }}" data-count="{{ tag[1] | size }}">{% if tag[0] == "메이플" %}<img src="/assets/icons/메이플.ico" alt="" class="tag-icon">{% endif %}{{ tag[0] }}</button>
             {% endfor %}
           </div>
         </div>
