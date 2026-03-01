@@ -1,9 +1,11 @@
 ---
-title: "Postgresql 파티션 PK"
+title: Postgresql 파티션 PK
 date: 2025-09-29
-tags: [미지정]
+tags:
+  - DB
 category:
-  - 기타
+  - 기술
+  - DB
 ---
 
 Postgresql 파티션을 사용할 때 현재 케이뱅크 DBA 작업자분들은 표준으로 아래와 같이 잡는다

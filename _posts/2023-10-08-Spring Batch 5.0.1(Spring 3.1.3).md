@@ -1,9 +1,13 @@
 ---
-title: "Spring Batch 5.0.1(Spring 3.1.3)"
+title: Spring Batch 5.0.1(Spring 3.1.3)
 date: 2023-10-08
-tags: [미지정]
+tags:
+  - Spring
+  - Batch
+  - Java
 category:
   - 기술
+  - MSA표준
 ---
 1. Job과 Container 1:1 로 만들고 인프라 환경에서 크론잡을 돌리는 방식, 또는 컨트롤엠 쿠버네티스 버전 사용
 2. Job : Container로 만들었을 때 생기는 문제점

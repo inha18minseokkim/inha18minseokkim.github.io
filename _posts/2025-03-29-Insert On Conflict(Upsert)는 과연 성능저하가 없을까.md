@@ -1,9 +1,11 @@
 ---
-title: "Insert On Conflict(Upsert)는 과연 성능저하가 없을까?"
+title: Insert On Conflict(Upsert)는 과연 성능저하가 없을까?
 date: 2025-03-29
-tags: [미지정]
+tags:
+  - DB
 category:
   - 기술
+  - DB
 ---
 
 ## 현재 사용중인 쿼리

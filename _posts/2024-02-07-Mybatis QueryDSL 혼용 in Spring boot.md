@@ -1,9 +1,13 @@
 ---
-title: "Mybatis QueryDSL 혼용 in Spring boot"
+title: Mybatis QueryDSL 혼용 in Spring boot
 date: 2024-02-07
-tags: [미지정]
+tags:
+  - QueryDSL
+  - MyBatis
+  - Java
 category:
-  - 기술
+  - 실무경험
+  - MSA표준
 ---
 
 ```java
