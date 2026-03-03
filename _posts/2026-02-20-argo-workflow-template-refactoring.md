@@ -8,6 +8,7 @@ tags:
   - MSA
 category:
   - 기술
+  - MSA표준
 ---
 # Argo Workflow 중복 제거: WorkflowTemplate으로 공통화하기
 
