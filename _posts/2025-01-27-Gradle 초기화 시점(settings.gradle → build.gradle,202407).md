@@ -24,7 +24,6 @@ GitLab CI 환경에서 Git Submodule을 사용할 때 발생하는 문제와 Gra
 | 제약 | SRE팀에서 CI 스크립트 수정 불가 (당시 기준) |
 
 **관련 문서:**
-- [Gitlab SAML 환경에서 clone (1)]({% post_url 2025-01-27-Gitlab SAML 환경에서 clone (1) %})
 - [build.gradle Settings.gradle (1)]({% post_url 2025-01-27-build.gradle Settings.gradle (1) %})
 - [Gradle User Guide](https://docs.gradle.org/current/userguide/userguide.html)
 
