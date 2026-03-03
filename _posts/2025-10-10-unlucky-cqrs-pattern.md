@@ -1,7 +1,12 @@
 ---
-title: "언럭키 CQRS 패턴 (20251010)"
+title: 어쩌다 보니 언럭키 CQRS 패턴이 되어버린 건에 관하여
 date: 2025-10-10
-tags: [아키텍처, CQRS, Spring, 백엔드, 주식서비스]
+tags:
+  - 아키텍처
+  - CQRS
+  - Spring
+  - 백엔드
+  - 주식서비스
 category:
   - 기술
 ---

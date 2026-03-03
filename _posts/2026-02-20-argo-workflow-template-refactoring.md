@@ -1,5 +1,5 @@
 ---
-title: argo workflow template refactoring
+title: argo workflow template refactoring 하기
 date: 2026-02-19
 tags:
   - argo
@@ -30,9 +30,9 @@ ETF 데이터 적재를 위해 3개의 Argo Workflow를 운영하고 있었다.
 # 이 블록이 3개 파일에 전부 복붙되어 있다
 spec:
   hostAliases:
-    - ip: "172.16.21.140"
+    - ip: "아이이이이이피"
       hostnames:
-        - "inter-apiwas00.k-bank.com"
+        - "도메에에에에인"
   ttlStrategy:
     secondsAfterCompletion: 86400
   # ...
