@@ -665,7 +665,7 @@ html.light .icon-moon { display: block; }
 }
 
 .post-page > .container {
-  max-width: 1020px;
+  max-width: 1200px;
 }
 
 .post-layout {
@@ -690,6 +690,20 @@ html.light .icon-moon { display: block; }
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+}
+
+/* 광고 사이드바 */
+.ad-sidebar {
+  width: 160px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 5rem;
+  order: 3;
+}
+
+.ad-sidebar ins {
+  display: block;
+  min-height: 250px;
 }
 
 .post-sidebar .category-btn {
@@ -961,6 +975,10 @@ html.light .icon-moon { display: block; }
 /* ============================================
    Posts Layout (sidebar + main)
    ============================================ */
+.posts-section > .container {
+  max-width: 1200px;
+}
+
 .posts-layout {
   display: flex;
   gap: 2.5rem;
@@ -1188,6 +1206,11 @@ html.light .icon-moon { display: block; }
   }
 
   .post-sidebar {
+    display: none;
+  }
+
+  /* 모바일에서 광고 사이드바 숨김 */
+  .ad-sidebar {
     display: none;
   }
 }
