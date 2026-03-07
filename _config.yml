@@ -28,7 +28,7 @@ exclude:
 # Plugins
 plugins:
   - jekyll-feed
-
+  - jekyll-sitemap
 # Post defaults
 defaults:
   - scope:
