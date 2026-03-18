@@ -111,6 +111,7 @@ permalink: /about
           <li><a href="/2024/10/11/mediation-패턴-도입기-feignClient-vs-webClient-non-blocking(20240915)/">feignClient vs WebClient Non-blocking 비교</a></li>
           <li><a href="/2024/12/04/mediation-패턴-도입기-Reactor-Non-blocking-vs-Multi-Thread(virtual)-실험/">Reactor Non-blocking vs Virtual Thread 실험</a></li>
           <li><a href="/2025/02/06/mediation-패턴-도입기-하지만-100-코틀린이라면/">Java Reactor에서 Kotlin 코루틴으로 — 왜 코틀린인가</a></li>
+          <li><a href="/2025/10/31/BM들에게-보내는-편지-EDA/">BM들에게 보내는 편지 - EDA</a></li>
         </ul>
       </div>
 
