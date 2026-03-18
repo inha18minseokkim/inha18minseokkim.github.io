@@ -92,6 +92,19 @@ permalink: /about
       </div>
 
       <div class="about-section-block">
+        <h2 class="about-section-title">Certifications</h2>
+        <ul class="about-cert-list">
+          <li><span class="cert-name">재경관리사</span><span class="cert-meta">삼일회계법인, 2025.10</span></li>
+          <li><span class="cert-name">회계관리</span><span class="cert-meta">삼일회계법인, 2025.01</span></li>
+          <li><span class="cert-name">재무위험관리사 (국내FRM)</span><span class="cert-meta">금융투자협회, 2024.08</span></li>
+          <li><span class="cert-name">투자자산운용사</span><span class="cert-meta">금융투자협회, 2024.03</span></li>
+          <li><span class="cert-name">자산관리사 (FP)</span><span class="cert-meta">한국금융연수원, 2023.08</span></li>
+          <li><span class="cert-name">증권투자권유대행인</span><span class="cert-meta">금융투자협회, 2021.04</span></li>
+          <li><span class="cert-name">전산회계</span><span class="cert-meta">한국세무사회, 2020.12</span></li>
+        </ul>
+      </div>
+
+      <div class="about-section-block">
         <h2 class="about-section-title">Featured Posts</h2>
         <ul class="about-posts-list">
           <li><a href="/2024/11/26/mediation-패턴-도입기/">mediation 패턴 도입기 — BFF 설계 전체 흐름 정리</a></li>
@@ -221,6 +234,24 @@ permalink: /about
   border-color: var(--accent, #58a6ff);
   background: transparent;
 }
+
+.about-cert-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.about-cert-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.92rem;
+  gap: 1rem;
+}
+.cert-name { color: var(--text, #e6edf3); }
+.cert-meta { font-size: 0.82rem; color: var(--text-muted, #888); white-space: nowrap; }
 
 .about-posts-list {
   margin: 0;
