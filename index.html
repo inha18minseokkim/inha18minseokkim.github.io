@@ -308,8 +308,43 @@ document.addEventListener('DOMContentLoaded', function() {
     return tagOk && dateOk && searchOk;
   }
 
+  // 카테고리 + 날짜 + 검색어만 매칭 (태그 제외) — 태그 버튼 가용 목록 계산용
+  function catDateSearchMatch(item) {
+    const d      = new Date(item.dataset.date);
+    const dateOk = (!dateFrom && !dateTo) || (dateFrom && dateTo && d >= dateFrom && d <= dateTo);
+    let searchOk = true;
+    if (searchQuery) {
+      const title   = item.dataset.title || '';
+      const excerpt = item.dataset.excerpt || '';
+      searchOk = title.includes(searchQuery) || excerpt.includes(searchQuery);
+    }
+    return catMatch(item) && dateOk && searchOk;
+  }
+
+  // ── 태그 버튼 가시성 갱신 ─────────────────────────────────────────────────
+  function updateTagVisibility() {
+    const available = new Set();
+    postItems.forEach(item => {
+      if (!catDateSearchMatch(item)) return;
+      (item.dataset.tags ? item.dataset.tags.split(',') : []).forEach(t => available.add(t));
+    });
+
+    tagBtns.forEach(btn => {
+      const tag     = btn.dataset.tag;
+      const visible = available.has(tag);
+      btn.style.display = visible ? '' : 'none';
+      // 선택된 태그가 현재 카테고리에 없으면 자동 해제
+      if (!visible && selectedTags.has(tag)) {
+        selectedTags.delete(tag);
+        btn.classList.remove('active');
+      }
+    });
+  }
+
   // ── 필터 적용 ─────────────────────────────────────────────────────────────
   function applyFilter() {
+    updateTagVisibility();
+
     let cnt = 0;
     postItems.forEach(item => {
       const show = tagDateMatch(item) && catMatch(item);
