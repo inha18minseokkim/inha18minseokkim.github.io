@@ -33,6 +33,23 @@ layout: default
           {{ content }}
         </div>
 
+        {% if page.previous or page.next %}
+        <nav class="post-nav">
+          <div class="post-nav-item post-nav-prev">
+            {% if page.previous %}
+            <span class="post-nav-label">이전 글</span>
+            <a href="{{ page.previous.url | relative_url }}" class="post-nav-link">← {{ page.previous.title }}</a>
+            {% endif %}
+          </div>
+          <div class="post-nav-item post-nav-next">
+            {% if page.next %}
+            <span class="post-nav-label">다음 글</span>
+            <a href="{{ page.next.url | relative_url }}" class="post-nav-link">{{ page.next.title }} →</a>
+            {% endif %}
+          </div>
+        </nav>
+        {% endif %}
+
         <div class="post-footer">
           <a href="{{ '/' | relative_url }}" class="back-link">← 목록으로</a>
         </div>
@@ -170,3 +187,80 @@ layout: default
   buildSidebar();
 })();
 </script>
+
+<script>
+// ── 코드 블록 복사 버튼 ──────────────────────────────────────────────────────
+document.querySelectorAll('.post-content pre').forEach(function(pre) {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = '복사';
+  pre.style.position = 'relative';
+  pre.appendChild(btn);
+
+  btn.addEventListener('click', function() {
+    const code = pre.querySelector('code');
+    navigator.clipboard.writeText(code ? code.innerText : pre.innerText).then(function() {
+      btn.textContent = '완료';
+      setTimeout(function() { btn.textContent = '복사'; }, 1500);
+    });
+  });
+});
+</script>
+
+<style>
+/* ── 코드 복사 버튼 ──────────────────────────────────────────────────────── */
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  background: var(--tag-bg, #21262d);
+  color: var(--text-muted, #888);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+pre:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { color: var(--accent, #58a6ff); border-color: var(--accent, #58a6ff); }
+
+/* ── 이전/다음 글 네비게이션 ─────────────────────────────────────────────── */
+.post-nav {
+  display: flex;
+  gap: 1rem;
+  margin: 2.5rem 0 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.post-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.post-nav-next { align-items: flex-end; text-align: right; }
+.post-nav-label {
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.post-nav-link {
+  font-size: 0.9rem;
+  color: var(--text, #e6edf3);
+  text-decoration: none;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.post-nav-link:hover { color: var(--accent, #58a6ff); }
+
+@media (max-width: 600px) {
+  .post-nav { flex-direction: column; }
+  .post-nav-next { align-items: flex-start; text-align: left; }
+}
+</style>

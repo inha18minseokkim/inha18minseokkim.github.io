@@ -38,13 +38,43 @@ permalink: /about
             <span class="about-exp-period">재직 중</span>
           </div>
           <span class="about-exp-role">Backend Developer</span>
-          <ul class="about-exp-desc">
-            <li>주식 서비스 <strong>BFF(Backend-For-Frontend) 레이어 설계 및 구현</strong> — Mediation 패턴 도입</li>
-            <li>기존 Java + OpenFeign + CompletableFuture 구조에서 <strong>Spring WebFlux(Reactor) 기반 논블로킹</strong> 아키텍처로 전환</li>
-            <li>Java → <strong>Kotlin 마이그레이션</strong>. Kotlin 코루틴(<code>suspend</code> + <code>async/await</code>)으로 복수 API 병렬 조합 구현, 가독성과 동시성 제어 동시에 개선</li>
-            <li>WebClient 커스텀 구현 — Reactor Context를 통한 <strong>사내 표준 헤더 전파(Header Propagation)</strong></li>
-            <li>Reactor Non-blocking vs Virtual Thread(Java 21) 성능 비교 실험 및 기술 선택 근거 정리</li>
-          </ul>
+          <p class="about-exp-owns"><strong>운영 서비스:</strong> 공모주 메이트 · 비상장 주식 알림 · 투자홈 인사이트</p>
+          <div class="about-proj-list">
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">Mediation API 패턴 도입 — MSA 구조 개선</p>
+              <ul class="about-exp-desc">
+                <li>주식 서비스 내 하위 업무 복잡도 개선을 위해 <strong>BFF(Backend-For-Frontend) 레이어 설계 및 구현</strong></li>
+                <li>서비스 간 상호 호출 지양 및 공모주 ↔ 비상장 서비스 간 <strong>디커플링</strong></li>
+                <li>기존 Java + OpenFeign + CompletableFuture에서 <strong>Spring WebFlux(Reactor) 논블로킹</strong> 구조로 전환</li>
+                <li>Java → <strong>Kotlin 마이그레이션</strong>. 코루틴(<code>suspend</code> + <code>async/await</code>)으로 병렬 API 조합 및 가독성 개선</li>
+                <li>Reactor Context를 통한 <strong>사내 표준 헤더 전파(Header Propagation)</strong> 구현</li>
+              </ul>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">Redis 활용 성능 향상 & 임시 데이터 저장</p>
+              <ul class="about-exp-desc">
+                <li>캐싱 레이어 도입으로 주식 서비스 응답 성능 개선</li>
+              </ul>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">jflow ~ Argo Workflow 연동 고도화</p>
+              <ul class="about-exp-desc">
+                <li>케이뱅크 정기 작업 관제 시스템(jflow)과 Argo Workflow 연동으로 <strong>MSA 환경 배치 구조 개선</strong></li>
+                <li>MSA 환경에서 jflow 제약 조건 내 분산 작업 수행 방안 설계</li>
+              </ul>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">Python 기반 API 테스트 도입</p>
+              <ul class="about-exp-desc">
+                <li>반복적인 API 검증 자동화로 테스트 효율 향상</li>
+              </ul>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -185,6 +215,20 @@ permalink: /about
   margin: 0 0 1.2rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
+}
+
+.about-exp-owns {
+  font-size: 0.88rem;
+  color: var(--text-muted, #888);
+  margin: 0 0 1rem;
+}
+.about-proj-list { display: flex; flex-direction: column; gap: 1.2rem; }
+.about-proj-item { padding-left: 0.8rem; border-left: 2px solid var(--border); }
+.about-proj-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text, #e6edf3);
+  margin: 0 0 0.4rem;
 }
 
 .about-exp-item { margin-bottom: 1.2rem; }
