@@ -64,4 +64,4 @@ category:
 
 기존 형상 프로세스를 유지해야 하기 때문이다. 운영 반영 후 문제가 발생했을 때 마지막으로 배포된 `CHA` 브랜치를 추적하는 것이 현실적이며, `main`에 직접 반영하면 `CHA`와 `main`이 100% 동일하다고 보장하기 어렵다.
 
-→ [결재 반려 시 GitLab branch delete 이슈]({% post_url 2023-12-20-결재 반려 시 gitlab branch delete 이슈 %})
+→ [결재 반려 시 GitLab branch delete 이슈]({% post_url 2023-12-20-gitlab-branch-delete-on-approval-rejection %})

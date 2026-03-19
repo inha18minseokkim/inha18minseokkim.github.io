@@ -6,7 +6,7 @@ tags:
 category:
   - 재테크
 ---
-[conda 사용하는 이유]({% post_url 2025-07-14-conda 사용하는 이유 %})
+[conda 사용하는 이유]({% post_url 2025-07-14-why-use-conda %})
 [stratify + Clustering]({% post_url 2025-07-16-stratify + Clustering %})
 [Pytorch]({% post_url 2025-07-17-Pytorch %})
 [autogluon]({% post_url 2025-07-18-autogluon %})

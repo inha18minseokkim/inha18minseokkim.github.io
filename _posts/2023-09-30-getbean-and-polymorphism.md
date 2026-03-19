@@ -80,4 +80,4 @@ public class UseClass2 implements SomeInterface { }
 실제로는 이렇게 해놓음
 
 그냥 2번으로 하기로 함
-[getBean을 하지마라?]({% post_url 2023-10-01-getBean을 하지마라 %})
+[getBean을 하지마라?]({% post_url 2023-10-01-do-not-use-getbean %})

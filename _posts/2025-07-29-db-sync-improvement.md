@@ -74,4 +74,4 @@ Kafka 없이도 블로킹 문제를 완화할 수 있는 방법들:
 
 로깅 방식 개선에 대한 추가 논의가 진행되었다:
 
-- [S3 + Logback 활용안]({% post_url 2025-07-29-S3 + logback 활용안 %}) - Kafka, S3, Fluentbit를 활용한 로깅 방안 검토
+- [S3 + Logback 활용안]({% post_url 2025-07-29-s3-logback-usage-plan %}) - Kafka, S3, Fluentbit를 활용한 로깅 방안 검토

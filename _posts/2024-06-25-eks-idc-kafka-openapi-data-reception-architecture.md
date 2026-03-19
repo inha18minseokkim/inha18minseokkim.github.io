@@ -44,12 +44,12 @@ elink 신규 설명회에서 배치 기능이 있다고 했는데 확인해 봐�
 ![](/assets/images/Pasted%20image%2020260228171248_10ade41b.png)
 
 
-[Kafka with Kbank MSA + 표준 스케줄러]({% post_url 2024-07-11-Kafka with Kbank MSA + 표준 스케줄러 %})
-[Charset 인코딩 문제, 유량제어 문제]({% post_url 2024-07-16-Charset 인코딩 문제, 유량제어 문제 %})
-[failing offset 문제와 데이터 수신 및 적재용으로 kafka 구성에 대해]({% post_url 2024-08-13-failing offset 문제와 데이터 수신 및 적재용으로 kafka 구성에 대해 %})
-[EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)]({% post_url 2024-09-04-EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트) %})
-[다중 파티션 고도화]({% post_url 2024-09-09-다중 파티션 고도화 %})
-[후회합니다 죄송합니다]({% post_url 2024-08-19-후회합니다 죄송합니다 %})
-[Public 망에서 작업(희망사항)]({% post_url 2024-10-10-Public 망에서 작업(희망사항) %})
+[Kafka with Kbank MSA + 표준 스케줄러]({% post_url 2024-07-11-kafka-kbank-msa-standard-scheduler %})
+[Charset 인코딩 문제, 유량제어 문제]({% post_url 2024-07-16-charset-encoding-and-rate-control-issue %})
+[failing offset 문제와 데이터 수신 및 적재용으로 kafka 구성에 대해]({% post_url 2024-08-13-kafka-failing-offset-and-data-ingestion %})
+[EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)]({% post_url 2024-09-04-eks-idc-kafka-openapi-implementation-attempt %})
+[다중 파티션 고도화]({% post_url 2024-09-09-multi-partition-enhancement %})
+[후회합니다 죄송합니다]({% post_url 2024-08-19-regrets-and-apologies %})
+[Public 망에서 작업(희망사항)]({% post_url 2024-10-10-working-on-public-network-wishlist %})
 
-[아키텍쳐협의회 회의록(20241219)]({% post_url 2025-01-28-아키텍쳐협의회 회의록(20241219) %})
+[아키텍쳐협의회 회의록(20241219)]({% post_url 2025-01-28-architecture-council-meeting-notes-20241219 %})

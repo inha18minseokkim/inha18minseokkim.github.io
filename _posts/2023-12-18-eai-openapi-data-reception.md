@@ -49,4 +49,4 @@ CRD (Fixed) ← EAI (JSON → Fixed) ← DMZ ←──────
 
 → 이후 발생한 파일 크기 관련 OOM 이슈는 아래 포스트로 이어짐.
 
-[새로운 이슈(파일 크기 OOM)]({% post_url 2024-04-04-새로운 이슈(파일 크기 OOM) %})
+[새로운 이슈(파일 크기 OOM)]({% post_url 2024-04-04-file-size-oom-issue %})

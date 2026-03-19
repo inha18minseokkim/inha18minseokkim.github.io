@@ -13,7 +13,7 @@ category:
 
 투자홈 개발 과정에서 도입한 Mediation 패턴을 기반으로, 각 주식 서비스 간 강결합을 해소하기 위한 2차 리팩토링 계획 정리.
 
-→ Mediation 패턴 도입 상세 내용: [mediation 패턴 도입기]({% post_url 2024-11-26-mediation 패턴 도입기 %})
+→ Mediation 패턴 도입 상세 내용: [mediation 패턴 도입기]({% post_url 2024-11-26-mediation-pattern-introduction %})
 
 ---
 

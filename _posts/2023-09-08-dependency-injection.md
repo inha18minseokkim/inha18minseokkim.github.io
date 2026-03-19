@@ -87,4 +87,4 @@ SpellChecker spellChecker3 = new SpellChecker(DictionaryFactory::get);
 ```
 
 
-	[개인적인 생각 with Facade(20230910)]({% post_url 2023-09-10-개인적인 생각 with Facade(20230910) %})
+	[개인적인 생각 with Facade(20230910)]({% post_url 2023-09-10-personal-thoughts-on-facade-pattern %})

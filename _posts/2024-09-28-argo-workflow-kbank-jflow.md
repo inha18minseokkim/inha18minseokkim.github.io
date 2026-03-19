@@ -21,12 +21,12 @@ argo-workflow가 2024년 현재 내수용 레퍼런스가 많이 없어서 직�
 회사에서 현재 argo-workflow.yaml 파일을 스테이징에 업데이트 하기 위해서는 gitlab-ci 파이프라인을 통해 업데이트 해야하는데 상당히 귀찮기 때문에(자바 이미지는 바뀐게 아닌데 yaml 파일의 속성만 바꾸는 경우, 그리고 이미지 빌드하는데 너무오래걸림..자원이슈) su 권한을 받아야 하는데 su 권한 안줌
 그래서 맥미니에다가 argo 시리즈 올린다
 
-[맥미니용 샘플 배포(20240928)]({% post_url 2024-09-28-맥미니용 샘플 배포(20240928) %})
-[MSA workflow에 cronjob을 올리려면…(20240928)]({% post_url 2024-09-28-MSA workflow에 cronjob을 올리려면…(20240928) %})
+[맥미니용 샘플 배포(20240928)]({% post_url 2024-09-28-mac-mini-sample-deployment %})
+[MSA workflow에 cronjob을 올리려면…(20240928)]({% post_url 2024-09-28-msa-workflow-cronjob-deployment %})
 [v3.6 cron stop.strategy (20240928)]({% post_url 2024-09-28-v3.6 cron stop.strategy (20240928) %})
-[여러 번 실행(recursive)]({% post_url 2024-09-28-여러 번 실행(recursive) %})
-[1파일 n 잡]({% post_url 2024-09-29-1파일 n 잡 %})
-[실패해도 계속 실행 잡]({% post_url 2024-10-01-실패해도 계속 실행 잡 %})
-[실패해도 계속 실행 잡 2(개선버전)]({% post_url 2024-10-02-실패해도 계속 실행 잡 2(개선버전) %})
-[1차 완성본]({% post_url 2024-10-20-1차 완성본 %})
-[샤딩 활용 N Parallel workflow > Aggregate]({% post_url 2025-12-22-샤딩 활용 N Parallel workflow  Aggregate %})
+[여러 번 실행(recursive)]({% post_url 2024-09-28-recursive-execution %})
+[1파일 n 잡]({% post_url 2024-09-29-single-file-multiple-jobs %})
+[실패해도 계속 실행 잡]({% post_url 2024-10-01-continue-on-failure-job %})
+[실패해도 계속 실행 잡 2(개선버전)]({% post_url 2024-10-02-continue-on-failure-job-v2 %})
+[1차 완성본]({% post_url 2024-10-20-first-complete-version %})
+[샤딩 활용 N Parallel workflow > Aggregate]({% post_url 2025-12-22-sharding-n-parallel-workflow-aggregate %})

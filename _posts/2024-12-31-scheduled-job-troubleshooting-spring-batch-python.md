@@ -1,0 +1,24 @@
+---
+title: 정기작업에 관하여 삽질(스프링 배치, 파이썬 스크립트 등등)
+date: 2024-12-31
+tags:
+  - 개발
+  - Java
+  - Spring
+  - Batch
+category:
+  - 기술
+---
+Spring Batch 관련 개발 내용 정리.
+[Spring batch 아키텍쳐 논의/삽질]({% post_url 2023-11-02-spring-batch-architecture-discussion %})
+[argo-workflow+ 케이뱅크 jflow]({% post_url 2024-09-28-argo-workflow-kbank-jflow %})
+[Python + jflow 필요성 + 샘플 프로젝트]({% post_url 2024-12-31-python-jflow-necessity-and-sample-project %})
+[Python + KEDA ScaledJob]({% post_url 2025-01-09-Python + KEDA ScaledJob %})
+[Python + Argo Event (결과 : 원하는대로 안됨)]({% post_url 2025-01-14-python-argo-event-failed-result %})
+
+[argo-workflow <> jflow 연동 개선건(20241231)]({% post_url 2024-12-31-argo-workflow-jflow-integration-improvement-20241231 %})
+[argo-workflow - jflow 연동 개선건 2 (202502)]({% post_url 2025-02-12-argo-workflow-jflow-integration-improvement-2-202502 %})
+[Spring Batch Exit 로직 개선(20250220)]({% post_url 2025-02-20-spring-batch-exit-logic-improvement %})
+[Python - ISTIO 사이드카 연동 문제(사이드카보다 파이썬 외부 연결이 더 빨라,20250317)]({% post_url 2025-03-16-python-istio-sidecar-integration-issue %})
+
+[Jflow - Control M AWS 연동]({% post_url 2025-07-16-jflow-control-m-aws-integration %})

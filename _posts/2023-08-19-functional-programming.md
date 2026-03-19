@@ -156,4 +156,4 @@ public class TestApplication {
 
 참조 투명성 → 동일 input ⇒ 동일 output
 자바의 문제 : 어디까지를 참조 투명성으로 봐야할 것인가? 
-[참조 투명성 예제]({% post_url 2023-08-19-참조 투명성 예제 %})
+[참조 투명성 예제]({% post_url 2023-08-19-referential-transparency-example %})

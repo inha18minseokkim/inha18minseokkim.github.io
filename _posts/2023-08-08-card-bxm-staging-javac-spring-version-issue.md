@@ -44,5 +44,5 @@ asm bytecode manipulation framework
 결론 : 스프링에서 .class파일의 바이트코드 레벨의 무언가를 읽을 때 버전 차이로 생기는 문제
 
 BXM 컨테이너에서 객체를 불러오는 로직을 좀 더 파보기로 함
-[카드계 Bxm 자바8 로딩 하는방법(Spring Legacy 3, 부트아님)]({% post_url 2023-11-15-카드계 Bxm 자바8 로딩 하는방법(Spring Legacy 3, 부트아님) %})
-[자바 7/8 serializing compatibility의 문제?]({% post_url 2023-11-21-자바 78 serializing compatibility의 문제 %})
+[카드계 Bxm 자바8 로딩 하는방법(Spring Legacy 3, 부트아님)]({% post_url 2023-11-15-card-bxm-java8-loading-spring-legacy %})
+[자바 7/8 serializing compatibility의 문제?]({% post_url 2023-11-21-java-78-serialization-compatibility-issue %})

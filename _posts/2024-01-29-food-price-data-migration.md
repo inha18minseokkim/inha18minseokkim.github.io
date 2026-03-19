@@ -7,11 +7,11 @@ tags:
 category:
   - 실무경험
 ---
-[EDB 성능 봐야함]({% post_url 2024-02-01-EDB 성능 봐야함 %})
-[Layer 분리]({% post_url 2024-02-05-Layer 분리 %})
-[Mybatis QueryDSL 혼용 in Spring boot]({% post_url 2024-02-07-Mybatis QueryDSL 혼용 in Spring boot %})
-[캐싱 전략]({% post_url 2024-02-08-캐싱 전략 %})
-[코드성 vs Enum vs 도메인 분리]({% post_url 2024-02-15-코드성 vs Enum vs 도메인 분리 %})
+[EDB 성능 봐야함]({% post_url 2024-02-01-edb-performance-review %})
+[Layer 분리]({% post_url 2024-02-05-layer-separation %})
+[Mybatis QueryDSL 혼용 in Spring boot]({% post_url 2024-02-07-mybatis-querydsl-mixed-in-spring-boot %})
+[캐싱 전략]({% post_url 2024-02-08-caching-strategy %})
+[코드성 vs Enum vs 도메인 분리]({% post_url 2024-02-15-code-value-vs-enum-vs-domain-separation %})
 
 
 ### 잠정 결론

@@ -119,7 +119,7 @@ public class DefaultAnnouncementApiReceiveJobConfig {
 4. DB 적재
  
 Spring Batch 테스트 환경
-[뻘짓) Spring Batch 5 + Multiple DataSource]({% post_url 2023-10-10-뻘짓) Spring Batch 5 + Multiple DataSource %})
+[뻘짓) Spring Batch 5 + Multiple DataSource]({% post_url 2023-10-10-spring-batch-5-multiple-datasource-trial %})
 로컬테스트도 원래 있던 개발 서버에서 수행하는것으로
 크론잡 실행은 CronJob(ControlM) 즉 인프라단에서 수행하는것으로 결정
 데이터소스는 각 네임스페이스별로 하나씩 만들어오는것으로 함

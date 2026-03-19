@@ -10,7 +10,7 @@ category:
   - Network
 ---
 
-[EAI openApi 데이터 수신 관련]({% post_url 2023-12-18-EAI openApi 데이터 수신 관련 %}) 포스트에서 이어지는 내용.
+[EAI openApi 데이터 수신 관련]({% post_url 2023-12-18-eai-openapi-data-reception %}) 포스트에서 이어지는 내용.
 
 ---
 
