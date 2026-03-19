@@ -293,10 +293,11 @@ permalink: /about
   justify-content: space-between;
   align-items: baseline;
   font-size: 0.92rem;
-  gap: 1rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 .cert-name { color: var(--text, #e6edf3); }
-.cert-meta { font-size: 0.82rem; color: var(--text-muted, #888); white-space: nowrap; }
+.cert-meta { font-size: 0.82rem; color: var(--text-muted, #888); }
 
 .about-posts-list {
   margin: 0;
@@ -316,9 +317,17 @@ permalink: /about
 }
 
 @media (max-width: 600px) {
-  .about-header { flex-direction: column; align-items: flex-start; }
+  .about-section { padding: 2rem 0 3.5rem; }
+  .about-name { font-size: 1.9rem; }
+  .about-header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; }
   .about-contact { align-items: flex-start; }
+  .about-intro { font-size: 0.95rem; margin-bottom: 2rem; }
+  .about-section-block { margin-bottom: 2rem; }
   .about-stack-group { flex-direction: column; gap: 0.4rem; }
   .stack-label { min-width: unset; }
+  .about-proj-item { padding-left: 0.6rem; }
+  .about-cert-list li { flex-direction: column; gap: 0.1rem; }
+  .cert-meta { font-size: 0.78rem; }
+  .about-posts-list { padding-left: 1rem; }
 }
 </style>

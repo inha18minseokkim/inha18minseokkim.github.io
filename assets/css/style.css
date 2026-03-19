@@ -1124,11 +1124,11 @@ html.light .icon-moon { display: block; }
    ============================================ */
 @media (max-width: 640px) {
   .hero {
-    padding: 4rem 0 2.5rem;
+    padding: 3rem 0 2rem;
   }
 
   .post-link {
-    padding: 1.25rem;
+    padding: 1.1rem 1.25rem;
   }
 
   .post-content pre code,
@@ -1139,6 +1139,17 @@ html.light .icon-moon { display: block; }
 
   .post-content h2 {
     font-size: 1.25rem;
+  }
+
+  /* 날짜 필터 — 좁은 화면에서 width 자동 조정 */
+  .date-filter {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .date-filter-input {
+    width: 100%;
+    max-width: 280px;
   }
 
   /* 모바일: 사이드바를 수평 스크롤 바로 위에 배치 */
@@ -1212,5 +1223,24 @@ html.light .icon-moon { display: block; }
   /* 모바일에서 광고 사이드바 숨김 */
   .ad-sidebar {
     display: none;
+  }
+}
+
+/* 헤더 nav — 좁은 화면에서 gap 줄이고 글꼴 축소 */
+@media (max-width: 480px) {
+  .site-nav {
+    gap: 0.75rem;
+  }
+
+  .site-nav a {
+    font-size: 0.8rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .header-inner {
+    padding: 0 1rem;
   }
 }
