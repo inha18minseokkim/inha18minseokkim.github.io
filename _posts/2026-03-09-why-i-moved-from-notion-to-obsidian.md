@@ -2,9 +2,8 @@
 title: Notion에서 Obsidian으로 옮긴 이유
 date: 2026-03-09
 tags:
-  - Obsidian
   - 자동화
-  - 블로그
+  - 뻘짓
 category:
   - 기타
 ---

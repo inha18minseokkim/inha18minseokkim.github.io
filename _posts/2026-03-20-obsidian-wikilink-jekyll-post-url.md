@@ -1,11 +1,9 @@
 ---
-title: "옵시디언 {% post_url 링크 %}를 Jekyll post_url로 자동 변환하기"
+title: 옵시디언 {% post_url 링크 %}를 Jekyll post_url로 자동 변환하기
 date: 2026-03-20
 tags:
-  - 블로그
-  - Obsidian
-  - Jekyll
   - 자동화
+  - 뻘짓
 category:
   - 기타
 ---
