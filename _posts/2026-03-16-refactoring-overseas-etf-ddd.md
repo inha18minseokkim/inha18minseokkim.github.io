@@ -1,13 +1,15 @@
 ---
-title: "overseas-stock, ETF 서비스 DDD 리팩토링 작업기"
+title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
 date: 2026-03-16
 tags:
   - Kotlin
   - Spring
   - 아키텍처
   - DDD
+  - 주식서비스
 category:
   - 실무경험
+  - MSA표준
 ---
 
 3월 둘째 주에 overseas-stock-service랑 etf-service 두 개를 DDD 레이어드 아키텍처로 뜯어고쳤음.
@@ -67,7 +69,7 @@ JPA 엔티티나 인프라 타입이 애플리케이션 레이어까지 그냥 �
 | `DividendResult` | `domain/dividend/Dividend` |
 | `HoldingsResult` | `domain/holdings/Holdings` |
 
-미사용 DTO(`LatestPricesGetResult`, `RanksGetResult`)는 그냥 삭제했음.
+미사용 DTO(`LatestPricesGetResult`, `RanksGetResult`, 정확하게는 PriceResult와 역할이 겹치지만 기존 표준때문에 복붙해서 존재하는 것)는 그냥 삭제했음.
 
 ### 2. JPA 매퍼 계층 추가
 
@@ -90,7 +92,7 @@ Reader가 엔티티를 그대로 반환하던 걸 매퍼를 거쳐 도메인 모
 
 ### 3. YN → Boolean 교체
 
-도메인 모델에서 `YN` 열거형을 쓰는 게 어색했음. 비즈니스 의미는 그냥 Boolean인데.
+도메인 모델에서 `YN` 열거형을 쓰는 게 어색했음. 비즈니스 의미는 그냥 Boolean인데. 기존 계정계 메타 코드도메인을 그대로 준용했는데 생각해보니 DDD로 가다 보면 인프라 - 도메인에서 약어-자연어 매핑할때 같이 타입캐스팅 해버리면 어플리케이션단에서는 쓸 필요가 없다는 생각이 들었음.
 
 ```kotlin
 // Before
@@ -156,7 +158,8 @@ infrastructure/ (JPA Entity, Mapper, Reader, Repository)
 ## etf-service 추가 작업: common 패키지 이동
 
 etf-service에서 `etf/service/common/*` 패키지를 `common/*`으로 상위로 이동했음.
-`EtfServiceApplication`의 `scanBasePackages`에 `common.*`을 추가해서 컴포넌트 스캔 범위를 명시적으로 잡았음.
+`EtfServiceApplication`의 `scanBasePackages`에 `common.*`을 추가해서 컴포넌트 스캔 범위를 명시적으로 잡았음. 
+	근데 생각해보니 common엔 스캔할 컴포넌트가 없는데(common은 퓨어 자코 영역) 왜그랬지 수정하자
 
 ---
 
