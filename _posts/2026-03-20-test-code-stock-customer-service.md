@@ -198,18 +198,8 @@ fun 투자홈_히트_히스토리_등록_테스트() = runBlocking {
 
 ---
 
-## 실행 방법
+## 느낀점
 
-IntelliJ에서 Active Profile을 `local`로 설정 후 실행:
-
-```
-Run > Edit Configurations > Active profiles: local
-```
-
-Gradle로도 실행 가능:
-
-```bash
-./gradlew :stock-customer-service:test \
-  -Dspring.profiles.active=local \
-  --tests "com.kbank.convenience.stock.customer.domain.*"
-```
+LLM 들어와서 부터는 테스트 코드를 작성하는 것도 도메인 설명과 전략만 잘 명세해놓으면 머리속에 있는데 손이 늦는걸 모델이 휙휙 해줘버리니깐 상당히 좋음
+완벽하게 AI를 사용하지 못할거면 테스트코드라도 빡빡하게 짜서 생활화 하자.
+{% post_url 2026-03-04-dislike-test-code-but-want-tdd %}
