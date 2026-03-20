@@ -1,12 +1,15 @@
 ---
-title: "stock-customer-service RESTful 리팩토링 — customerId를 URI에서 뺀 이유"
+title: stock-customer-service RESTful 리팩토링 — customerId를 URI에서 뺀 이유
 date: 2026-03-20
 tags:
   - Kotlin
   - Spring
   - 아키텍처
+  - Refactoring
+  - HTTP
 category:
   - 실무경험
+  - MSA표준
 ---
 
 커밋 `77b272f`, `75d5775` 기준.

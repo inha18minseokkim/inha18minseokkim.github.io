@@ -1,5 +1,5 @@
 ---
-title: "stock-customer-service 도메인 통합 테스트 작성기"
+title: stock-customer-service 도메인 통합 테스트 작성기
 date: 2026-03-20
 tags:
   - Kotlin
@@ -7,6 +7,7 @@ tags:
   - 테스트
 category:
   - 실무경험
+  - MSA표준
 ---
 
 stock-customer-service에 도메인 서비스별 통합 테스트 코드를 처음으로 작성했음.

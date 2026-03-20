@@ -1,13 +1,15 @@
 ---
-title: "MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유"
+title: MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유
 date: 2026-03-20
 tags:
   - Kotlin
   - Spring
   - 아키텍처
   - DDD
+  - Refactoring
+  - 주식서비스
 category:
-  - 기술
+  - 발표자료
 ---
 
 이번 리팩토링은 단순한 패키지 구조 정리가 아님.

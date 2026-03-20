@@ -7,6 +7,7 @@ tags:
   - 아키텍처
   - DDD
   - 주식서비스
+  - Refactoring
 category:
   - 실무경험
   - MSA표준
