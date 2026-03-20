@@ -159,7 +159,7 @@ api/
 ## 다음 단계: Gradle 멀티모듈 (`feat-multi-module`)
 
 레이어를 통일했으니 이제 물리적 구조도 통합할 준비가 됐음. 진짜 겁나 오래준비했네..
-{% post_url 2025-01-27-multi-module-common-pitfalls %}
+[multi-module-common-pitfalls]({% post_url 2025-01-27-multi-module-common-pitfalls %})
 
 ### 왜 하나의 레포지터리로 합치나
 
