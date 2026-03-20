@@ -10,7 +10,7 @@ category:
   - 기타
 ---
 
-옵시디언으로 포스팅 초안 쓰다가 다른 글 링크를 `{% post_url 파일명 %}` 형식으로 달았는데,
+옵시디언으로 포스팅 초안 쓰다가 다른 글 링크를 `[[파일명]]` 형식으로 달았는데,
 깃허브 블로그에 올리면 링크가 그냥 텍스트로 보임.
 
 ---
@@ -23,8 +23,8 @@ Jekyll에서 내부 포스트 링크는 이렇게 써야 함.
 {% post_url 2026-03-16-refactoring-overseas-etf-ddd %}
 ```
 
-근데 옵시디언에서는 `{% post_url 2026-03-16-refactoring-overseas-etf-ddd %}` 이렇게 씀.
-두 형식이 달라서 옵시디언에서 링크를 달아놓으면 Jekyll 빌드 시 그냥 `{% post_url ... %}` 텍스트로 렌더링됨.
+근데 옵시디언에서는 `[[2026-03-16-refactoring-overseas-etf-ddd]]` 이렇게 씀.
+두 형식이 달라서 옵시디언에서 링크를 달아놓으면 Jekyll 빌드 시 그냥 `[[...]]` 텍스트로 렌더링됨.
 
 그렇다고 포스팅할 때마다 직접 `{% post_url %}` 형식으로 고쳐쓰는 건 번거로움.
 
@@ -45,7 +45,7 @@ push → GitHub Actions → 변환 스크립트 실행 → Jekyll 빌드 → 배
 
 ### 후보 B — Git pre-commit 훅
 
-커밋 직전에 `_posts/` 안의 스테이징된 파일을 스캔해서 `{% post_url 파일명 %}`을 `{% post_url 파일명 %}`으로 치환하고 다시 스테이징하는 방식.
+커밋 직전에 `_posts/` 안의 스테이징된 파일을 스캔해서 `[[파일명]]`을 `{% post_url 파일명 %}`으로 치환하고 다시 스테이징하는 방식.
 
 ```
 git commit → pre-commit 훅 실행 → 변환 → git add → 커밋 완료
@@ -78,7 +78,17 @@ filepath = sys.argv[1]
 with open(filepath, 'r', encoding='utf-8') as f:
     content = f.read()
 
-new_content = re.sub(r'\[\[([^\[\]]+)\]\]', r'{% post_url \1 %}', content)
+# 펜스 코드 블록(```...```), 인라인 코드(`...`) 는 건드리지 않음
+pattern = re.compile(r'(```[\s\S]*?```|`[^`\n]+`|\[\[([^\[\]\n]+)\]\])')
+
+def replace(m):
+    full = m.group(0)
+    if full.startswith('`'):
+        return full
+    return '{% post_url %s %}' % m.group(2)
+
+new_content = pattern.sub(replace, content)
+new_content = new_content.replace('{% post_url ', '{% post_url ').replace(' %}', ' %}')
 
 if new_content != content:
     with open(filepath, 'w', encoding='utf-8') as f:
@@ -92,7 +102,8 @@ done < <(git diff --cached --name-only --diff-filter=ACM | grep "^${POSTS_DIR}/.
 exit 0
 ```
 
-이제 옵시디언에서 `{% post_url 파일명 %}`으로 링크를 달아도 커밋 시 자동으로 `{% post_url 파일명 %}`으로 바뀜.
+이제 옵시디언에서 `[[파일명]]`으로 링크를 달아도 커밋 시 자동으로 `{% post_url 파일명 %}`으로 바뀜.
+코드 블록이나 인라인 코드 안에 있는 `[[...]]`는 변환하지 않아서 이 포스팅처럼 예시 코드를 쓸 때도 문제없음.
 
 ---
 
