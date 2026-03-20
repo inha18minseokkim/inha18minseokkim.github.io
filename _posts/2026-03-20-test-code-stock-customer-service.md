@@ -20,7 +20,7 @@ Member, Interest, Push, Hit 네 개 서비스 대상.
 `application-local.yml` 기준 실제 DB에 붙는 통합 테스트임.
 
 ```
-host:     125.186.138.131
+host:     대충DB호스트
 port:     5432
 database: vectorsample
 username: minseokkim
