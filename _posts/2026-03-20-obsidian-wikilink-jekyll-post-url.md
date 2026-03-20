@@ -1,5 +1,5 @@
 ---
-title: 옵시디언 {% post_url 링크 %}를 Jekyll post_url로 자동 변환하기
+title: "옵시디언 wikilink를 Jekyll post_url로 자동 변환하기"
 date: 2026-03-20
 tags:
   - 자동화
