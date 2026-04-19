@@ -11,7 +11,7 @@ category:
   - 실무경험
   - MSA표준
 ---
-
+이제;
 커밋 `77b272f`, `75d5775` 기준.
 
 기존 컨트롤러에서 `customerId`를 `@PathVariable`이나 `@RequestParam`으로 직접 받고 있었음.

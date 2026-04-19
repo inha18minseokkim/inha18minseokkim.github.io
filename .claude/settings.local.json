@@ -29,7 +29,10 @@
       "Bash(find C:\\\\Users\\\\Surface\\\\Documents\\\\minseokkim\\\\_posts:*)",
       "Bash(xargs -0 grep \"^tags:\")",
       "Bash(cd:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "WebFetch(domain:aspiring-pasta-3a9.notion.site)",
+      "WebFetch(domain:web.archive.org)",
+      "WebFetch(domain:notion.so)"
     ]
   }
 }
