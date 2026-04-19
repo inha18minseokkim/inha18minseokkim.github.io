@@ -10,5 +10,5 @@ category:
 ---
 보금자리론 확약 통지 완료
 
-![Pasted image 20260406151836.png|352]({% post_url Pasted image 20260406151836.png|352 %})
+![이미지](/assets/images/Pasted%20image%2020260406151836.png)
 

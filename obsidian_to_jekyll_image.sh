@@ -42,7 +42,7 @@ for md_file in "$POSTS_DIR"/*.md; do
             filename=$(basename "$md_file")
             # ![[Pasted image XXXXX.png]] -> ![이미지](/assets/images/Pasted%20image%20XXXXX.png)
             # macOS sed는 -i 뒤에 백업 확장자가 필요 (''은 백업 안 함)
-            sed -i '' 's/!\[\[Pasted image \([0-9]*\)\.png\]\]/![이미지](\/assets\/images\/Pasted%20image%20\1.png)/g' "$md_file"
+            sed -i 's/!\[\[Pasted image \([0-9]*\)\.png\]\]/![이미지](\/assets\/images\/Pasted%20image%20\1.png)/g' "$md_file"
             echo "변환: $filename"
             ((converted_count++)) || true
         fi
