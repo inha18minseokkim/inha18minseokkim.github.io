@@ -1,5 +1,5 @@
 ---
-title: 스펙 문서 → GitHub Issue → Claude Code, AI 보조 티켓 기반 개발 워크플로우
+title: 하네스 엔지니어링 까지는 아니고 목줄 엔지니어링
 date: 2026-04-26
 tags:
   - AI/ML
