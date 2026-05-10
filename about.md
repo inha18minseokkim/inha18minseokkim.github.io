@@ -38,7 +38,8 @@ permalink: /about
             <span class="about-exp-period">재직 중</span>
           </div>
           <span class="about-exp-role">Backend Developer</span>
-          <p class="about-exp-owns"><strong>운영 서비스:</strong> 공모주 메이트 · 비상장 주식 알림 · 투자홈 인사이트</p>
+          <p class="about-exp-owns"><strong>개발한 대고객 서비스:</strong> 공모주 메이트 · 식품물가 알림 · 돈나무 키우기 · 비상장 주식 알림 · 투자홈 인사이트</p>
+          <p class="about-exp-owns"><strong>현재 운영:</strong> 공모주 메이트 · 비상장 주식 알림 · 투자홈 인사이트</p>
           <div class="about-proj-list">
 
             <div class="about-proj-item">
@@ -64,15 +65,10 @@ permalink: /about
               <ul class="about-exp-desc">
                 <li>케이뱅크 정기 작업 관제 시스템(jflow)과 Argo Workflow 연동으로 <strong>MSA 환경 배치 구조 개선</strong></li>
                 <li>MSA 환경에서 jflow 제약 조건 내 분산 작업 수행 방안 설계</li>
+                <li><strong>MSA 환경 Batch ↔ IDC 연동 표준 개발</strong></li>
               </ul>
             </div>
 
-            <div class="about-proj-item">
-              <p class="about-proj-title">Python 기반 API 테스트 도입</p>
-              <ul class="about-exp-desc">
-                <li>반복적인 API 검증 자동화로 테스트 효율 향상</li>
-              </ul>
-            </div>
 
           </div>
         </div>
