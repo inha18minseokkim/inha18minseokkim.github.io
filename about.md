@@ -34,41 +34,62 @@ permalink: /about
         <h2 class="about-section-title">Experience</h2>
         <div class="about-exp-item">
           <div class="about-exp-header">
-            <span class="about-exp-company">케이뱅크</span>
-            <span class="about-exp-period">재직 중</span>
+            <span class="about-exp-company">케이뱅크 혁신 서비스 백엔드 개발</span>
+            <span class="about-exp-period">2023.01 ~ 현재</span>
           </div>
           <span class="about-exp-role">Backend Developer</span>
-          <p class="about-exp-owns"><strong>개발한 대고객 서비스:</strong> 공모주 메이트 · 식품물가 알림 · 돈나무 키우기 · 비상장 주식 알림 · 투자홈 인사이트</p>
-          <p class="about-exp-owns"><strong>현재 운영:</strong> 공모주 메이트 · 비상장 주식 알림 · 투자홈 인사이트</p>
           <div class="about-proj-list">
 
             <div class="about-proj-item">
-              <p class="about-proj-title">Mediation API 패턴 도입 — MSA 구조 개선</p>
+              <p class="about-proj-title">초기 서비스 개발 및 MSA 전환 <span class="about-exp-period">(2023.01 ~ 2024.01)</span></p>
               <ul class="about-exp-desc">
-                <li>주식 서비스 내 하위 업무 복잡도 개선을 위해 <strong>BFF(Backend-For-Frontend) 레이어 설계 및 구현</strong></li>
-                <li>서비스 간 상호 호출 지양 및 공모주 ↔ 비상장 서비스 간 <strong>디커플링</strong></li>
-                <li>기존 Java + OpenFeign + CompletableFuture에서 <strong>Spring WebFlux(Reactor) 논블로킹</strong> 구조로 전환</li>
-                <li>Java → <strong>Kotlin 마이그레이션</strong>. 코루틴(<code>suspend</code> + <code>async/await</code>)으로 병렬 API 조합 및 가독성 개선</li>
-                <li>Reactor Context를 통한 <strong>사내 표준 헤더 전파(Header Propagation)</strong> 구현</li>
+                <li><strong>신규 서비스 런칭:</strong> 공모주 메이트, 식품물가 알림, 돈나무 키우기 등의 백엔드 서비스와 계정계/카드계 포털 관리자 화면 및 푸시 배치 기능 개발</li>
+                <li><strong>MSA 추진 TF 활동:</strong> 레거시 시스템을 Spring Boot 3, PostgreSQL 환경으로 마이그레이션하는 작업에 참여</li>
+                <li><strong>MSA 배치 구동 아키텍처 개선:</strong> 사내 정기 작업 관제 시스템(jflow)과 Argo-Workflow를 연동하여 MSA 환경에 배치 어플리케이션을 구동시키는 표준 수립</li>
               </ul>
             </div>
 
             <div class="about-proj-item">
-              <p class="about-proj-title">Redis 활용 성능 향상 & 임시 데이터 저장</p>
+              <p class="about-proj-title">비상장 주식 서비스 구축 및 레거시-MSA 연동 아키텍처 개선 <span class="about-exp-period">(2024.03 ~ 2024.04)</span></p>
+              <p class="about-exp-tech">Java/Kotlin, Spring Boot, Spring Cloud Gateway, JPA</p>
               <ul class="about-exp-desc">
-                <li>캐싱 레이어 도입으로 주식 서비스 응답 성능 개선</li>
+                <li><strong>EKS 간 대외 연동 구조 확립:</strong> IDC 대외계와 EKS 환경을 연결하기 위해 EAI-OpenAPI 릴레이 구조 도입</li>
+                <li><strong>API 게이트웨이 라우팅 한계 극복:</strong> 레거시 MCI 어댑터의 URI 매핑 한계를 Spring Cloud Gateway 라우팅 로직 개선으로 해결</li>
+                <li><strong>오버엔지니어링 식별 및 최적화:</strong> Spring Cloud Gateway와 Redis 간 불필요한 연동을 선제적으로 파악, 제거하여 장애 시 가용성 확보</li>
+                <li><strong>공통 데이터 변경 표준화:</strong> JPA Audit 기능을 활용하여 표준 공통 컬럼(GUID 등) 적재 자동화</li>
+                <li><strong>프로젝트 매니지먼트:</strong> 백엔드 핵심 설계 및 유관 부서 간 일정/비즈니스 요건 조율 주도</li>
               </ul>
             </div>
 
             <div class="about-proj-item">
-              <p class="about-proj-title">jflow ~ Argo Workflow 연동 고도화</p>
+              <p class="about-proj-title">투자홈/투자캘린더 서비스 개발, 고도화 <span class="about-exp-period">(2024.04 ~ 2025.07)</span></p>
+              <p class="about-exp-tech">Kotlin suspend, Kafka, KEDA, Redis</p>
               <ul class="about-exp-desc">
-                <li>케이뱅크 정기 작업 관제 시스템(jflow)과 Argo Workflow 연동으로 <strong>MSA 환경 배치 구조 개선</strong></li>
-                <li>MSA 환경에서 jflow 제약 조건 내 분산 작업 수행 방안 설계</li>
-                <li><strong>MSA 환경 Batch ↔ IDC 연동 표준 개발</strong></li>
+                <li><strong>대외기관 API 병목 현상 해결:</strong> 폐쇄망 제약(10 TPS)을 극복하기 위해 Kafka 기반 OpenAPI 수신 파이프라인 구축, KEDA 도입으로 EKS 자원 효율화</li>
+                <li><strong>MSA 하위 도메인 디커플링:</strong> 주식 도메인 내 하위 업무(공모주, 비상장 등) 간 복잡도를 낮추기 위해 BFF 패턴 설계 및 적용</li>
+                <li><strong>조회 성능 개선:</strong> 논블로킹 아키텍처와 Redis Lua Script 도입으로 준실시간 국내 주식 데이터 조회 성능 대폭 개선</li>
               </ul>
             </div>
 
+            <div class="about-proj-item">
+              <p class="about-proj-title">주간 투자왕 서비스 개발 <span class="about-exp-period">(2025.06 ~ 2025.12)</span></p>
+              <p class="about-exp-tech">Kotlin, Spring WebFlux, R2DBC, Kafka</p>
+              <ul class="about-exp-desc">
+                <li><strong>Full Reactive 스택:</strong> 대량 트래픽 처리를 위해 Spring WebFlux와 R2DBC 도입, 논블로킹 I/O 기반으로 DB 병목 제거</li>
+                <li><strong>Hexagonal Architecture 도입:</strong> 도메인 로직과 인프라 간 결합을 끊어 비즈니스 변화에 민첩하게 대응할 수 있는 구조 구축</li>
+                <li><strong>이벤트 기반 아키텍처(EDA) 적용:</strong> 계정계 입출금 연동을 위해 Kafka 활용, 서비스 간 결합도를 낮추고 응답 지연 최소화</li>
+              </ul>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">게임 센터 서비스 개발 <span class="about-exp-period">(2026.04 ~ 진행 중)</span></p>
+              <p class="about-exp-tech">Java 21, Spring Boot, Spring Data JDBC, Debezium(CDC), Kafka</p>
+              <ul class="about-exp-desc">
+                <li><strong>Virtual Thread 및 Spring Data JDBC 도입:</strong> JDK 21의 Virtual Thread와 헥사고날 아키텍처에 적합한 Spring Data JDBC로 기술 스택 전환</li>
+                <li><strong>CDC 기반 EDA 입출금 아키텍처:</strong> Debezium CDC 도입, 데이터 정합성이 최우선인 입출금 로직을 Outbox 패턴으로 구현</li>
+                <li><strong>도메인 중심 아키텍처 및 로직 통합:</strong> 헥사고날 아키텍처 적용으로 기존 주간 투자왕 서비스에 파편화되어 있던 입출금 처리 로직 통합 성공</li>
+              </ul>
+            </div>
 
           </div>
         </div>
@@ -225,6 +246,12 @@ permalink: /about
   font-weight: 600;
   color: var(--text, #e6edf3);
   margin: 0 0 0.4rem;
+}
+.about-exp-tech {
+  font-size: 0.82rem;
+  color: var(--text-muted, #888);
+  margin: 0 0 0.5rem;
+  font-style: italic;
 }
 
 .about-exp-item { margin-bottom: 1.2rem; }
