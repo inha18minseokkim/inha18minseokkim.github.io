@@ -189,6 +189,14 @@ layout: default
 </script>
 
 <script>
+// ── 테이블 가로 스크롤 래퍼 ────────────────────────────────────────────────
+document.querySelectorAll('.post-content table').forEach(function(table) {
+  var wrapper = document.createElement('div');
+  wrapper.className = 'table-scroll';
+  table.parentNode.insertBefore(wrapper, table);
+  wrapper.appendChild(table);
+});
+
 // ── 코드 블록 복사 버튼 ──────────────────────────────────────────────────────
 document.querySelectorAll('.post-content pre').forEach(function(pre) {
   const btn = document.createElement('button');

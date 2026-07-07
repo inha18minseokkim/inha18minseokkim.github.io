@@ -858,13 +858,15 @@ html.light .icon-moon { display: block; }
   }
 }
 
+.post-content .table-scroll {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
 .post-content table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
   font-size: 0.9rem;
-  overflow-x: auto;
-  display: block;
 }
 
 .post-content table th,
