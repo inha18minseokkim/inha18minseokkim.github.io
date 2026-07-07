@@ -9,5 +9,3 @@ __pycache__/
 .idea/
 memo/
 node_modules/
-package-lock.json
-package.json
