@@ -858,6 +858,33 @@ html.light .icon-moon { display: block; }
   }
 }
 
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.post-content table th,
+.post-content table td {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.post-content table th {
+  background: var(--surface);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.post-content table tr:nth-child(even) td {
+  background: rgba(124, 111, 255, 0.03);
+}
+
 .post-content hr {
   border: none;
   border-top: 1px solid var(--border);
