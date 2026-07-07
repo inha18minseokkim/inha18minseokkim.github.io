@@ -88,13 +88,15 @@ Flux.interval(Duration.ofSeconds(3))
     ));
 ```
 
-이렇게 하면 `Kafka Consumer`처럼 스트림을 구독하는 것과 비슷하게 됨. 쓰다가 진짜 r2dbc 쓸 필요가 없다 싶으면 그냥 jdbc + Spring Scheduled로 다시 바꿀 예정임
+이렇게 하면 `Kafka Consumer`처럼 스트림을 구독하는 것과 비슷하게 됨.
+
+근데 결론적으로는 `Flux.interval` + r2dbc 조합은 안 쓰기로 함. 이 작업을 굳이 스트림으로 쪼개서 리액티브하게 처리해봐야 당장 효용이 있는 것도 아니고, 오히려 이슈 트래킹만 버든이 되는 느낌이라 그냥 **Spring Cronjob + JDBC**로 감.
 
 물론 대용량 쿼리로 긁는거니 추가 고려사항 있음:
 
 - **오프셋 컬럼 인덱스 필수** — `id`나 `updated_at` 기준으로 조회할 때 인덱스 없으면 매 사이클마다 풀 스캔
 - **Aurora Reader Endpoint 격리** — 폴링 쿼리는 반드시 리더 인스턴스로만
-- **LIMIT 걸기** — 한 사이클에 대량이 몰려 OOM 나는 거 방지
+- **LIMIT 걸기** — 한 사이클에 대량이 몰려 OOM 나는 거 방지. 처음 실행할 때(초기 select)도 LIMIT 안 걸면 풀스캔 나니까 첫 쿼리부터 무조건 지정해야 함
 - **Soft Delete 설계** — 하드 딜리트된 데이터는 폴링으로 감지 불가, `is_deleted` 플래그로 처리해야 함. 그리고 인터페이스용 테이블이니깐 delete 날리지 마 그냥 나중에 시간지나서 truncate 파티션 해
 - 멱등처리 필수
 
