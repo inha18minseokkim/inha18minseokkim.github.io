@@ -33,7 +33,9 @@
       "WebFetch(domain:aspiring-pasta-3a9.notion.site)",
       "WebFetch(domain:web.archive.org)",
       "WebFetch(domain:notion.so)",
-      "WebFetch(domain:gemini.google.com)"
+      "WebFetch(domain:gemini.google.com)",
+      "PowerShell(git add *)",
+      "PowerShell(git push *)"
     ]
   }
 }
