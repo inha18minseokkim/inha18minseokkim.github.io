@@ -52,7 +52,7 @@ category:
 
 매수 금액은 **N억**. 솔직히 비싸다고 생각했다. 올 확장 + 로얄층이라 인테리어 비용 아꼈다고 자기합리화했다.
 
-![이미지](/assets/images/Pasted%20image%2020260220085530.png)
+<img src="/assets/images/Pasted%20image%2020260220085530.png" style="max-width:480px;width:100%;">
 
 ---
 
@@ -76,25 +76,27 @@ category:
 보금자리론 D-90부터 신청
 ```
 
-![이미지](/assets/images/Pasted%20image%2020260220085538.png)
-
 자금조달계획서 작성 예시. 여자친구 전세대출 잔금은 대여금 명목으로 기재.
 
-![이미지](/assets/images/Pasted%20image%2020260220085544.png)
+<img src="/assets/images/Pasted%20image%2020260220085538.png" style="max-width:480px;width:100%;">
 
 새올전자민원에서 접수 번호로 계속 조회했다.
 
-![이미지](/assets/images/Pasted%20image%2020260220085551.png)
-
-![이미지](/assets/images/Pasted%20image%2020260220085557.png)
+<div style="display:flex;gap:8px;align-items:flex-start;">
+<img src="/assets/images/Pasted%20image%2020260220085544.png" style="width:48%;">
+<img src="/assets/images/Pasted%20image%2020260220085551.png" style="width:48%;">
+</div>
 
 진짜 14영업일 꽉 채워서 나왔다. 안양 동안구청 공무원 고생 많으심.
 
-![이미지](/assets/images/Pasted%20image%2020260220085605.png)
+<img src="/assets/images/Pasted%20image%2020260220085557.png" style="max-width:480px;width:100%;">
 
 허가증 나오자마자 라스베가스 AWS Reinvent 현장에서 전자계약 진행.
 
-![이미지](/assets/images/Pasted%20image%2020260220085611.png)
+<div style="display:flex;gap:8px;align-items:flex-start;">
+<img src="/assets/images/Pasted%20image%2020260220085605.png" style="width:48%;">
+<img src="/assets/images/Pasted%20image%2020260220085611.png" style="width:48%;">
+</div>
 
 국토부 실거래 신고용 자금조달계획서 엑셀. 관할구청용이랑 따로 제출해야 한다.
 
@@ -126,19 +128,20 @@ category:
 
 신용점수에 타격이 크지 않을 선에서 **N만 원** 실행했다.
 
-![이미지](/assets/images/Pasted%20image%2020260220085617.png)
-![이미지](/assets/images/Pasted%20image%2020260220085622.png)
-![이미지](/assets/images/Pasted%20image%2020260220085628.png)
-
 보금자리론 D-90 당일 스마트주택금융 앱으로 서류 제출.
 
-![이미지](/assets/images/Pasted%20image%2020260220085633.png)
+<div style="display:flex;gap:8px;align-items:flex-start;">
+<img src="/assets/images/Pasted%20image%2020260220085617.png" style="width:31%;">
+<img src="/assets/images/Pasted%20image%2020260220085622.png" style="width:31%;">
+<img src="/assets/images/Pasted%20image%2020260220085628.png" style="width:31%;">
+</div>
 
-서류 제출 후 심사 진행 화면.
+<div style="display:flex;gap:8px;align-items:flex-start;margin-top:8px;">
+<img src="/assets/images/Pasted%20image%2020260220085633.png" style="width:48%;">
+<img src="/assets/images/Pasted%20image%2020260308021049.png" style="width:48%;">
+</div>
 
-![이미지](/assets/images/Pasted%20image%2020260308021049.png)
-
-결심한 그날 오후 보금자리론 확약 통지가 날아왔다.
+서류 제출 후 심사 진행. 결심한 그날 오후 보금자리론 확약 통지가 날아왔다.
 
 ### DSR 77.3%가 실제로 부담스럽지 않은 이유
 
@@ -156,25 +159,27 @@ category:
 
 보금자리론 확약 통지가 나온 날 그대로 진행했다.
 
-![이미지](/assets/images/Pasted%20image%2020260406151836.png)
+<div style="display:flex;gap:8px;align-items:flex-start;">
+<img src="/assets/images/Pasted%20image%2020260406151836.png" style="width:48%;">
+<img src="/assets/images/Pasted%20image%2020260510235312.png" style="width:48%;">
+</div>
 
 확약 통지 완료. 점심 먹다가 알림 왔다.
 
-![이미지](/assets/images/Pasted%20image%2020260510235312.png)
-
-![이미지](/assets/images/Pasted%20image%2020260510235216.png)
+<img src="/assets/images/Pasted%20image%2020260510235216.png" style="max-width:480px;width:100%;">
 
 - 보금자리론 **N억** 실행 — 체증식 분할상환
 - 법무사는 보금자리론 특성상 은행 지정 법무사 필수. 법무사비용 + 채권매각대금은 현금 납부
 - 취득세는 **위택스에서 BC카드 할부**로 직접 납부 (법무사 통하지 않음)
 
-![이미지](/assets/images/Pasted%20image%2020260510235204.png)
+<img src="/assets/images/Pasted%20image%2020260510235204.png" style="max-width:480px;width:100%;">
 
 법무사 비용 청구서. 취득세 제외하고 현금 납부.
 
-![이미지](/assets/images/Pasted%20image%2020260510234700.png)
-
-![이미지](/assets/images/Pasted%20image%2020260707091405.png)
+<div style="display:flex;gap:8px;align-items:flex-start;">
+<img src="/assets/images/Pasted%20image%2020260510234700.png" style="width:48%;">
+<img src="/assets/images/Pasted%20image%2020260707091405.png" style="width:48%;">
+</div>
 
 위택스에서 BC카드 할부로 취득세 직접 납부.
 
@@ -184,7 +189,7 @@ category:
 
 ## 6. 지금 이런 효과가 있다 — 전세난민 위기 탈출
 
-![이미지](/assets/images/Pasted%20image%2020260707091641.png)
+<img src="/assets/images/Pasted%20image%2020260707091641.png" style="max-width:480px;width:100%;">
 
 여기서부터가 핵심이다.
 
