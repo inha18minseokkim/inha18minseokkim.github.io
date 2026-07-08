@@ -234,6 +234,10 @@ document.querySelectorAll('.post-content pre').forEach(function(pre) {
 pre:hover .copy-btn { opacity: 1; }
 .copy-btn:hover { color: var(--accent, #58a6ff); border-color: var(--accent, #58a6ff); }
 
+@media (max-width: 640px) {
+  .copy-btn { opacity: 1; font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+}
+
 /* ── 이전/다음 글 네비게이션 ─────────────────────────────────────────────── */
 .post-nav {
   display: flex;

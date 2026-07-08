@@ -55,8 +55,20 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="메뉴" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </div>
+    <!-- 모바일 메뉴 -->
+    <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="{{ '/' | relative_url }}">글 목록</a>
+      <a href="{{ '/about' | relative_url }}">About</a>
+      <a href="https://github.com/inha18minseokkim" target="_blank" rel="noopener">GitHub ↗</a>
+      <div class="mobile-search-wrap">
+        <input type="text" id="mobileSearchInput" placeholder="검색..." autocomplete="off" />
+      </div>
+    </nav>
   </header>
 
   <main>
@@ -79,6 +91,29 @@
         localStorage.setItem('theme', 'light');
       }
     });
+
+    (function () {
+      var hamburgerBtn = document.getElementById('hamburgerBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      if (!hamburgerBtn || !mobileMenu) return;
+
+      hamburgerBtn.addEventListener('click', function () {
+        var isOpen = mobileMenu.classList.toggle('open');
+        hamburgerBtn.classList.toggle('open', isOpen);
+        hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+      });
+
+      // 메뉴 링크 클릭 시 닫기
+      mobileMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          mobileMenu.classList.remove('open');
+          hamburgerBtn.classList.remove('open');
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        });
+      });
+    })();
   </script>
 </body>
 </html>
