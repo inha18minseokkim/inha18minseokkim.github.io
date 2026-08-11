@@ -417,26 +417,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── 검색 ──────────────────────────────────────────────────────────────────
   let searchTimeout = null;
-  function handleSearch(value, otherInput) {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
-      searchQuery = value.toLowerCase().trim();
-      if (otherInput) otherInput.value = value;
-      applyFilter();
-    }, 200);
-  }
-
   if (searchInput) {
     searchInput.addEventListener('input', function() {
-      const mobileInput = document.getElementById('mobileSearchInput');
-      handleSearch(this.value, mobileInput);
-    });
-  }
-
-  const mobileSearchInput = document.getElementById('mobileSearchInput');
-  if (mobileSearchInput) {
-    mobileSearchInput.addEventListener('input', function() {
-      handleSearch(this.value, searchInput);
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchQuery = this.value.toLowerCase().trim();
+        applyFilter();
+      }, 200); // 200ms 디바운스
     });
   }
 
