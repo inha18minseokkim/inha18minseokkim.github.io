@@ -81,6 +81,32 @@ category:
 - 텍스트 흐름도: ` ``` ` 코드 블록 사용 (언어 미명시)
 - 볼드: 핵심 개념, 결론, 중요 주의사항
 
+### 이미지 포맷 검토 및 변환
+
+포스팅 작업 시 이미지가 Jekyll에서 렌더링 가능한 형식인지 반드시 확인한다.
+
+**Jekyll에서 렌더링되는 형식 (올바른 예)**
+```markdown
+![이미지](/assets/images/Pasted%20image%2020260805223842.png)
+```
+
+**Obsidian 전용 문법 — Jekyll에서 렌더링 안 됨 (잘못된 예)**
+```markdown
+![[Pasted image 20260805223842.png]]
+```
+
+포스팅 파일에 `![[Pasted image` 패턴이 있거나, 루트 디렉토리에 `Pasted image *.png` 파일이 있으면 반드시 아래 스크립트를 실행한다.
+
+```bash
+bash obsidian_to_jekyll_image.sh
+```
+
+스크립트가 하는 일:
+1. 루트 디렉토리의 `Pasted image *.png` 파일을 `assets/images/`로 이동
+2. `_posts/*.md`의 `![[Pasted image XXXXX.png]]` 문법을 `![이미지](/assets/images/Pasted%20image%20XXXXX.png)` 로 변환 (공백 → `%20` URL 인코딩 포함)
+
+스크립트 실행 후 변환된 파일과 이동된 이미지도 함께 커밋할 것.
+
 ---
 
 ## 글 유형별 전개 패턴
