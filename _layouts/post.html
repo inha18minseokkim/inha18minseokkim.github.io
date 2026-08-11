@@ -33,6 +33,24 @@ layout: default
           {{ content }}
         </div>
 
+        {% assign post_key = page.path | remove: "_posts/" | remove: ".md" %}
+        {% assign related = site.data.related_posts[post_key] %}
+        {% if related %}
+        <section class="related-posts">
+          <h3 class="related-posts-title">연관 포스팅</h3>
+          <ul class="related-posts-list">
+            {% for rel in related %}
+            <li class="related-post-item">
+              <a href="{{ rel.url | relative_url }}" class="related-post-link">
+                <span class="related-post-title">{{ rel.title }}</span>
+                <span class="related-post-date">{{ rel.date }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </section>
+        {% endif %}
+
         {% if page.previous or page.next %}
         <nav class="post-nav">
           <div class="post-nav-item post-nav-prev">
@@ -189,6 +207,14 @@ layout: default
 </script>
 
 <script>
+// ── 테이블 가로 스크롤 래퍼 ────────────────────────────────────────────────
+document.querySelectorAll('.post-content table').forEach(function(table) {
+  var wrapper = document.createElement('div');
+  wrapper.className = 'table-scroll';
+  table.parentNode.insertBefore(wrapper, table);
+  wrapper.appendChild(table);
+});
+
 // ── 코드 블록 복사 버튼 ──────────────────────────────────────────────────────
 document.querySelectorAll('.post-content pre').forEach(function(pre) {
   const btn = document.createElement('button');
@@ -225,6 +251,75 @@ document.querySelectorAll('.post-content pre').forEach(function(pre) {
 }
 pre:hover .copy-btn { opacity: 1; }
 .copy-btn:hover { color: var(--accent, #58a6ff); border-color: var(--accent, #58a6ff); }
+
+@media (max-width: 640px) {
+  .copy-btn { opacity: 1; font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+}
+
+/* ── 연관 포스팅 ─────────────────────────────────────────────────────────── */
+.related-posts {
+  margin: 2.5rem 0 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.related-posts-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted, #888);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 0 0 1rem;
+}
+.related-posts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.related-post-item {
+  display: block;
+}
+.related-post-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  text-decoration: none;
+  background: var(--code-bg, #161b22);
+  border: 1px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+.related-post-link:hover {
+  border-color: var(--accent, #58a6ff);
+  background: var(--hover-bg, #1c2128);
+}
+.related-post-title {
+  font-size: 0.88rem;
+  color: var(--text, #e6edf3);
+  line-height: 1.5;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.related-post-link:hover .related-post-title {
+  color: var(--accent, #58a6ff);
+}
+.related-post-date {
+  font-size: 0.75rem;
+  color: var(--text-muted, #888);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .related-post-link { flex-direction: column; gap: 0.2rem; }
+  .related-post-date { font-size: 0.7rem; }
+}
 
 /* ── 이전/다음 글 네비게이션 ─────────────────────────────────────────────── */
 .post-nav {
