@@ -119,7 +119,7 @@ git checkout 68ce962 -- "assets/images/Pasted image 20260406151836.png"
 
 ## Obsidian → Jekyll 이미지 변환 스크립트
 
-Obsidian에서 스크린샷 붙여넣기 하면 `![[Pasted image 20260510120000.png]]` 형식으로 들어감. Jekyll은 이 문법을 모르니까 변환이 필요함.
+Obsidian에서 스크린샷 붙여넣기 하면 `![이미지](/assets/images/Pasted%20image%2020260510120000.png)` 형식으로 들어감. Jekyll은 이 문법을 모르니까 변환이 필요함.
 
 ```bash
 #!/bin/bash

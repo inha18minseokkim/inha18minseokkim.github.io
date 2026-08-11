@@ -54,10 +54,10 @@ suspend fun getGameData(userId: String) = coroutineScope {
 ---
 ## 꾸역꾸역 다 받아놓고(back-pressure, suspend) 순차적으로 처리할거임(R2dbc) vs 한도 초과하면 터질건데 한도는 무한대임(VThread)
 
-![[Pasted image 20260419232727.png]]
+![이미지](/assets/images/Pasted%20image%2020260419232727.png)
 대충 각 진영의 싸움 나노바나나에 넣고 돌려 봄
 
-![[Pasted image 20260419232816.png]]
+![이미지](/assets/images/Pasted%20image%2020260419232816.png)
 
 
 ---
