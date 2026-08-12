@@ -16,7 +16,7 @@ category:
 
 **그럼에도 불구하고, **남은 20대 남자(평균 30만, 케이뱅크 계좌회원 10만, 20대 출생년도별)들을 모두 회원으로 별 노력없이 만들 수 있다는 메리트가 있다.
 [비대면 실명인증(유권해석 및 사례)]({% post_url 2024-01-08-non-face-real-name-verification %})
-[오픈api 방식 인증]({% post_url 2024-01-08-open-api-authentication %})
+오픈api 방식 인증
 [금융규제 샌드박스]({% post_url 2024-01-08-financial-regulatory-sandbox %})
 [국인체(**국방인사정보체계 구축 및 운영에 관한 훈령)**]({% post_url 2024-01-22-defense-personnel-information-system-directive %})
 [준비해야 할 사항(정리중)]({% post_url 2024-01-14-preparation-checklist %})
