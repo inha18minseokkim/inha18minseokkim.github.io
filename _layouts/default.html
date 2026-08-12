@@ -55,13 +55,57 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
+        <button class="hamburger" id="hamburgerBtn" aria-label="메뉴" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </div>
+    <!-- 모바일 메뉴 -->
+    <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="{{ '/' | relative_url }}">글 목록</a>
+      <a href="{{ '/about' | relative_url }}">About</a>
+      <a href="https://github.com/inha18minseokkim" target="_blank" rel="noopener">GitHub ↗</a>
+      <div class="mobile-search-wrap">
+        <input type="text" id="mobileSearchInput" placeholder="검색..." autocomplete="off" />
+      </div>
+    </nav>
   </header>
 
   <main>
     {{ content }}
   </main>
+
+  <!-- 검색 오버레이 -->
+  <div id="searchOverlay" hidden aria-modal="true" role="dialog" aria-label="검색">
+    <div class="search-backdrop"></div>
+    <div class="search-panel">
+      <div class="search-panel-header">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchOverlayInput" placeholder="검색어 입력..." autocomplete="off" spellcheck="false" />
+        <button class="search-close-btn" id="searchCloseBtn" aria-label="닫기">✕</button>
+      </div>
+      <div class="search-panel-body">
+        <div class="search-col" id="keywordCol">
+          <div class="search-col-title">키워드</div>
+          <ul class="search-result-list" id="keywordResultList"></ul>
+          <p class="search-empty" id="keywordEmpty" hidden>결과 없음</p>
+        </div>
+        <div class="search-col" id="semanticCol">
+          <div class="search-col-title">
+            시맨틱
+            <span class="semantic-badge" id="semanticBadge" hidden></span>
+          </div>
+          <ul class="search-result-list" id="semanticResultList"></ul>
+          <p class="search-empty" id="semanticEmpty" hidden></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 전체 포스팅 메타데이터 (키워드 검색용) -->
+  <script id="sitePostsData" type="application/json">
+  [{% for post in site.posts %}{"title":{{ post.title | jsonify }},"url":{{ post.url | relative_url | jsonify }},"date":{{ post.date | date: "%Y.%m.%d" | jsonify }},"tags":{{ post.tags | jsonify }},"excerpt":{{ post.excerpt | strip_html | truncate: 200 | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+  </script>
 
   <footer class="site-footer">
     <div class="container">
@@ -79,6 +123,315 @@
         localStorage.setItem('theme', 'light');
       }
     });
+
+    (function () {
+      var hamburgerBtn = document.getElementById('hamburgerBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      if (!hamburgerBtn || !mobileMenu) return;
+
+      hamburgerBtn.addEventListener('click', function () {
+        var isOpen = mobileMenu.classList.toggle('open');
+        hamburgerBtn.classList.toggle('open', isOpen);
+        hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+      });
+
+      // 메뉴 링크 클릭 시 닫기
+      mobileMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          mobileMenu.classList.remove('open');
+          hamburgerBtn.classList.remove('open');
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+        });
+      });
+    })();
   </script>
+
+  <!-- 시맨틱 검색 모듈 -->
+  <script type="module">
+  const TRANSFORMERS_CDN = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js';
+  const SEARCH_MODEL = 'Xenova/paraphrase-multilingual-MiniLM-L12-v2';
+  const EMBEDDINGS_URL = '/assets/search/embeddings.json';
+  const TOP_N = 7;
+
+  const ALL_POSTS = JSON.parse(document.getElementById('sitePostsData').textContent);
+
+  let embData = null, extractor = null;
+  let embState = 'idle', modelState = 'idle';
+  let currentQuery = '', debounceTimer = null;
+
+  // ── DOM refs ───────────────────────────────────────────────────────────────
+  const overlay       = document.getElementById('searchOverlay');
+  const overlayInput  = document.getElementById('searchOverlayInput');
+  const closeBtn      = document.getElementById('searchCloseBtn');
+  const keywordList   = document.getElementById('keywordResultList');
+  const keywordEmpty  = document.getElementById('keywordEmpty');
+  const semanticList  = document.getElementById('semanticResultList');
+  const semanticEmpty = document.getElementById('semanticEmpty');
+  const semanticBadge = document.getElementById('semanticBadge');
+
+  // ── 키워드 검색 ────────────────────────────────────────────────────────────
+  function keywordSearch(q) {
+    const lq = q.toLowerCase();
+    return ALL_POSTS.filter(p =>
+      p.title.toLowerCase().includes(lq) ||
+      (p.excerpt || '').toLowerCase().includes(lq) ||
+      (p.tags || []).some(t => t.toLowerCase().includes(lq))
+    ).slice(0, TOP_N);
+  }
+
+  // ── Lazy 로더 ──────────────────────────────────────────────────────────────
+  async function ensureEmbeddings() {
+    if (embState === 'ready') return;
+    if (embState === 'loading') { while (embState === 'loading') await sleep(80); return; }
+    embState = 'loading';
+    try {
+      embData = await fetch(EMBEDDINGS_URL).then(r => r.json());
+      embState = 'ready';
+    } catch { embState = 'error'; throw new Error('embeddings 로드 실패'); }
+  }
+
+  async function ensureModel() {
+    if (modelState === 'ready') return;
+    if (modelState === 'loading') { while (modelState === 'loading') await sleep(80); return; }
+    modelState = 'loading';
+    setBadge('모델 로딩 중...');
+    try {
+      const { pipeline, env } = await import(TRANSFORMERS_CDN);
+      env.allowLocalModels = false;
+      extractor = await pipeline('feature-extraction', SEARCH_MODEL, { quantized: true });
+      modelState = 'ready';
+      setBadge('');
+    } catch { modelState = 'error'; setBadge('오류'); throw new Error('모델 로드 실패'); }
+  }
+
+  // ── 코사인 (정규화 벡터는 dot product = cosine) ───────────────────────────
+  function dot(a, b) {
+    let s = 0;
+    for (let i = 0; i < a.length; i++) s += a[i] * b[i];
+    return s;
+  }
+
+  // ── 시맨틱 검색 ────────────────────────────────────────────────────────────
+  async function semanticSearch(q) {
+    await Promise.all([ensureEmbeddings(), ensureModel()]);
+    const out = await extractor(q, { pooling: 'mean', normalize: true });
+    const qvec = Array.from(out.data);
+    return embData.vecs
+      .map((vec, i) => ({ score: dot(qvec, vec), post: embData.posts[i] }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, TOP_N);
+  }
+
+  // ── 렌더 ───────────────────────────────────────────────────────────────────
+  function renderList(ul, emptyEl, items, showScore) {
+    ul.innerHTML = '';
+    if (!items.length) { emptyEl.hidden = false; return; }
+    emptyEl.hidden = true;
+    items.forEach(({ post, score }) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="${post.url}" class="search-result-link">
+        <span class="search-result-title">${escHtml(post.title)}</span>
+        <span class="search-result-meta">
+          ${escHtml(post.date)}
+          ${showScore ? `<span class="search-score">${Math.round(score * 100)}%</span>` : ''}
+        </span>
+      </a>`;
+      ul.appendChild(li);
+    });
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function setBadge(text) {
+    semanticBadge.textContent = text;
+    semanticBadge.hidden = !text;
+  }
+
+  // ── 검색 실행 ──────────────────────────────────────────────────────────────
+  async function runSearch(q) {
+    if (!q.trim()) {
+      keywordList.innerHTML = ''; semanticList.innerHTML = '';
+      keywordEmpty.hidden = true; semanticEmpty.hidden = true;
+      return;
+    }
+
+    // 키워드 즉시
+    const kRes = keywordSearch(q);
+    renderList(keywordList, keywordEmpty, kRes.map(p => ({ post: p, score: 1 })), false);
+
+    // 시맨틱 비동기
+    semanticList.innerHTML = '<li class="search-loading">분석 중...</li>';
+    semanticEmpty.hidden = true;
+    try {
+      const sRes = await semanticSearch(q);
+      if (currentQuery !== q) return;
+      renderList(semanticList, semanticEmpty, sRes, true);
+    } catch {
+      semanticList.innerHTML = '';
+      semanticEmpty.textContent = '시맨틱 검색 사용 불가';
+      semanticEmpty.hidden = false;
+    }
+  }
+
+  // ── 오버레이 열기/닫기 ─────────────────────────────────────────────────────
+  function openOverlay(initValue = '') {
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    overlayInput.value = initValue;
+    overlayInput.focus();
+    if (initValue) { currentQuery = initValue; runSearch(initValue); }
+  }
+
+  function closeOverlay() {
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+    currentQuery = '';
+    keywordList.innerHTML = ''; semanticList.innerHTML = '';
+    keywordEmpty.hidden = true; semanticEmpty.hidden = true;
+  }
+
+  // ── 이벤트 ─────────────────────────────────────────────────────────────────
+  closeBtn.addEventListener('click', closeOverlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay || e.target.classList.contains('search-backdrop')) closeOverlay(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) closeOverlay(); });
+
+  overlayInput.addEventListener('input', e => {
+    clearTimeout(debounceTimer);
+    currentQuery = e.target.value.trim();
+    debounceTimer = setTimeout(() => runSearch(currentQuery), 220);
+  });
+
+  // 헤더/모바일 검색 입력창 → 오버레이로 위임
+  ['headerSearchInput', 'mobileSearchInput'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('focus', () => openOverlay(el.value));
+    el.addEventListener('input', e => { if (!overlay.hidden) { overlayInput.value = e.target.value; overlayInput.dispatchEvent(new Event('input')); } });
+  });
+
+  // 페이지 idle 시 preload
+  const preload = () => { ensureEmbeddings().catch(() => {}); ensureModel().catch(() => {}); };
+  if ('requestIdleCallback' in window) requestIdleCallback(preload, { timeout: 5000 });
+  else setTimeout(preload, 3000);
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+  </script>
+
+  <style>
+  /* ── 검색 오버레이 ───────────────────────────────────────────────────────── */
+  #searchOverlay {
+    position: fixed; inset: 0; z-index: 900;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 3.5rem 1rem 2rem;
+    overflow-y: auto;
+  }
+  #searchOverlay[hidden] { display: none; }
+
+  .search-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+  }
+
+  .search-panel {
+    position: relative; z-index: 1;
+    background: var(--bg, #0d1117);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 100%; max-width: 760px;
+    display: flex; flex-direction: column;
+    max-height: calc(100vh - 5rem);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  .search-panel-header {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .search-icon { width: 16px; height: 16px; flex-shrink: 0; color: var(--text-muted, #888); }
+
+  #searchOverlayInput {
+    flex: 1; background: none; border: none; outline: none;
+    font-size: 1rem; color: var(--text, #e6edf3); font-family: inherit;
+  }
+  #searchOverlayInput::placeholder { color: var(--text-muted, #888); }
+
+  .search-close-btn {
+    background: none; border: none; color: var(--text-muted, #888);
+    cursor: pointer; font-size: 0.9rem; padding: 0.3rem 0.5rem;
+    border-radius: 4px; line-height: 1;
+  }
+  .search-close-btn:hover { background: var(--tag-bg, #21262d); color: var(--text, #e6edf3); }
+
+  .search-panel-body {
+    display: flex; flex: 1; overflow: hidden; min-height: 0;
+  }
+
+  .search-col {
+    flex: 1; overflow-y: auto; padding: 0.9rem 1rem;
+  }
+  .search-col + .search-col { border-left: 1px solid var(--border); }
+
+  .search-col-title {
+    font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--text-muted, #888);
+    margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+
+  .semantic-badge {
+    font-size: 0.62rem; background: var(--tag-bg, #21262d);
+    color: var(--text-muted, #888); padding: 0.1rem 0.4rem;
+    border-radius: 3px; font-weight: 400; text-transform: none; letter-spacing: 0;
+  }
+
+  .search-result-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+
+  .search-result-link {
+    display: flex; flex-direction: column; gap: 0.15rem;
+    padding: 0.45rem 0.55rem; border-radius: 6px;
+    text-decoration: none; transition: background 0.1s;
+  }
+  .search-result-link:hover { background: var(--tag-bg, #21262d); }
+
+  .search-result-title {
+    font-size: 0.875rem; color: var(--text, #e6edf3); line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .search-result-link:hover .search-result-title { color: var(--accent, #58a6ff); }
+
+  .search-result-meta {
+    font-size: 0.73rem; color: var(--text-muted, #888);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+
+  .search-score {
+    background: var(--tag-bg, #21262d); padding: 0.05rem 0.3rem;
+    border-radius: 3px; font-size: 0.68rem; color: var(--accent, #58a6ff);
+  }
+
+  .search-empty { font-size: 0.83rem; color: var(--text-muted, #888); margin: 0.25rem 0; }
+
+  .search-loading {
+    list-style: none; font-size: 0.83rem; color: var(--text-muted, #888);
+    padding: 0.45rem 0.55rem;
+    animation: searchPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes searchPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  @media (max-width: 580px) {
+    #searchOverlay { padding: 1rem 0.5rem; align-items: flex-start; }
+    .search-panel { max-height: calc(100vh - 2rem); border-radius: 8px; }
+    .search-panel-body { flex-direction: column; }
+    .search-col + .search-col { border-left: none; border-top: 1px solid var(--border); }
+    .search-panel-header { padding: 0.6rem 0.75rem; }
+    .search-col { padding: 0.75rem; }
+  }
+  </style>
 </body>
 </html>

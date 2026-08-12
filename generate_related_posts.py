@@ -7,6 +7,7 @@ Apple Metal(MPS) 가속 사용
 출력: _data/related_posts.yml
 """
 
+import json
 import os
 import re
 import sys
@@ -20,6 +21,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 POSTS_DIR = Path("_posts")
 OUTPUT_FILE = Path("_data/related_posts.yml")
 MODEL_NAME = "paraphrase-multilingual-mpnet-base-v2"
+SEARCH_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
+SEARCH_OUTPUT_FILE = Path("assets/search/embeddings.json")
 TOP_K = 5
 MAX_BODY_CHARS = 1000
 
@@ -65,11 +68,15 @@ def load_posts() -> list[dict]:
             post = frontmatter.load(md_file)
             date_raw = post.metadata.get("date", "")
             date_str = str(date_raw)[:10] if date_raw else ""
+            tags = post.metadata.get("tags", [])
+            if isinstance(tags, str):
+                tags = [tags]
             posts.append({
                 "key": md_file.stem,
                 "title": str(post.metadata.get("title", md_file.stem)),
                 "date": date_str,
                 "url": filename_to_url(md_file.name),
+                "tags": [str(t) for t in tags],
                 "text": build_embed_text(post.metadata, post.content),
             })
         except Exception as e:
@@ -120,6 +127,41 @@ def main():
         yaml.dump(related, f, allow_unicode=True, sort_keys=True, default_flow_style=False)
 
     print(f"완료: {OUTPUT_FILE} ({len(related)}개 항목)")
+
+    # ── 검색용 임베딩 생성 (MiniLM-L12-v2, 브라우저와 동일 모델) ─────────────
+    print(f"\n검색 임베딩 생성 중: {SEARCH_MODEL_NAME}")
+    search_model = SentenceTransformer(SEARCH_MODEL_NAME, device=device)
+    search_embs = search_model.encode(
+        texts,
+        batch_size=32,
+        show_progress_bar=True,
+        convert_to_numpy=True,
+    )
+
+    # 브라우저에서 dot product = cosine이 되도록 정규화
+    norms = np.linalg.norm(search_embs, axis=1, keepdims=True)
+    normalized = search_embs / np.maximum(norms, 1e-9)
+
+    search_data = {
+        "dim": int(search_embs.shape[1]),
+        "posts": [
+            {
+                "title": p["title"],
+                "url": p["url"],
+                "date": p["date"],
+                "tags": p["tags"],
+            }
+            for p in posts
+        ],
+        "vecs": [[round(float(v), 5) for v in vec] for vec in normalized],
+    }
+
+    SEARCH_OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(SEARCH_OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(search_data, f, ensure_ascii=False, separators=(",", ":"))
+
+    size_kb = SEARCH_OUTPUT_FILE.stat().st_size // 1024
+    print(f"완료: {SEARCH_OUTPUT_FILE} ({len(posts)}개, dim={search_data['dim']}, {size_kb}KB)")
 
 
 if __name__ == "__main__":
