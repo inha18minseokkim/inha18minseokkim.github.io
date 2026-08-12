@@ -1460,3 +1460,49 @@ html.light .icon-moon { display: block; }
     padding: 2rem 0 4rem;
   }
 }
+
+/* ============================================
+   Post List Thumbnail
+   ============================================ */
+.post-link.has-thumb {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.post-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-thumb-wrap {
+  flex-shrink: 0;
+  width: 120px;
+  height: 80px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.post-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+
+.post-link:hover .post-thumb {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .post-thumb-wrap {
+    display: none;
+  }
+
+  .post-link.has-thumb {
+    display: block;
+  }
+}

@@ -57,20 +57,37 @@ layout: default
 
         <ul class="post-list">
           {% for post in site.posts %}
+          {% if post.thumbnail %}
+            {% assign thumb = post.thumbnail %}
+          {% else %}
+            {% assign img_parts = post.content | split: '<img src="' %}
+            {% if img_parts.size > 1 %}
+              {% assign thumb = img_parts[1] | split: '"' | first %}
+            {% else %}
+              {% assign thumb = '' %}
+            {% endif %}
+          {% endif %}
           <li class="post-item" data-tags="{{ post.tags | join: ',' }}" data-date="{{ post.date | date: '%Y-%m-%d' }}" data-category="{{ post.categories | join: ',' | default: '기타' }}" data-title="{{ post.title | downcase }}" data-excerpt="{{ post.excerpt | strip_html | truncate: 300 | downcase }}">
-            <a href="{{ post.url | relative_url }}" class="post-link">
-              <div class="post-meta">
-                <time class="post-date">{{ post.date | date: "%Y. %m. %d" }}</time>
-                {% if post.tags %}
-                <div class="post-tags">
-                  {% for tag in post.tags %}
-                  <span class="tag">{{ tag }}</span>
-                  {% endfor %}
+            <a href="{{ post.url | relative_url }}" class="post-link{% if thumb != '' %} has-thumb{% endif %}">
+              <div class="post-text">
+                <div class="post-meta">
+                  <time class="post-date">{{ post.date | date: "%Y. %m. %d" }}</time>
+                  {% if post.tags %}
+                  <div class="post-tags">
+                    {% for tag in post.tags %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
                 </div>
-                {% endif %}
+                <h2 class="post-title">{{ post.title }}</h2>
+                <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 160 }}</p>
               </div>
-              <h2 class="post-title">{{ post.title }}</h2>
-              <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 160 }}</p>
+              {% if thumb != '' %}
+              <div class="post-thumb-wrap">
+                <img class="post-thumb" src="{{ thumb }}" alt="" loading="lazy" />
+              </div>
+              {% endif %}
             </a>
           </li>
           {% endfor %}
@@ -417,13 +434,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── 검색 ──────────────────────────────────────────────────────────────────
   let searchTimeout = null;
+  function handleSearch(value, otherInput) {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      searchQuery = value.toLowerCase().trim();
+      if (otherInput) otherInput.value = value;
+      applyFilter();
+    }, 200);
+  }
+
   if (searchInput) {
     searchInput.addEventListener('input', function() {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        searchQuery = this.value.toLowerCase().trim();
-        applyFilter();
-      }, 200); // 200ms 디바운스
+      const mobileInput = document.getElementById('mobileSearchInput');
+      handleSearch(this.value, mobileInput);
+    });
+  }
+
+  const mobileSearchInput = document.getElementById('mobileSearchInput');
+  if (mobileSearchInput) {
+    mobileSearchInput.addEventListener('input', function() {
+      handleSearch(this.value, searchInput);
     });
   }
 
