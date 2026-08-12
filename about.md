@@ -135,12 +135,17 @@ permalink: /about
             <span class="about-exp-company">인하대학교</span>
             <span class="about-exp-period">18학번</span>
           </div>
+          <ul class="about-exp-desc">
+            <li><strong>주전공:</strong> 컴퓨터공학과</li>
+            <li><strong>복수전공:</strong> 글로벌금융학과 (금융공학, 재무회계)</li>
+          </ul>
         </div>
       </div>
 
       <div class="about-section-block">
         <h2 class="about-section-title">Certifications</h2>
         <ul class="about-cert-list">
+          <li><span class="cert-name">신용분석사</span><span class="cert-meta">한국금융연수원, 2026.06</span></li>
           <li><span class="cert-name">재경관리사</span><span class="cert-meta">삼일회계법인, 2025.10</span></li>
           <li><span class="cert-name">회계관리</span><span class="cert-meta">삼일회계법인, 2025.01</span></li>
           <li><span class="cert-name">재무위험관리사 (국내FRM)</span><span class="cert-meta">금융투자협회, 2024.08</span></li>
