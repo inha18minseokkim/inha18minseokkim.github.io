@@ -225,11 +225,26 @@ GitHub PR 생성 → 검토 → master 머지
 5. `git push origin <브랜치명>`
 6. GitHub에서 PR 생성 → master 머지
 
+### CI/CD 파이프라인
+
+`.github/workflows/jekyll.yml`에 정의된 워크플로우:
+
+| 트리거 | build 잡 | deploy 잡 |
+|---|---|---|
+| 모든 브랜치 push | 실행 (Jekyll 빌드 검증) | 실행 안 함 |
+| PR (→ master) | 실행 (Jekyll 빌드 검증) | 실행 안 함 |
+| master push/머지 | 실행 | 실행 (GitHub Pages 배포) |
+
+**master 브랜치 보호 규칙**: `build` status check 통과가 머지 필수 조건. 빌드가 실패하면 PR을 머지할 수 없다.
+
+> **주의**: `{% raw %}{% post_url 삭제된포스팅 %}{% endraw %}` 태그가 남아있으면 빌드 실패. 포스팅 삭제 시 해당 파일을 참조하는 post_url 링크를 반드시 같이 정리할 것.
+
 ### Claude 작업 시 주의사항
 
 - **master에 직접 push하지 않는다.** 항상 작업 브랜치를 먼저 확인하거나 새로 생성.
 - 단, 현재 이미 master에 있다면 작업 브랜치로 먼저 이동 후 작업할 것.
 - PR 생성 시 `gh pr create` 사용.
+- 포스팅 삭제 PR을 만들 때는 삭제 대상 파일을 post_url 태그로 참조하는 포스팅이 없는지 먼저 확인한다: `grep -r "post_url 삭제할파일명" _posts/`
 
 ---
 
