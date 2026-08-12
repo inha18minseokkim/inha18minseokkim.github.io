@@ -2,9 +2,6 @@
 - date: '2024-10-20'
   title: 아파트 매수 후보지 선정 및 토지거래허가신청, 보금자리론 신청
   url: /2024/10/20/apartment-purchase-26 1/
-- date: '2024-01-08'
-  title: 오픈api 방식 인증
-  url: /2024/01/08/open-api-authentication/
 - date: '2024-01-22'
   title: 국인체(**국방인사정보체계 구축 및 운영에 관한 훈령)**
   url: /2024/01/22/defense-personnel-information-system-directive/
@@ -14,6 +11,9 @@
 - date: '2023-10-06'
   title: 금요일
   url: /2023/10/06/friday/
+- date: '2024-08-01'
+  title: 추석 KTX 예매 시 코레일이 터진 이유에 대한 추측
+  url: /2024/08/01/korail-chuseok-crash-analysis/
 2023-03-27-batch-transaction-timing-and-context:
 - date: '2025-02-20'
   title: Spring Batch Exit 로직 개선(20250220)
@@ -24,12 +24,12 @@
 - date: '2023-10-08'
   title: Spring Batch 5.0.1(Spring 3.1.3)
   url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2023-10-01'
   title: MockBean
   url: /2023/10/01/MockBean/
+- date: '2023-10-27'
+  title: Spring Batch + Cursor Based ItemReader 이슈
+  url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
 2023-04-18-disclosure-system-notes:
 - date: '2024-10-12'
   title: 파일 수신 시점 문제(대고객 인지 늦음)
@@ -50,9 +50,6 @@
 - date: '2023-09-05'
   title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
   url: /2023/09/05/AA/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2025-09-05'
   title: M365 <> Confluence RAG 연동
   url: /2025/09/05/m365-confluence-rag-integration/
@@ -62,6 +59,9 @@
 - date: '2024-03-21'
   title: MCI2api-gateway 개선(spring-cloud) 삽질기
   url: /2024/03/21/mci-api-gateway-spring-cloud-improvement/
+- date: '2025-03-23'
+  title: Servlet ThreadLocal vs Netty Context
+  url: /2025/03/23/Servlet ThreadLocal vs Netty Context/
 2023-05-25-operational-risk-issues:
 - date: '2023-06-07'
   title: 내부상품대분류관련
@@ -194,9 +194,6 @@
 - date: '2024-02-07'
   title: Mybatis QueryDSL 혼용 in Spring boot
   url: /2024/02/07/mybatis-querydsl-mixed-in-spring-boot/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
@@ -206,6 +203,9 @@
 - date: '2026-03-04'
   title: 테스트코드 짜기는 싫지만 TDD는 하고 싶어 - 클로드를 시켜
   url: /2026/03/04/dislike-test-code-but-want-tdd/
+- date: '2023-10-01'
+  title: MockBean
+  url: /2023/10/01/MockBean/
 2023-08-01-stateless-msa:
 - date: '2023-09-10'
   title: 개인적인 생각 with Facade(20230910)
@@ -226,9 +226,6 @@
 - date: '2023-11-15'
   title: 카드계 Bxm 자바8 로딩 하는방법(Spring Legacy 3, 부트아님)
   url: /2023/11/15/card-bxm-java8-loading-spring-legacy/
-- date: '2023-12-12'
-  title: 발견한 기술 이슈 및 삽질(BXM framework,카드계)
-  url: /2023/12/12/bxm-framework-technical-issues/
 - date: '2023-12-04'
   title: 카드계 BxmBean에 대하여
   url: /2023/12/04/card-bxmbean-overview/
@@ -238,6 +235,9 @@
 - date: '2024-02-07'
   title: 카드계 개발 젠킨스 문제(~202312현재)/java 클래스의 롤링배포 방식 문제
   url: /2024/02/07/card-jenkins-rolling-deploy-issue/
+- date: '2023-10-10'
+  title: 뻘짓) Spring Batch 5 + Multiple DataSource
+  url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
 2023-08-11-seminar-macro-financial-market-issues:
 - date: '2026-03-08'
   title: 보금자리론 확약통지 후 추가 대출 신청 및 상담
@@ -694,15 +694,15 @@
 - date: '2023-10-08'
   title: Spring Batch 5.0.1(Spring 3.1.3)
   url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
-- date: '2024-12-31'
-  title: 정기작업에 관하여 삽질(스프링 배치, 파이썬 스크립트 등등)
-  url: /2024/12/31/scheduled-job-troubleshooting-spring-batch-python/
 - date: '2023-10-27'
   title: Spring Batch + Cursor Based ItemReader 이슈
   url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
 - date: '2023-10-27'
   title: Spring batch BadSQLGrammar
   url: /2023/10/27/Spring batch BadSQLGrammar/
+- date: '2025-02-11'
+  title: Spring Batch 5.2에서 ResourcelessJobRepository로 DB 없이 배치 실행하기
+  url: /2025/02/11/spring-batch-resourceless-job-repository/
 2023-10-01-do-not-use-getbean:
 - date: '2023-09-09'
   title: IOC
@@ -745,12 +745,12 @@
 - date: '2025-02-11'
   title: Spring Batch 5.2에서 ResourcelessJobRepository로 DB 없이 배치 실행하기
   url: /2025/02/11/spring-batch-resourceless-job-repository/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2025-02-03'
   title: 스프링부트 배치) 배치 메타테이블이 필요할까
   url: /2025/02/03/spring-batch-is-meta-table-necessary/
+- date: '2023-10-27'
+  title: Spring Batch + Cursor Based ItemReader 이슈
+  url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
 2023-10-10-spring-batch-5-multiple-datasource-trial:
 - date: '2023-10-08'
   title: Spring Batch 5.0.1(Spring 3.1.3)
@@ -758,15 +758,15 @@
 - date: '2025-02-11'
   title: Spring Batch 5.2에서 ResourcelessJobRepository로 DB 없이 배치 실행하기
   url: /2025/02/11/spring-batch-resourceless-job-repository/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2025-02-03'
   title: 스프링부트 배치) 배치 메타테이블이 필요할까
   url: /2025/02/03/spring-batch-is-meta-table-necessary/
 - date: '2023-10-27'
   title: Spring Batch + Cursor Based ItemReader 이슈
   url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
+- date: '2025-02-20'
+  title: Spring Batch Exit 로직 개선(20250220)
+  url: /2025/02/20/spring-batch-exit-logic-improvement/
 2023-10-12-JobLauncher Configuration + JobParameter:
 - date: '2024-10-20'
   title: 1차 완성본
@@ -793,12 +793,12 @@
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2023-10-27'
   title: Spring Batch + Cursor Based ItemReader 이슈
   url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
+- date: '2025-02-20'
+  title: Spring Batch Exit 로직 개선(20250220)
+  url: /2025/02/20/spring-batch-exit-logic-improvement/
 2023-10-24-business-planning-idea-meeting:
 - date: '2024-10-12'
   title: 주관사, 공동 주관사 문제
@@ -819,9 +819,6 @@
 - date: '2023-10-27'
   title: Spring Batch + Cursor Based ItemReader 이슈
   url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
@@ -831,6 +828,9 @@
 - date: '2023-10-08'
   title: Spring Batch 5.0.1(Spring 3.1.3)
   url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
+- date: '2023-11-01'
+  title: Spring batch + Control M
+  url: /2023/11/01/Spring batch + Control M/
 2023-10-27-git-branch-strategy-discussion:
 - date: '2024-01-26'
   title: 첫 GO 중 GitLab 이슈 (공모주 메이트)
@@ -851,9 +851,6 @@
 - date: '2023-10-27'
   title: Spring batch BadSQLGrammar
   url: /2023/10/27/Spring batch BadSQLGrammar/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
@@ -863,13 +860,10 @@
 - date: '2023-10-08'
   title: Spring Batch 5.0.1(Spring 3.1.3)
   url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
+- date: '2023-11-01'
+  title: Spring batch + Control M
+  url: /2023/11/01/Spring batch + Control M/
 2023-10-30-Spring batch + FlowJob:
-- date: '2024-12-31'
-  title: 정기작업에 관하여 삽질(스프링 배치, 파이썬 스크립트 등등)
-  url: /2024/12/31/scheduled-job-troubleshooting-spring-batch-python/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2023-10-01'
   title: MockBean
   url: /2023/10/01/MockBean/
@@ -879,10 +873,13 @@
 - date: '2025-02-20'
   title: Spring Batch Exit 로직 개선(20250220)
   url: /2025/02/20/spring-batch-exit-logic-improvement/
+- date: '2023-10-27'
+  title: Spring Batch + Cursor Based ItemReader 이슈
+  url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
+- date: '2023-10-10'
+  title: 뻘짓) Spring Batch 5 + Multiple DataSource
+  url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
 2023-11-01-Spring batch + Control M:
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2023-10-27'
   title: Spring Batch + Cursor Based ItemReader 이슈
   url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
@@ -895,19 +892,6 @@
 - date: '2023-10-27'
   title: Spring batch BadSQLGrammar
   url: /2023/10/27/Spring batch BadSQLGrammar/
-2023-11-02-spring-batch-architecture-discussion:
-- date: '2023-10-27'
-  title: Spring Batch + Cursor Based ItemReader 이슈
-  url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
-- date: '2023-10-27'
-  title: Spring batch BadSQLGrammar
-  url: /2023/10/27/Spring batch BadSQLGrammar/
-- date: '2023-10-10'
-  title: 뻘짓) Spring Batch 5 + Multiple DataSource
-  url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
-- date: '2025-02-11'
-  title: Spring Batch 5.2에서 ResourcelessJobRepository로 DB 없이 배치 실행하기
-  url: /2025/02/11/spring-batch-resourceless-job-repository/
 - date: '2023-10-08'
   title: Spring Batch 5.0.1(Spring 3.1.3)
   url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
@@ -966,15 +950,15 @@
 - date: '2023-12-04'
   title: 카드계 BxmBean에 대하여
   url: /2023/12/04/card-bxmbean-overview/
-- date: '2023-12-12'
-  title: 발견한 기술 이슈 및 삽질(BXM framework,카드계)
-  url: /2023/12/12/bxm-framework-technical-issues/
 - date: '2023-11-15'
   title: Class Loader
   url: /2023/11/15/Class Loader/
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
+- date: '2024-07-10'
+  title: 케이뱅크 메타 표준 & Spring Data Envers 도입기
+  url: /2024/07/10/kbank-meta-standard-spring-data-envers/
 2023-11-21-java-78-serialization-compatibility-issue:
 - date: '2023-09-23'
   title: Java Memory Model + final 선언 필요성(JLS 17.4)
@@ -1014,15 +998,15 @@
 - date: '2023-08-08'
   title: 카드계 BXM 스테이징 javac&spring 버전 이슈
   url: /2023/08/08/card-bxm-staging-javac-spring-version-issue/
-- date: '2023-12-12'
-  title: 발견한 기술 이슈 및 삽질(BXM framework,카드계)
-  url: /2023/12/12/bxm-framework-technical-issues/
 - date: '2023-11-15'
   title: Class Loader
   url: /2023/11/15/Class Loader/
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
+- date: '2023-09-30'
+  title: getBean + 다형성
+  url: /2023/09/30/getbean-and-polymorphism/
 2023-12-05-jdk-dynamic-proxy-casting-issue:
 - date: '2023-11-26'
   title: Proxy
@@ -1039,22 +1023,6 @@
 - date: '2023-08-08'
   title: 카드계 BXM 스테이징 javac&spring 버전 이슈
   url: /2023/08/08/card-bxm-staging-javac-spring-version-issue/
-2023-12-12-bxm-framework-technical-issues:
-- date: '2023-08-08'
-  title: 카드계 BXM 스테이징 javac&spring 버전 이슈
-  url: /2023/08/08/card-bxm-staging-javac-spring-version-issue/
-- date: '2023-11-15'
-  title: 카드계 Bxm 자바8 로딩 하는방법(Spring Legacy 3, 부트아님)
-  url: /2023/11/15/card-bxm-java8-loading-spring-legacy/
-- date: '2023-12-04'
-  title: 카드계 BxmBean에 대하여
-  url: /2023/12/04/card-bxmbean-overview/
-- date: '2024-02-07'
-  title: 카드계 개발 젠킨스 문제(~202312현재)/java 클래스의 롤링배포 방식 문제
-  url: /2024/02/07/card-jenkins-rolling-deploy-issue/
-- date: '2024-05-16'
-  title: 카드계 Locust 도입 시 EUC-KR 이슈
-  url: /2024/05/16/card-locust-euckr-encoding-issue/
 2023-12-13-library-annotation-nesting-compatibility:
 - date: '2023-09-28'
   title: 상위 인터페이스에서 하위 클래스 변수 접근
@@ -1113,12 +1081,12 @@
 - date: '2023-09-04'
   title: 회의록(야놀자 사례)
   url: /2023/09/04/meeting-notes-yanolja-case/
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
 - date: '2024-04-04'
   title: 새로운 이슈(파일 크기 OOM)
   url: /2024/04/04/file-size-oom-issue/
+- date: '2025-02-06'
+  title: mediation 패턴 도입기 - 하지만 100% 코틀린이라면???
+  url: /2025/02/06/mediation-what-if-100-percent-kotlin/
 2023-12-26-jpa-keywords-summary:
 - date: '2024-10-22'
   title: JPA 복합 키 + JoinTable 응용
@@ -1199,22 +1167,6 @@
 - date: '2024-01-08'
   title: 금융규제 샌드박스
   url: /2024/01/08/financial-regulatory-sandbox/
-2024-01-08-open-api-authentication:
-- date: '2024-10-20'
-  title: 아파트 매수 후보지 선정 및 토지거래허가신청, 보금자리론 신청
-  url: /2024/10/20/apartment-purchase-26 1/
-- date: '2024-08-01'
-  title: 추석 KTX 예매 시 코레일이 터진 이유에 대한 추측
-  url: /2024/08/01/korail-chuseok-crash-analysis/
-- date: '2023-03-01'
-  title: 푸시메세지 조립 - 한국어 종성과 조사 처리
-  url: /2023/03/01/korean-push-message-particles/
-- date: '2024-01-22'
-  title: 국인체(**국방인사정보체계 구축 및 운영에 관한 훈령)**
-  url: /2024/01/22/defense-personnel-information-system-directive/
-- date: '2024-02-21'
-  title: 활용 데이터
-  url: /2024/02/21/utilized-data/
 2024-01-13-financial-regulatory-sandbox-manual-summary:
 - date: '2025-02-20'
   title: api 분석
@@ -1284,17 +1236,17 @@
   title: 화면 명세(회의전 기획안)
   url: /2024/02/21/screen-spec-pre-meeting/
 - date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
-- date: '2025-11-14'
   title: MGM 처리관련 논의
   url: /2025/11/14/mgm-processing-discussion/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2025-11-14'
   title: 게임 초기화
   url: /2025/11/14/game-initialization/
+- date: '2025-11-14'
+  title: 집계 후 푸시 발송
+  url: /2025/11/14/push-notification-after-aggregation/
+- date: '2024-10-12'
+  title: 공모주 데이터의 지속적인 에러
+  url: /2024/10/12/ipo-data-persistent-errors/
 2024-01-22-defense-personnel-information-system-directive:
 - date: '2024-02-21'
   title: 활용 데이터
@@ -1308,9 +1260,9 @@
 - date: '2023-10-06'
   title: 금요일
   url: /2023/10/06/friday/
-- date: '2024-01-08'
-  title: 오픈api 방식 인증
-  url: /2024/01/08/open-api-authentication/
+- date: '2026-02-12'
+  title: 공모주 메이트 2차 리팩토링
+  url: /2026/02/12/ipo-mate-second-refactoring/
 2024-01-26-first-go-live-gitlab-issue-ipo-mate:
 - date: '2025-01-27'
   title: Gradle 초기화 시점(settings.gradle → build.gradle)
@@ -1327,23 +1279,6 @@
 - date: '2023-12-20'
   title: 결재 반려 시 GitLab Branch Delete 이슈
   url: /2023/12/20/gitlab-branch-delete-on-approval-rejection/
-2024-01-29-food-price-data-migration:
-- date: '2024-02-07'
-  title: Mybatis QueryDSL 혼용 in Spring boot
-  url: /2024/02/07/mybatis-querydsl-mixed-in-spring-boot/
-- date: '2025-03-29'
-  title: Insert On Conflict(Upsert)는 과연 성능저하가 없을까?
-  url: /2025/03/29/insert-on-conflict-upsert-performance-impact/
-- date: '2024-02-02'
-  title: Query based→ OOP 전환 커브
-  url: /2024/02/02/query-based-to-oop-transition/
-- date: '2024-05-18'
-  title: Spring Cloud Config-Server + Spring Security (Basic Auth) 정리(Bootstrap 사용
-    안함)
-  url: /2024/05/18/spring-cloud-config-server-spring-security-basic-auth/
-- date: '2026-02-12'
-  title: 공모주 메이트 2차 리팩토링
-  url: /2026/02/12/ipo-mate-second-refactoring/
 2024-02-01-edb-performance-review:
 - date: '2025-05-30'
   title: Redis 활용 이력 적재 RateLimit
@@ -1361,12 +1296,6 @@
   title: DB Sync 개선 - 거래이력 로깅 병목 해결
   url: /2025/07/29/db-sync-improvement/
 2024-02-02-query-based-to-oop-transition:
-- date: '2024-01-29'
-  title: 식품물가 마이그레이션
-  url: /2024/01/29/food-price-data-migration/
-- date: '2024-03-04'
-  title: PostgreSQL
-  url: /2024/03/04/PostgreSQL/
 - date: '2023-11-11'
   title: Transactional
   url: /2023/11/11/Transactional/
@@ -1376,6 +1305,12 @@
 - date: '2026-03-04'
   title: 테스트코드 짜기는 싫지만 TDD는 하고 싶어 - 클로드를 시켜
   url: /2026/03/04/dislike-test-code-but-want-tdd/
+- date: '2026-02-12'
+  title: 공모주 메이트 2차 리팩토링
+  url: /2026/02/12/ipo-mate-second-refactoring/
+- date: '2024-04-29'
+  title: 'JPA: Query Based vs Domain Based / @NotFound Ignore vs Exception'
+  url: /2024/04/29/JPA Query Based vs Domain Based  @NotFound Ignore vs Exception/
 2024-02-05-layer-separation:
 - date: '2023-09-25'
   title: ConcurrentModificationException
@@ -1396,9 +1331,6 @@
 - date: '2023-08-08'
   title: 카드계 BXM 스테이징 javac&spring 버전 이슈
   url: /2023/08/08/card-bxm-staging-javac-spring-version-issue/
-- date: '2023-12-12'
-  title: 발견한 기술 이슈 및 삽질(BXM framework,카드계)
-  url: /2023/12/12/bxm-framework-technical-issues/
 - date: '2023-11-15'
   title: 카드계 Bxm 자바8 로딩 하는방법(Spring Legacy 3, 부트아님)
   url: /2023/11/15/card-bxm-java8-loading-spring-legacy/
@@ -1408,13 +1340,13 @@
 - date: '2024-05-16'
   title: 카드계 Locust 도입 시 EUC-KR 이슈
   url: /2024/05/16/card-locust-euckr-encoding-issue/
+- date: '2024-05-28'
+  title: 주식 단위업무 MSA Arch 개선
+  url: /2024/05/28/stock-unit-msa-architecture-improvement/
 2024-02-07-mybatis-querydsl-mixed-in-spring-boot:
 - date: '2023-07-15'
   title: MyBatis 쿼리 파라미터 로깅 - Custom Interceptor 구현
   url: /2023/07/15/mybatis-custom-log-interceptor/
-- date: '2024-01-29'
-  title: 식품물가 마이그레이션
-  url: /2024/01/29/food-price-data-migration/
 - date: '2026-03-04'
   title: 테스트코드 짜기는 싫지만 TDD는 하고 싶어 - 클로드를 시켜
   url: /2026/03/04/dislike-test-code-but-want-tdd/
@@ -1424,6 +1356,9 @@
 - date: '2024-02-02'
   title: Query based→ OOP 전환 커브
   url: /2024/02/02/query-based-to-oop-transition/
+- date: '2026-03-20'
+  title: stock-customer-service 도메인 통합 테스트 작성기
+  url: /2026/03/20/test-code-stock-customer-service/
 2024-02-08-caching-strategy:
 - date: '2023-06-07'
   title: 내부상품대분류관련
@@ -1444,9 +1379,6 @@
 - date: '2024-02-01'
   title: EDB 성능 튜닝 - 식품물가 아키텍처 개선기
   url: /2024/02/01/edb-performance-review/
-- date: '2024-01-29'
-  title: 식품물가 마이그레이션
-  url: /2024/01/29/food-price-data-migration/
 - date: '2025-12-01'
   title: Optimizing agentic aI apps with semantic caching in Amazon ElastiCache
   url: /2025/12/01/Optimizing agentic aI apps with semantic caching in Amazon ElastiCache/
@@ -1456,6 +1388,9 @@
 - date: '2023-09-10'
   title: ExecutorService
   url: /2023/09/10/ExecutorService/
+- date: '2024-03-11'
+  title: 구조 (202401 ver,Kbank MSA 최초 오픈 시점)
+  url: /2024/03/11/kbank-msa-initial-architecture-202401/
 2024-02-21-screen-spec-pre-meeting:
 - date: '2024-02-22'
   title: 화면 명세(회의 후)
@@ -1488,22 +1423,6 @@
 - date: '2024-06-14'
   title: 상장주식시세 기획안 개선 + API 기준 데이터 정리
   url: /2024/06/14/listed-stock-price-plan-improvement-api-data/
-2024-02-21-unlisted-stock-alert-service-dunamu:
-- date: '2025-07-29'
-  title: DB Sync 개선 - 거래이력 로깅 병목 해결
-  url: /2025/07/29/db-sync-improvement/
-- date: '2024-03-12'
-  title: MSA→EAI→OpenApi→두나무→OpenApi→EAI→MSA 데이터 수신 개발
-  url: /2024/03/12/msa-eai-openapi-dunamu-data-reception/
-- date: '2024-03-04'
-  title: 이력성 Column AOP(GUID,JpaAudit)
-  url: /2024/03/04/audit-column-aop-guid-jpa-audit/
-- date: '2024-06-14'
-  title: 상장주식시세 기획안 개선 + API 기준 데이터 정리
-  url: /2024/06/14/listed-stock-price-plan-improvement-api-data/
-- date: '2024-11-06'
-  title: 20241208 정기 중단PM간 주식 업무 개선 마이그레이션사항(꽤큼)
-  url: /2024/11/06/stock-service-migration-improvement-20241208/
 2024-02-21-utilized-data:
 - date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
@@ -1514,12 +1433,12 @@
 - date: '2024-04-15'
   title: 권리변동에 따른 데이터 보정 필요
   url: /2024/04/15/data-correction-for-rights-change/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-02-22'
   title: 화면 명세(회의 후)
   url: /2024/02/22/screen-spec-post-meeting/
+- date: '2024-05-26'
+  title: 기획안 질문
+  url: /2024/05/26/planning-questions/
 2024-02-22-screen-spec-post-meeting:
 - date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
@@ -1559,51 +1478,32 @@
 - date: '2024-05-26'
   title: 기획안 질문
   url: /2024/05/26/planning-questions/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-06-14'
   title: 상장주식시세 기획안 개선 + API 기준 데이터 정리
   url: /2024/06/14/listed-stock-price-plan-improvement-api-data/
 - date: '2024-10-12'
   title: 주관사, 공동 주관사 문제
   url: /2024/10/12/ipo-lead-underwriter-joint-underwriter-issue/
-2024-03-04-PostgreSQL:
-- date: '2024-03-04'
-  title: PostgreSQL 시퀀스 + 캐시 주의점
-  url: /2024/03/04/postgresql-sequence-cache-caution/
-- date: '2025-03-29'
-  title: Insert On Conflict(Upsert)는 과연 성능저하가 없을까?
-  url: /2025/03/29/insert-on-conflict-upsert-performance-impact/
-- date: '2026-04-30'
-  title: PostgreSQL 파티션 PK, 이제는 진짜 이해함
-  url: /2026/04/30/postgresql-partition-pk-deep-dive/
-- date: '2025-09-29'
-  title: Postgresql 파티션 PK
-  url: /2025/09/29/postgresql-partition-pk/
-- date: '2026-02-12'
-  title: 공모주 메이트 2차 리팩토링
-  url: /2026/02/12/ipo-mate-second-refactoring/
+- date: '2024-02-21'
+  title: 활용 데이터
+  url: /2024/02/21/utilized-data/
 2024-03-04-audit-column-aop-guid-jpa-audit:
 - date: '2025-02-03'
   title: 스프링부트 배치) 배치 메타테이블이 필요할까
   url: /2025/02/03/spring-batch-is-meta-table-necessary/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
 - date: '2024-05-07'
   title: Gradle + Spring 멀티 모듈
   url: /2024/05/07/gradle-spring-multi-module/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
+- date: '2023-11-11'
+  title: Transactional
+  url: /2023/11/11/Transactional/
+- date: '2023-10-27'
+  title: Spring Batch + Cursor Based ItemReader 이슈
+  url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
 2024-03-04-postgresql-sequence-cache-caution:
-- date: '2024-03-04'
-  title: PostgreSQL
-  url: /2024/03/04/PostgreSQL/
 - date: '2026-02-12'
   title: 공모주 메이트 2차 리팩토링
   url: /2026/02/12/ipo-mate-second-refactoring/
@@ -1616,29 +1516,29 @@
 - date: '2026-01-02'
   title: Postgresql CDC + Debezium + kafka 사용 EDA > transactional outbox 패턴
   url: /2026/01/02/postgresql-cdc-debezium-kafka-eda-transactional-outbox/
+- date: '2025-02-03'
+  title: 스프링부트 배치) 배치 메타테이블이 필요할까
+  url: /2025/02/03/spring-batch-is-meta-table-necessary/
 2024-03-11-kbank-msa-initial-architecture-202401:
 - date: '2024-03-21'
   title: MCI2api-gateway 개선(spring-cloud) 삽질기
   url: /2024/03/21/mci-api-gateway-spring-cloud-improvement/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-04-04'
   title: RouteLocator로 Path 파싱 후 라우팅
   url: /2024/04/04/routelocator-path-parsing-routing/
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
 - date: '2025-09-05'
   title: M365 <> Confluence RAG 연동
   url: /2025/09/05/m365-confluence-rag-integration/
+- date: '2024-12-09'
+  title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
+  url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
+- date: '2023-09-04'
+  title: 회의록(야놀자 사례)
+  url: /2023/09/04/meeting-notes-yanolja-case/
 2024-03-12-msa-eai-openapi-dunamu-data-reception:
 - date: '2025-01-28'
   title: 아키텍쳐협의회 회의록(20241219)
   url: /2025/01/28/architecture-council-meeting-notes-20241219/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2023-12-18'
   title: EAI openApi 데이터 수신 관련
   url: /2023/12/18/eai-openapi-data-reception/
@@ -1648,6 +1548,9 @@
 - date: '2024-07-10'
   title: 케이뱅크 메타 표준 & Spring Data Envers 도입기
   url: /2024/07/10/kbank-meta-standard-spring-data-envers/
+- date: '2025-04-29'
+  title: 주식서비스 LANGRAPH
+  url: /2025/04/29/stock-service-langgraph/
 2024-03-21-mci-api-gateway-spring-cloud-improvement:
 - date: '2024-03-11'
   title: 구조 (202401 ver,Kbank MSA 최초 오픈 시점)
@@ -1658,12 +1561,12 @@
 - date: '2024-12-09'
   title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
   url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
+- date: '2023-09-10'
+  title: ExecutorService
+  url: /2023/09/10/ExecutorService/
+- date: '2025-12-04'
+  title: '**Lambda Managed Instances: EC2 Power with Serverless Simplicity**'
+  url: /2025/12/04/Lambda Managed Instances EC2 Power with Serverless Simplicity/
 2024-03-28-localdatetime-serialization-issue:
 - date: '2026-02-19'
   title: Redis pub/sub 활용해서 Local Cache 동기화 - 기본
@@ -1780,9 +1683,6 @@
 - date: '2024-02-02'
   title: Query based→ OOP 전환 커브
   url: /2024/02/02/query-based-to-oop-transition/
-- date: '2024-11-26'
-  title: mediation 패턴 도입기
-  url: /2024/11/26/mediation-pattern-introduction/
 - date: '2024-10-11'
   title: mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)
   url: /2024/10/11/mediation-feign-client-vs-webclient-nonblocking/
@@ -1792,13 +1692,13 @@
 - date: '2023-11-11'
   title: Transactional
   url: /2023/11/11/Transactional/
+- date: '2023-09-05'
+  title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
+  url: /2023/09/05/AA/
 2024-04-29-refactoring-1st-phase-20240430:
 - date: '2025-05-30'
   title: Redis 활용 이력 적재 RateLimit
   url: /2025/05/30/redis-history-ingestion-rate-limit/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-04-05'
   title: 'Redis '
   url: /2024/04/05/Redis/
@@ -1808,6 +1708,9 @@
 - date: '2023-11-11'
   title: Transactional
   url: /2023/11/11/Transactional/
+- date: '2026-02-12'
+  title: 공모주 메이트 2차 리팩토링
+  url: /2026/02/12/ipo-mate-second-refactoring/
 2024-05-01-mac-mini-for-server:
 - date: '2024-01-01'
   title: 회사에서 Surface Pro X (ARM+LTE) 개발환경 구성기
@@ -1841,9 +1744,6 @@
   title: 스프링부트 배치) 배치 메타테이블이 필요할까
   url: /2025/02/03/spring-batch-is-meta-table-necessary/
 2024-05-16-card-locust-euckr-encoding-issue:
-- date: '2023-12-12'
-  title: 발견한 기술 이슈 및 삽질(BXM framework,카드계)
-  url: /2023/12/12/bxm-framework-technical-issues/
 - date: '2024-02-07'
   title: 카드계 개발 젠킨스 문제(~202312현재)/java 클래스의 롤링배포 방식 문제
   url: /2024/02/07/card-jenkins-rolling-deploy-issue/
@@ -1856,6 +1756,9 @@
 - date: '2023-09-05'
   title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
   url: /2023/09/05/AA/
+- date: '2024-07-11'
+  title: Kafka with Kbank MSA + 표준 스케줄러
+  url: /2024/07/11/kafka-kbank-msa-standard-scheduler/
 2024-05-16-proxy-tethering-experiment:
 - date: '2024-12-02'
   title: mediation 도입기 - 높은 부하 상황에서 자원 사용량
@@ -1885,9 +1788,9 @@
 - date: '2025-02-06'
   title: Jpa Upsert 존재하지 않는 이유
   url: /2025/02/06/jpa-upsert-does-not-exist/
-- date: '2024-01-29'
-  title: 식품물가 마이그레이션
-  url: /2024/01/29/food-price-data-migration/
+- date: '2025-02-19'
+  title: CI - Gradle&Sonar Pipeline 버전 업그레이드
+  url: /2025/02/19/ci-gradle-sonar-pipeline-version-upgrade/
 2024-05-26-planning-questions:
 - date: '2024-10-12'
   title: 주관사, 공동 주관사 문제
@@ -1937,9 +1840,6 @@
   title: 스테이징 DB 장애(용량 부족)
   url: /2024/10/12/staging-db-outage-disk-full/
 2024-06-11-investment-temperature-fear-greed-index:
-- date: '2024-09-09'
-  title: K-IFRS 관련
-  url: /2024/09/09/k-ifrs-overview/
 - date: '2025-05-07'
   title: 재무 데이터 처리
   url: /2025/05/07/financial-data-processing/
@@ -1952,6 +1852,9 @@
 - date: '2026-02-12'
   title: 공모주 메이트 2차 리팩토링
   url: /2026/02/12/ipo-mate-second-refactoring/
+- date: '2024-09-09'
+  title: 연결재무제표 작성 대상기업/면제기업
+  url: /2024/09/09/consolidated-financial-statement-exempt-companies/
 2024-06-11-listed-stock-price:
 - date: '2024-04-05'
   title: 'Redis '
@@ -1973,9 +1876,6 @@
   title: 활용 데이터
   url: /2024/02/21/utilized-data/
 - date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
-- date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
   url: /2024/02/21/screen-spec-pre-meeting/
 - date: '2024-06-11'
@@ -1984,6 +1884,9 @@
 - date: '2024-04-15'
   title: 권리변동에 따른 데이터 보정 필요
   url: /2024/04/15/data-correction-for-rights-change/
+- date: '2024-04-05'
+  title: 'Redis '
+  url: /2024/04/05/Redis/
 2024-06-25-eks-idc-kafka-openapi-data-reception-architecture:
 - date: '2024-09-04'
   title: EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)
@@ -1991,15 +1894,15 @@
 - date: '2024-10-28'
   title: Kafka - Avro를 활용한 직렬 역직렬화(20241028)
   url: /2024/10/28/kafka-avro-serialization-deserialization/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2024-10-11'
   title: 1차 리팩토링 및 로직 개선 (~20241015)
   url: /2024/10/11/first-refactoring-and-logic-improvement/
 - date: '2024-07-16'
   title: Charset 인코딩 문제, 유량제어 문제
   url: /2024/07/16/charset-encoding-and-rate-control-issue/
+- date: '2024-08-19'
+  title: 후회합니다 죄송합니다
+  url: /2024/08/19/regrets-and-apologies/
 2024-07-02-ux-planning-final-meeting-20240702:
 - date: '2025-02-20'
   title: 투자온도 SUNSET 건
@@ -2052,9 +1955,6 @@
 - date: '2024-06-25'
   title: EKS-IDCkafka-openApi 수신 구조 잡기
   url: /2024/06/25/eks-idc-kafka-openapi-data-reception-architecture/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2024-08-19'
   title: 후회합니다 죄송합니다
   url: /2024/08/19/regrets-and-apologies/
@@ -2064,6 +1964,9 @@
 - date: '2025-07-29'
   title: S3 + logback 활용안
   url: /2025/07/29/s3-logback-usage-plan/
+- date: '2024-10-11'
+  title: 1차 리팩토링 및 로직 개선 (~20241015)
+  url: /2024/10/11/first-refactoring-and-logic-improvement/
 2024-07-16-charset-encoding-and-rate-control-issue:
 - date: '2024-06-25'
   title: EKS-IDCkafka-openApi 수신 구조 잡기
@@ -2100,9 +2003,6 @@
 - date: '2024-10-20'
   title: 아파트 매수 후보지 선정 및 토지거래허가신청, 보금자리론 신청
   url: /2024/10/20/apartment-purchase-26 1/
-- date: '2024-01-08'
-  title: 오픈api 방식 인증
-  url: /2024/01/08/open-api-authentication/
 - date: '2024-02-21'
   title: 활용 데이터
   url: /2024/02/21/utilized-data/
@@ -2112,6 +2012,9 @@
 - date: '2026-03-29'
   title: 보금자리론 잔금일-취득세 계산, 법무사
   url: /2026/04/05/apartment-pay-the-remainder/
+- date: '2023-10-06'
+  title: 금요일
+  url: /2023/10/06/friday/
 2024-08-13-kafka-failing-offset-and-data-ingestion:
 - date: '2024-10-28'
   title: Kafka - Avro를 활용한 직렬 역직렬화(20241028)
@@ -2199,19 +2102,16 @@
 - date: '2024-10-28'
   title: Kafka - Avro를 활용한 직렬 역직렬화(20241028)
   url: /2024/10/28/kafka-avro-serialization-deserialization/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2024-08-19'
   title: 후회합니다 죄송합니다
   url: /2024/08/19/regrets-and-apologies/
 - date: '2025-07-29'
   title: S3 + logback 활용안
   url: /2025/07/29/s3-logback-usage-plan/
+- date: '2024-07-11'
+  title: Kafka with Kbank MSA + 표준 스케줄러
+  url: /2024/07/11/kafka-kbank-msa-standard-scheduler/
 2024-09-09-consolidated-financial-statement-exempt-companies:
-- date: '2024-09-09'
-  title: K-IFRS 관련
-  url: /2024/09/09/k-ifrs-overview/
 - date: '2025-02-20'
   title: api 분석
   url: /2025/02/20/api-analysis/
@@ -2224,6 +2124,9 @@
 - date: '2025-02-20'
   title: 무형자산>가상자산 계정 분석
   url: /2025/02/20/intangible-virtual-asset-account-analysis/
+- date: '2024-09-09'
+  title: 재무데이터 노출기준 정하기
+  url: /2024/09/09/financial-data-exposure-criteria/
 2024-09-09-does-scheduled-job-have-to-be-batch:
 - date: '2024-09-28'
   title: 여러 번 실행(recursive)
@@ -2242,9 +2145,6 @@
   url: /2025/07/16/jflow-control-m-aws-integration/
 2024-09-09-financial-data-exposure-criteria:
 - date: '2024-09-09'
-  title: K-IFRS 관련
-  url: /2024/09/09/k-ifrs-overview/
-- date: '2024-09-09'
   title: 연결재무제표 작성 대상기업/면제기업
   url: /2024/09/09/consolidated-financial-statement-exempt-companies/
 - date: '2025-02-20'
@@ -2256,22 +2156,9 @@
 - date: '2023-06-07'
   title: 내부상품대분류관련
   url: /2023/06/07/internal-product-category/
-2024-09-09-k-ifrs-overview:
-- date: '2025-02-20'
-  title: 무형자산>가상자산 계정 분석
-  url: /2025/02/20/intangible-virtual-asset-account-analysis/
-- date: '2024-09-09'
-  title: 연결재무제표 작성 대상기업/면제기업
-  url: /2024/09/09/consolidated-financial-statement-exempt-companies/
-- date: '2024-06-11'
-  title: 투자온도(구 공포탐욕지수)
-  url: /2024/06/11/investment-temperature-fear-greed-index/
-- date: '2025-02-20'
-  title: api 분석
-  url: /2025/02/20/api-analysis/
-- date: '2024-09-09'
-  title: 주권상장법인 사업보고서 제출기한
-  url: /2024/09/09/listed-company-business-report-deadline/
+- date: '2024-09-12'
+  title: 주식수 변동에 따른 가격 히스토리 갱신
+  url: /2024/09/12/price-history-update-on-share-count-change/
 2024-09-09-listed-company-business-report-deadline:
 - date: '2025-11-14'
   title: 현금 리워드 소멸 경고 배치
@@ -2280,14 +2167,14 @@
   title: 금융규제 샌드박스
   url: /2024/01/08/financial-regulatory-sandbox/
 - date: '2024-09-09'
-  title: K-IFRS 관련
-  url: /2024/09/09/k-ifrs-overview/
-- date: '2024-09-09'
   title: 연결재무제표 작성 대상기업/면제기업
   url: /2024/09/09/consolidated-financial-statement-exempt-companies/
 - date: '2023-04-18'
   title: 공시 시스템 관련 메모
   url: /2023/04/18/disclosure-system-notes/
+- date: '2024-09-09'
+  title: 재무데이터 노출기준 정하기
+  url: /2024/09/09/financial-data-exposure-criteria/
 2024-09-09-multi-partition-enhancement:
 - date: '2023-09-10'
   title: 개인적인 생각 with Facade(20230910)
@@ -2308,18 +2195,18 @@
 - date: '2025-01-09'
   title: Python + KEDA ScaledJob
   url: /2025/01/09/Python + KEDA ScaledJob/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2024-10-21'
   title: KEDA Job(20241021)
   url: /2024/10/21/KEDA Job(20241021)/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-03-12'
   title: MSA→EAI→OpenApi→두나무→OpenApi→EAI→MSA 데이터 수신 개발
   url: /2024/03/12/msa-eai-openapi-dunamu-data-reception/
+- date: '2024-10-21'
+  title: Argo Event kafka event vs KEDA kafka
+  url: /2024/10/21/Argo Event kafka event vs KEDA kafka/
+- date: '2024-09-04'
+  title: EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)
+  url: /2024/09/04/eks-idc-kafka-openapi-implementation-attempt/
 2024-09-11-search-feature-enhancement-unlisted-stock:
 - date: '2024-02-02'
   title: Query based→ OOP 전환 커브
@@ -2570,12 +2457,12 @@
 - date: '2026-02-12'
   title: 공모주 메이트 2차 리팩토링
   url: /2026/02/12/ipo-mate-second-refactoring/
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
 - date: '2024-06-05'
   title: 환율 서비스 일시 장애(20240531)
   url: /2024/06/05/exchange-rate-service-outage-20240531/
+- date: '2024-04-29'
+  title: 리팩토링1차(20240430)
+  url: /2024/04/29/refactoring-1st-phase-20240430/
 2024-10-10-working-on-public-network-wishlist:
 - date: '2024-10-28'
   title: Kafka - Avro를 활용한 직렬 역직렬화(20241028)
@@ -2599,35 +2486,16 @@
 - date: '2025-02-20'
   title: 투자온도 SUNSET 건
   url: /2025/02/20/investment-temperature-sunset/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2024-06-25'
   title: EKS-IDCkafka-openApi 수신 구조 잡기
   url: /2024/06/25/eks-idc-kafka-openapi-data-reception-architecture/
 - date: '2024-08-19'
   title: 후회합니다 죄송합니다
   url: /2024/08/19/regrets-and-apologies/
-2024-10-11-kubernetes-node-dns-failure-20240920:
-- date: '2025-08-12'
-  title: 'EKS Pod 배포 및 구동시 38080(server.port) already in use 발생: exec form'
-  url: /2025/08/12/eks-pod-deploy-port-already-in-use-exec-form/
-- date: '2026-03-17'
-  title: 폐쇄망 EKS GitLab CI 시 DNS Lookup 이슈
-  url: /2026/03/17/closed-network-eks-gitlab-ci-dns-lookup-issue/
-- date: '2024-04-04'
-  title: RouteLocator로 Path 파싱 후 라우팅
-  url: /2024/04/04/routelocator-path-parsing-routing/
-- date: '2024-07-11'
-  title: Kafka with Kbank MSA + 표준 스케줄러
-  url: /2024/07/11/kafka-kbank-msa-standard-scheduler/
-- date: '2025-01-18'
-  title: 신혼여행가서 메이플 일퀘하는데 연결이 안됨
-  url: /2026/01/18/maple-daily-quest-connection-issue-on-honeymoon/
+- date: '2025-07-29'
+  title: S3 + logback 활용안
+  url: /2025/07/29/s3-logback-usage-plan/
 2024-10-11-mediation-feign-client-vs-webclient-nonblocking:
-- date: '2024-11-26'
-  title: mediation 패턴 도입기
-  url: /2024/11/26/mediation-pattern-introduction/
 - date: '2024-11-26'
   title: mediation 패턴 도입기 - RECYCLE_FACADES
   url: /2024/11/26/mediation-recycle-facades/
@@ -2640,6 +2508,9 @@
 - date: '2024-12-17'
   title: mediaion 패턴 도입기 - webclient + openfeign 사용
   url: /2024/12/17/mediation-webclient-openfeign-usage/
+- date: '2024-12-09'
+  title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
+  url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
 2024-10-12-file-reception-timing-delay-issue:
 - date: '2023-04-18'
   title: 공시 시스템 관련 메모
@@ -2704,22 +2575,6 @@
 - date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
   url: /2024/02/21/screen-spec-pre-meeting/
-2024-10-12-mci-api-gateway-logging-troubleshooting:
-- date: '2025-07-29'
-  title: DB Sync 개선 - 거래이력 로깅 병목 해결
-  url: /2025/07/29/db-sync-improvement/
-- date: '2024-10-14'
-  title: api-gateway netty - retry on post Fail
-  url: /2024/10/14/api-gateway netty - retry on post Fail/
-- date: '2024-03-11'
-  title: 구조 (202401 ver,Kbank MSA 최초 오픈 시점)
-  url: /2024/03/11/kbank-msa-initial-architecture-202401/
-- date: '2024-10-12'
-  title: 스테이징 DB 장애(용량 부족)
-  url: /2024/10/12/staging-db-outage-disk-full/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 2024-10-12-staging-db-outage-disk-full:
 - date: '2024-10-10'
   title: STK업무 장애(DBA의 작업실수)
@@ -2733,13 +2588,10 @@
 - date: '2025-12-21'
   title: Elasticache 네트워크 대역 장애
   url: /2025/12/21/elasticache-network-bandwidth-outage/
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
+- date: '2023-10-27'
+  title: Spring batch BadSQLGrammar
+  url: /2023/10/27/Spring batch BadSQLGrammar/
 2024-10-14-api-gateway netty - retry on post Fail:
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
 - date: '2026-03-20'
   title: stock-customer-service RESTful 리팩토링 — customerId를 URI에서 뺀 이유
   url: /2026/03/20/refactoring-stock-customer-service-restful/
@@ -2752,6 +2604,9 @@
 - date: '2026-02-19'
   title: Redis pub/sub 활용해서 Local Cache 동기화 - kotlin arrow 응용
   url: /2026/02/19/redis-pubsub-local-cache-with-arrow/
+- date: '2024-04-04'
+  title: RouteLocator로 Path 파싱 후 라우팅
+  url: /2024/04/04/routelocator-path-parsing-routing/
 2024-10-19-webclient-builder-singleton-header-duplicate-warning:
 - date: '2024-11-30'
   title: mediation 패턴 도입기 - 케이뱅크 내부에서 webflux의 한계(20241130기준)
@@ -2788,9 +2643,6 @@
 - date: '2026-07-07'
   title: 만 26세, 토허제 구역에서 아파트 산 이야기 (feat. 전세난민 위기 탈출)
   url: /2026/07/07/apartment-investment-story/
-- date: '2024-01-08'
-  title: 오픈api 방식 인증
-  url: /2024/01/08/open-api-authentication/
 - date: '2024-08-01'
   title: 추석 KTX 예매 시 코레일이 터진 이유에 대한 추측
   url: /2024/08/01/korail-chuseok-crash-analysis/
@@ -2800,6 +2652,9 @@
 - date: '2026-03-29'
   title: 보금자리론 잔금일-취득세 계산, 법무사
   url: /2026/04/05/apartment-pay-the-remainder/
+- date: '2023-03-01'
+  title: 푸시메세지 조립 - 한국어 종성과 조사 처리
+  url: /2023/03/01/korean-push-message-particles/
 2024-10-20-first-complete-version:
 - date: '2025-02-12'
   title: argo-workflow - jflow 연동 개선건 2 (202502)
@@ -2826,12 +2681,12 @@
 - date: '2024-10-11'
   title: 1차 리팩토링 및 로직 개선 (~20241015)
   url: /2024/10/11/first-refactoring-and-logic-improvement/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2024-09-28'
   title: argo-workflow+ 케이뱅크 jflow
   url: /2024/09/28/argo-workflow-kbank-jflow/
+- date: '2024-10-28'
+  title: Kafka - Avro를 활용한 직렬 역직렬화(20241028)
+  url: /2024/10/28/kafka-avro-serialization-deserialization/
 2024-10-21-KEDA Job(20241021):
 - date: '2024-10-21'
   title: Argo Event kafka event vs KEDA kafka
@@ -2839,15 +2694,15 @@
 - date: '2025-01-09'
   title: Python + KEDA ScaledJob
   url: /2025/01/09/Python + KEDA ScaledJob/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2025-01-14'
   title: 'Python + Argo Event (결과 : 원하는대로 안됨)'
   url: /2025/01/14/python-argo-event-failed-result/
 - date: '2024-10-11'
   title: 1차 리팩토링 및 로직 개선 (~20241015)
   url: /2024/10/11/first-refactoring-and-logic-improvement/
+- date: '2024-09-11'
+  title: 데이터 수신 pod에 KEDA 적용
+  url: /2024/09/11/keda-on-data-reception-pod/
 2024-10-22-jpa-composite-key-jointable:
 - date: '2023-12-26'
   title: JPA 키워드 정리
@@ -2864,22 +2719,6 @@
 - date: '2025-02-06'
   title: Jpa Upsert 존재하지 않는 이유
   url: /2025/02/06/jpa-upsert-does-not-exist/
-2024-10-24-KEDA ScaledJob + Kafka:
-- date: '2024-10-11'
-  title: 1차 리팩토링 및 로직 개선 (~20241015)
-  url: /2024/10/11/first-refactoring-and-logic-improvement/
-- date: '2024-06-25'
-  title: EKS-IDCkafka-openApi 수신 구조 잡기
-  url: /2024/06/25/eks-idc-kafka-openapi-data-reception-architecture/
-- date: '2024-09-04'
-  title: EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)
-  url: /2024/09/04/eks-idc-kafka-openapi-implementation-attempt/
-- date: '2024-10-28'
-  title: Kafka - Avro를 활용한 직렬 역직렬화(20241028)
-  url: /2024/10/28/kafka-avro-serialization-deserialization/
-- date: '2024-07-11'
-  title: Kafka with Kbank MSA + 표준 스케줄러
-  url: /2024/07/11/kafka-kbank-msa-standard-scheduler/
 2024-10-28-kafka-avro-serialization-deserialization:
 - date: '2024-06-25'
   title: EKS-IDCkafka-openApi 수신 구조 잡기
@@ -2897,9 +2736,6 @@
   title: 후회합니다 죄송합니다
   url: /2024/08/19/regrets-and-apologies/
 2024-11-02-mediation-reactive-feign-vs-virtual-thread-java21:
-- date: '2024-11-26'
-  title: mediation 패턴 도입기
-  url: /2024/11/26/mediation-pattern-introduction/
 - date: '2024-12-04'
   title: mediation 패턴 도입기 - Reactor Non-blocking vs Multi Thread(virtual) 실험
   url: /2024/12/04/mediation-reactor-nonblocking-vs-virtual-thread/
@@ -2912,6 +2748,9 @@
 - date: '2025-02-06'
   title: mediation 패턴 도입기 - 하지만 100% 코틀린이라면???
   url: /2025/02/06/mediation-what-if-100-percent-kotlin/
+- date: '2024-11-26'
+  title: mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지
+  url: /2024/11/26/mediation-interceptor-threadlocal-servletcontext-data-loss/
 2024-11-04-jpa-findall-fetchjoin-issue:
 - date: '2025-02-03'
   title: Jpa FetchJoin vs BatchSize , 각각의 장단점 주의점
@@ -2932,9 +2771,6 @@
 - date: '2025-03-05'
   title: 요건확정회의 (20250305)
   url: /2025/03/05/requirements-finalization-meeting-20250305/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-06-11'
   title: 투자온도(구 공포탐욕지수)
   url: /2024/06/11/investment-temperature-fear-greed-index/
@@ -2944,13 +2780,13 @@
 - date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
   url: /2024/02/21/screen-spec-pre-meeting/
+- date: '2024-10-10'
+  title: 리팩토링 2차 (20240910)
+  url: /2024/10/10/refactoring-2nd-phase-20240910/
 2024-11-26-mediation-interceptor-threadlocal-servletcontext-data-loss:
 - date: '2025-02-06'
   title: mediation 패턴 도입기 - 하지만 100% 코틀린이라면???
   url: /2025/02/06/mediation-what-if-100-percent-kotlin/
-- date: '2024-11-26'
-  title: mediation 패턴 도입기
-  url: /2024/11/26/mediation-pattern-introduction/
 - date: '2024-11-26'
   title: mediation 패턴 도입기 - RECYCLE_FACADES
   url: /2024/11/26/mediation-recycle-facades/
@@ -2960,22 +2796,9 @@
 - date: '2024-10-11'
   title: mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)
   url: /2024/10/11/mediation-feign-client-vs-webclient-nonblocking/
-2024-11-26-mediation-pattern-introduction:
-- date: '2024-10-11'
-  title: mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)
-  url: /2024/10/11/mediation-feign-client-vs-webclient-nonblocking/
-- date: '2024-11-02'
-  title: mediation 패턴 도입기 - reactive feign vs virtual thread(java21)
-  url: /2024/11/02/mediation-reactive-feign-vs-virtual-thread-java21/
-- date: '2025-02-06'
-  title: mediation 패턴 도입기 - 하지만 100% 코틀린이라면???
-  url: /2025/02/06/mediation-what-if-100-percent-kotlin/
-- date: '2024-12-04'
-  title: mediation 패턴 도입기 - Reactor Non-blocking vs Multi Thread(virtual) 실험
-  url: /2024/12/04/mediation-reactor-nonblocking-vs-virtual-thread/
-- date: '2024-11-26'
-  title: mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지
-  url: /2024/11/26/mediation-interceptor-threadlocal-servletcontext-data-loss/
+- date: '2024-11-30'
+  title: mediation 패턴 도입기 - 케이뱅크 내부에서 webflux의 한계(20241130기준)
+  url: /2024/11/30/mediation-webflux-limitations-in-kbank/
 2024-11-26-mediation-recycle-facades:
 - date: '2024-10-11'
   title: mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)
@@ -2986,12 +2809,12 @@
 - date: '2024-11-26'
   title: mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지
   url: /2024/11/26/mediation-interceptor-threadlocal-servletcontext-data-loss/
-- date: '2024-11-26'
-  title: mediation 패턴 도입기
-  url: /2024/11/26/mediation-pattern-introduction/
 - date: '2025-02-06'
   title: mediation 패턴 도입기 - 하지만 100% 코틀린이라면???
   url: /2025/02/06/mediation-what-if-100-percent-kotlin/
+- date: '2024-12-09'
+  title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
+  url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
 2024-11-30-mediation-webflux-limitations-in-kbank:
 - date: '2024-12-17'
   title: mediaion 패턴 도입기 - webclient + openfeign 사용
@@ -3028,9 +2851,6 @@
 - date: '2024-11-02'
   title: mediation 패턴 도입기 - reactive feign vs virtual thread(java21)
   url: /2024/11/02/mediation-reactive-feign-vs-virtual-thread-java21/
-- date: '2024-11-26'
-  title: mediation 패턴 도입기
-  url: /2024/11/26/mediation-pattern-introduction/
 - date: '2025-01-22'
   title: 202412) 현재 상황에서는 Reactor, 중기적으로는 VThread, 장기적으로는 둘다?
   url: /2025/01/22/reactor-now-vthread-mid-term-both-long-term/
@@ -3040,6 +2860,9 @@
 - date: '2024-10-11'
   title: mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)
   url: /2024/10/11/mediation-feign-client-vs-webclient-nonblocking/
+- date: '2024-12-17'
+  title: mediaion 패턴 도입기 - webclient + openfeign 사용
+  url: /2024/12/17/mediation-webclient-openfeign-usage/
 2024-12-09-mediation-reactor-misconceptions-and-mistakes:
 - date: '2024-12-17'
   title: mediaion 패턴 도입기 - webclient + openfeign 사용
@@ -3088,22 +2911,6 @@
 - date: '2024-12-17'
   title: mediaion 패턴 도입기 - webclient + openfeign 사용
   url: /2024/12/17/mediation-webclient-openfeign-usage/
-2024-12-24-JPA OOM:
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
-- date: '2024-04-04'
-  title: 새로운 이슈(파일 크기 OOM)
-  url: /2024/04/04/file-size-oom-issue/
-- date: '2023-11-11'
-  title: Transactional
-  url: /2023/11/11/Transactional/
-- date: '2023-09-05'
-  title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
-  url: /2023/09/05/AA/
-- date: '2024-02-02'
-  title: Query based→ OOP 전환 커브
-  url: /2024/02/02/query-based-to-oop-transition/
 2024-12-31-argo-workflow-jflow-integration-improvement-20241231:
 - date: '2025-02-12'
   title: argo-workflow - jflow 연동 개선건 2 (202502)
@@ -3121,9 +2928,6 @@
   title: argo workflow template refactoring 하기
   url: /2026/02/20/argo-workflow-template-refactoring/
 2024-12-31-python-jflow-necessity-and-sample-project:
-- date: '2024-12-31'
-  title: 정기작업에 관하여 삽질(스프링 배치, 파이썬 스크립트 등등)
-  url: /2024/12/31/scheduled-job-troubleshooting-spring-batch-python/
 - date: '2024-10-20'
   title: 1차 완성본
   url: /2024/10/20/first-complete-version/
@@ -3136,22 +2940,9 @@
 - date: '2024-12-31'
   title: Argo Workflow + JFlow 연동 시 로그 문제 해결
   url: /2024/12/31/argo-workflow-jflow-integration-improvement-20241231/
-2024-12-31-scheduled-job-troubleshooting-spring-batch-python:
-- date: '2024-12-31'
-  title: Python + jflow 필요성 + 샘플 프로젝트
-  url: /2024/12/31/python-jflow-necessity-and-sample-project/
-- date: '2025-02-12'
-  title: argo-workflow - jflow 연동 개선건 2 (202502)
-  url: /2025/02/12/argo-workflow-jflow-integration-improvement-2-202502/
-- date: '2024-09-28'
-  title: argo-workflow+ 케이뱅크 jflow
-  url: /2024/09/28/argo-workflow-kbank-jflow/
-- date: '2024-12-31'
-  title: Argo Workflow + JFlow 연동 시 로그 문제 해결
-  url: /2024/12/31/argo-workflow-jflow-integration-improvement-20241231/
-- date: '2023-10-10'
-  title: 뻘짓) Spring Batch 5 + Multiple DataSource
-  url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
+- date: '2023-10-08'
+  title: Spring Batch 5.0.1(Spring 3.1.3)
+  url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
 2025-01-01-opendart-professional-investor:
 - date: '2025-02-17'
   title: OpenDart - 전문투자자 대상 선별 방법
@@ -3181,9 +2972,9 @@
 - date: '2024-10-21'
   title: Argo Event kafka event vs KEDA kafka
   url: /2024/10/21/Argo Event kafka event vs KEDA kafka/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
+- date: '2024-09-29'
+  title: 1파일 n 잡
+  url: /2024/09/29/single-file-multiple-jobs/
 2025-01-10-redis-single-thread-multiplexing:
 - date: '2024-07-04'
   title: Redis Pipeline 조회 ⇒ Lua 조회
@@ -3207,15 +2998,15 @@
 - date: '2024-10-21'
   title: KEDA Job(20241021)
   url: /2024/10/21/KEDA Job(20241021)/
-- date: '2024-12-31'
-  title: 정기작업에 관하여 삽질(스프링 배치, 파이썬 스크립트 등등)
-  url: /2024/12/31/scheduled-job-troubleshooting-spring-batch-python/
 - date: '2024-09-28'
   title: argo-workflow+ 케이뱅크 jflow
   url: /2024/09/28/argo-workflow-kbank-jflow/
 - date: '2026-01-02'
   title: Postgresql CDC + Debezium + kafka 사용 EDA > transactional outbox 패턴
   url: /2026/01/02/postgresql-cdc-debezium-kafka-eda-transactional-outbox/
+- date: '2025-02-12'
+  title: argo-workflow - jflow 연동 개선건 2 (202502)
+  url: /2025/02/12/argo-workflow-jflow-integration-improvement-2-202502/
 2025-01-20-spring-batch-common-meta-db-multiple-datasource:
 - date: '2023-11-11'
   title: Transactional
@@ -3229,9 +3020,9 @@
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
+- date: '2025-02-11'
+  title: Spring Batch 5.2에서 ResourcelessJobRepository로 DB 없이 배치 실행하기
+  url: /2025/02/11/spring-batch-resourceless-job-repository/
 2025-01-21-netty-native-memory-issue:
 - date: '2025-09-08'
   title: 'Java Committed Memory 부제 : 메모리가 왜 계속 증가함?'
@@ -3264,22 +3055,6 @@
 - date: '2025-12-04'
   title: '**Lambda Managed Instances: EC2 Power with Serverless Simplicity**'
   url: /2025/12/04/Lambda Managed Instances EC2 Power with Serverless Simplicity/
-2025-01-27-build.gradle Settings.gradle (1):
-- date: '2025-01-27'
-  title: Gradle 초기화 시점(settings.gradle → build.gradle)
-  url: /2025/01/27/gradle-initialization-timing-settings-build/
-- date: '2024-07-19'
-  title: Gradle Multi Module + Gitlab Submodule 도입기
-  url: /2024/07/19/gradle-multi-module-gitlab-submodule/
-- date: '2024-05-07'
-  title: Gradle + Spring 멀티 모듈
-  url: /2024/05/07/gradle-spring-multi-module/
-- date: '2025-02-13'
-  title: 단일 이미지 빌드 환경에서 멀티모듈 빌드(뻘)
-  url: /2025/02/13/single-image-multi-module-build/
-- date: '2024-12-31'
-  title: Python + jflow 필요성 + 샘플 프로젝트
-  url: /2024/12/31/python-jflow-necessity-and-sample-project/
 2025-01-27-gradle-initialization-timing-settings-build:
 - date: '2024-07-19'
   title: Gradle Multi Module + Gitlab Submodule 도입기
@@ -3293,9 +3068,9 @@
 - date: '2023-10-27'
   title: Branch 전략 논의
   url: /2023/10/27/git-branch-strategy-discussion/
-- date: '2025-01-27'
-  title: build.gradle Settings.gradle (1)
-  url: /2025/01/27/build.gradle Settings.gradle (1)/
+- date: '2026-03-17'
+  title: 폐쇄망 EKS GitLab CI 시 DNS Lookup 이슈
+  url: /2026/03/17/closed-network-eks-gitlab-ci-dns-lookup-issue/
 2025-01-27-multi-module-common-pitfalls:
 - date: '2024-05-07'
   title: Gradle + Spring 멀티 모듈
@@ -3396,9 +3171,6 @@
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
   url: /2023/10/10/spring-batch-5-multiple-datasource-trial/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2025-02-11'
   title: Spring Batch 5.2에서 ResourcelessJobRepository로 DB 없이 배치 실행하기
   url: /2025/02/11/spring-batch-resourceless-job-repository/
@@ -3408,6 +3180,9 @@
 - date: '2025-01-20'
   title: 스프링부트 배치) 공통 메타 DB + Multiple DataSource(20250120)
   url: /2025/01/20/spring-batch-common-meta-db-multiple-datasource/
+- date: '2025-02-20'
+  title: Spring Batch Exit 로직 개선(20250220)
+  url: /2025/02/20/spring-batch-exit-logic-improvement/
 2025-02-06-jpa-upsert-does-not-exist:
 - date: '2024-05-18'
   title: Spring Cloud Config-Server + Spring Security (Basic Auth) 정리(Bootstrap 사용
@@ -3429,9 +3204,6 @@
 - date: '2024-11-26'
   title: mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지
   url: /2024/11/26/mediation-interceptor-threadlocal-servletcontext-data-loss/
-- date: '2024-11-26'
-  title: mediation 패턴 도입기
-  url: /2024/11/26/mediation-pattern-introduction/
 - date: '2024-10-11'
   title: mediation 패턴 도입기 - feignClient vs webClient non blocking(20240915)
   url: /2024/10/11/mediation-feign-client-vs-webclient-nonblocking/
@@ -3441,6 +3213,9 @@
 - date: '2024-11-30'
   title: mediation 패턴 도입기 - 케이뱅크 내부에서 webflux의 한계(20241130기준)
   url: /2024/11/30/mediation-webflux-limitations-in-kbank/
+- date: '2024-11-26'
+  title: mediation 패턴 도입기 - RECYCLE_FACADES
+  url: /2024/11/26/mediation-recycle-facades/
 2025-02-11-spring-batch-resourceless-job-repository:
 - date: '2023-10-10'
   title: 뻘짓) Spring Batch 5 + Multiple DataSource
@@ -3448,15 +3223,15 @@
 - date: '2023-10-08'
   title: Spring Batch 5.0.1(Spring 3.1.3)
   url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
 - date: '2025-02-03'
   title: 스프링부트 배치) 배치 메타테이블이 필요할까
   url: /2025/02/03/spring-batch-is-meta-table-necessary/
 - date: '2025-02-20'
   title: Spring Batch Exit 로직 개선(20250220)
   url: /2025/02/20/spring-batch-exit-logic-improvement/
+- date: '2023-10-27'
+  title: Spring batch BadSQLGrammar
+  url: /2023/10/27/Spring batch BadSQLGrammar/
 2025-02-12-argo-workflow-jflow-integration-improvement-2-202502:
 - date: '2024-12-31'
   title: Argo Workflow + JFlow 연동 시 로그 문제 해결
@@ -3558,9 +3333,6 @@
 - date: '2024-09-09'
   title: 연결재무제표 작성 대상기업/면제기업
   url: /2024/09/09/consolidated-financial-statement-exempt-companies/
-- date: '2024-09-09'
-  title: K-IFRS 관련
-  url: /2024/09/09/k-ifrs-overview/
 - date: '2024-01-15'
   title: 자사주취득 vs 자사주취득신탁계약
   url: /2024/01/15/treasury-stock-acquisition/
@@ -3570,10 +3342,10 @@
 - date: '2024-09-09'
   title: 재무데이터 노출기준 정하기
   url: /2024/09/09/financial-data-exposure-criteria/
+- date: '2024-06-11'
+  title: 투자온도(구 공포탐욕지수)
+  url: /2024/06/11/investment-temperature-fear-greed-index/
 2025-02-20-intangible-virtual-asset-account-analysis:
-- date: '2024-09-09'
-  title: K-IFRS 관련
-  url: /2024/09/09/k-ifrs-overview/
 - date: '2024-06-11'
   title: 투자온도(구 공포탐욕지수)
   url: /2024/06/11/investment-temperature-fear-greed-index/
@@ -3586,6 +3358,9 @@
 - date: '2024-05-26'
   title: 기획안 질문
   url: /2024/05/26/planning-questions/
+- date: '2025-02-17'
+  title: OpenDart - 전문투자자 대상 선별 방법
+  url: /2025/02/17/opendart-professional-investor-selection/
 2025-02-20-investment-temperature-sunset:
 - date: '2024-10-11'
   title: 1차 리팩토링 및 로직 개선 (~20241015)
@@ -3615,9 +3390,9 @@
 - date: '2023-10-27'
   title: Spring Batch + Cursor Based ItemReader 이슈
   url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
-- date: '2023-11-02'
-  title: Spring batch 아키텍쳐 논의/삽질
-  url: /2023/11/02/spring-batch-architecture-discussion/
+- date: '2025-02-03'
+  title: 스프링부트 배치) 배치 메타테이블이 필요할까
+  url: /2025/02/03/spring-batch-is-meta-table-necessary/
 2025-03-05-requirements-finalization-meeting-20250305:
 - date: '2024-02-22'
   title: 화면 명세(회의 후)
@@ -3654,9 +3429,6 @@
 - date: '2024-12-31'
   title: Python + jflow 필요성 + 샘플 프로젝트
   url: /2024/12/31/python-jflow-necessity-and-sample-project/
-- date: '2025-03-18'
-  title: Gitlab CI 관련 삽질
-  url: /2025/03/18/gitlab-ci-troubleshooting/
 - date: '2024-04-04'
   title: RouteLocator로 Path 파싱 후 라우팅
   url: /2024/04/04/routelocator-path-parsing-routing/
@@ -3666,10 +3438,10 @@
 - date: '2025-01-09'
   title: Python + KEDA ScaledJob
   url: /2025/01/09/Python + KEDA ScaledJob/
+- date: '2025-02-13'
+  title: 단일 이미지 빌드 환경에서 멀티모듈 빌드(뻘)
+  url: /2025/02/13/single-image-multi-module-build/
 2025-03-17-ci-sonarqube-python-integration-sonar-scanner-image:
-- date: '2025-03-18'
-  title: Gitlab CI 관련 삽질
-  url: /2025/03/18/gitlab-ci-troubleshooting/
 - date: '2024-07-19'
   title: Gradle Multi Module + Gitlab Submodule 도입기
   url: /2024/07/19/gradle-multi-module-gitlab-submodule/
@@ -3682,22 +3454,9 @@
 - date: '2025-03-16'
   title: Python - ISTIO 사이드카 연동 문제(사이드카보다 파이썬 외부 연결이 더 빨라,20250317)
   url: /2025/03/16/python-istio-sidecar-integration-issue/
-2025-03-18-gitlab-ci-troubleshooting:
-- date: '2025-03-17'
-  title: 'CI) Sonarqube + Python 연동 문제 해결 : Sonar Scanner Image'
-  url: /2025/03/17/ci-sonarqube-python-integration-sonar-scanner-image/
 - date: '2025-01-27'
   title: Gradle 초기화 시점(settings.gradle → build.gradle)
   url: /2025/01/27/gradle-initialization-timing-settings-build/
-- date: '2024-07-19'
-  title: Gradle Multi Module + Gitlab Submodule 도입기
-  url: /2024/07/19/gradle-multi-module-gitlab-submodule/
-- date: '2024-01-26'
-  title: 첫 GO 중 GitLab 이슈 (공모주 메이트)
-  url: /2024/01/26/first-go-live-gitlab-issue-ipo-mate/
-- date: '2025-03-16'
-  title: Python - ISTIO 사이드카 연동 문제(사이드카보다 파이썬 외부 연결이 더 빨라,20250317)
-  url: /2025/03/16/python-istio-sidecar-integration-issue/
 2025-03-23-Servlet ThreadLocal vs Netty Context:
 - date: '2024-11-26'
   title: mediation 패턴 도입기 - Interceptor, ThreadLocal, ServletContext + 유실까지
@@ -3731,12 +3490,6 @@
   title: Netty Native memory 문제
   url: /2025/01/21/netty-native-memory-issue/
 2025-03-29-insert-on-conflict-upsert-performance-impact:
-- date: '2024-03-04'
-  title: PostgreSQL
-  url: /2024/03/04/PostgreSQL/
-- date: '2024-01-29'
-  title: 식품물가 마이그레이션
-  url: /2024/01/29/food-price-data-migration/
 - date: '2026-03-04'
   title: 테스트코드 짜기는 싫지만 TDD는 하고 싶어 - 클로드를 시켜
   url: /2026/03/04/dislike-test-code-but-want-tdd/
@@ -3746,6 +3499,12 @@
 - date: '2025-07-06'
   title: '@Transactional(readOnly=True)를 막 쓰지 말자'
   url: /2025/07/06/transactional-readonly-careful-usage/
+- date: '2025-01-20'
+  title: 스프링부트 배치) 공통 메타 DB + Multiple DataSource(20250120)
+  url: /2025/01/20/spring-batch-common-meta-db-multiple-datasource/
+- date: '2025-09-29'
+  title: Postgresql 파티션 PK
+  url: /2025/09/29/postgresql-partition-pk/
 2025-04-01-langchain-mcp-tech-talk:
 - date: '2025-05-25'
   title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
@@ -3759,9 +3518,9 @@
 - date: '2025-07-05'
   title: AI - PT 콘티
   url: /2025/07/05/ai-presentation-storyboard/
-- date: '2025-09-05'
-  title: Copilot Agent
-  url: /2025/09/05/Copilot Agent/
+- date: '2025-02-12'
+  title: 멀티 모듈 구성 개선(안, 202502)
+  url: /2025/02/12/multi-module-configuration-improvement/
 2025-04-01-rate-limiting-for-history-ingestion-speed-control:
 - date: '2025-05-30'
   title: Redis 활용 이력 적재 RateLimit
@@ -3794,54 +3553,22 @@
 - date: '2025-02-02'
   title: Keep Alive + Content Length를 잘못세팅하면 벌어지는 일
   url: /2025/02/02/keep-alive-content-length-misconfiguration/
-2025-04-29-nonlinear-processor-aka-ai:
-- date: '2026-01-26'
-  title: Raptor RAG 활용 공시 문서 압축 요약
-  url: /2026/01/26/raptor-rag-disclosure-document-summarization/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
-- date: '2025-07-01'
-  title: 케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇
-  url: /2025/07/01/kbank-ai-contest-rag-langchain/
-- date: '2025-06-18'
-  title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
-  url: /2025/06/18/ai-contest-2025-first-half-gold-prize/
-- date: '2025-09-05'
-  title: Copilot Agent
-  url: /2025/09/05/Copilot Agent/
 2025-04-29-stock-service-langgraph:
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-03-12'
   title: MSA→EAI→OpenApi→두나무→OpenApi→EAI→MSA 데이터 수신 개발
   url: /2024/03/12/msa-eai-openapi-dunamu-data-reception/
 - date: '2025-01-28'
   title: 아키텍쳐협의회 회의록(20241219)
   url: /2025/01/28/architecture-council-meeting-notes-20241219/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
 - date: '2025-06-18'
   title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
   url: /2025/06/18/ai-contest-2025-first-half-gold-prize/
-2025-04-30-stock-service-rag-pipeline:
-- date: '2025-04-29'
-  title: 비선형 처리기(AKA. AI)
-  url: /2025/04/29/nonlinear-processor-aka-ai/
-- date: '2025-07-01'
-  title: 케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇
-  url: /2025/07/01/kbank-ai-contest-rag-langchain/
-- date: '2025-06-18'
-  title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
-  url: /2025/06/18/ai-contest-2025-first-half-gold-prize/
-- date: '2025-07-05'
-  title: AI - PT 콘티
-  url: /2025/07/05/ai-presentation-storyboard/
-- date: '2026-01-26'
-  title: Raptor RAG 활용 공시 문서 압축 요약
-  url: /2026/01/26/raptor-rag-disclosure-document-summarization/
+- date: '2024-10-28'
+  title: Kafka - Avro를 활용한 직렬 역직렬화(20241028)
+  url: /2024/10/28/kafka-avro-serialization-deserialization/
+- date: '2025-12-01'
+  title: Optimizing agentic aI apps with semantic caching in Amazon ElastiCache
+  url: /2025/12/01/Optimizing agentic aI apps with semantic caching in Amazon ElastiCache/
 2025-05-07-financial-data-processing:
 - date: '2024-06-11'
   title: 투자온도(구 공포탐욕지수)
@@ -3872,8 +3599,8 @@
   title: AI - PT 콘티
   url: /2025/07/05/ai-presentation-storyboard/
 - date: '2025-09-05'
-  title: Copilot Agent
-  url: /2025/09/05/Copilot Agent/
+  title: M365 <> Confluence RAG 연동
+  url: /2025/09/05/m365-confluence-rag-integration/
 2025-05-30-personalized-info-caching-strategy:
 - date: '2024-04-15'
   title: 권리변동에 따른 데이터 보정 필요
@@ -3881,15 +3608,15 @@
 - date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
   url: /2024/02/21/screen-spec-pre-meeting/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
 - date: '2024-10-12'
   title: 공모주 데이터의 지속적인 에러
   url: /2024/10/12/ipo-data-persistent-errors/
 - date: '2023-06-27'
   title: POC회의록(20230627)
   url: /2023/06/27/poc-meeting-notes-20230627/
+- date: '2023-04-18'
+  title: 공시 시스템 관련 메모
+  url: /2023/04/18/disclosure-system-notes/
 2025-05-30-redis-history-ingestion-rate-limit:
 - date: '2026-02-12'
   title: 공모주 메이트 2차 리팩토링
@@ -3913,15 +3640,15 @@
 - date: '2025-07-05'
   title: AI - PT 콘티
   url: /2025/07/05/ai-presentation-storyboard/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
-- date: '2025-04-29'
-  title: 비선형 처리기(AKA. AI)
-  url: /2025/04/29/nonlinear-processor-aka-ai/
 - date: '2025-12-04'
   title: '**Building the Future Trading Platform leveraging AI and AWS**'
   url: /2025/12/04/Building the Future Trading Platform leveraging AI and AWS/
+- date: '2025-05-25'
+  title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
+  url: /2025/05/25/tech-talk-kbank-stock-msa-langchain-mcp/
+- date: '2025-04-01'
+  title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
+  url: /2025/04/01/langchain-mcp-tech-talk/
 2025-06-28-caffeine-cache-static-declaration-effects:
 - date: '2025-09-08'
   title: 'Java Committed Memory 부제 : 메모리가 왜 계속 증가함?'
@@ -3942,18 +3669,18 @@
 - date: '2025-06-18'
   title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
   url: /2025/06/18/ai-contest-2025-first-half-gold-prize/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
 - date: '2025-07-05'
   title: AI - PT 콘티
   url: /2025/07/05/ai-presentation-storyboard/
-- date: '2025-04-29'
-  title: 비선형 처리기(AKA. AI)
-  url: /2025/04/29/nonlinear-processor-aka-ai/
 - date: '2025-05-25'
   title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
   url: /2025/05/25/tech-talk-kbank-stock-msa-langchain-mcp/
+- date: '2025-04-01'
+  title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
+  url: /2025/04/01/langchain-mcp-tech-talk/
+- date: '2023-09-05'
+  title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
+  url: /2023/09/05/AA/
 2025-07-05-ai-presentation-storyboard:
 - date: '2025-06-18'
   title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
@@ -3961,15 +3688,15 @@
 - date: '2025-07-01'
   title: 케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇
   url: /2025/07/01/kbank-ai-contest-rag-langchain/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
-- date: '2025-04-29'
-  title: 비선형 처리기(AKA. AI)
-  url: /2025/04/29/nonlinear-processor-aka-ai/
 - date: '2025-05-25'
   title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
   url: /2025/05/25/tech-talk-kbank-stock-msa-langchain-mcp/
+- date: '2025-04-01'
+  title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
+  url: /2025/04/01/langchain-mcp-tech-talk/
+- date: '2025-12-04'
+  title: '**Building the Future Trading Platform leveraging AI and AWS**'
+  url: /2025/12/04/Building the Future Trading Platform leveraging AI and AWS/
 2025-07-06-transactional-readonly-careful-usage:
 - date: '2023-03-27'
   title: Batch의 Transaction 시점, Context에 관해
@@ -4038,9 +3765,6 @@
 - date: '2025-07-14'
   title: 멀티캠퍼스 **[금융특화] 파이썬과 오픈소스를 활용한 딥러닝(심화)**
   url: /2025/07/14/multicampus-financial-python-deep-learning/
-- date: '2025-09-05'
-  title: Copilot Agent
-  url: /2025/09/05/Copilot Agent/
 - date: '2025-07-18'
   title: autogluon
   url: /2025/07/18/autogluon/
@@ -4050,6 +3774,9 @@
 - date: '2025-05-25'
   title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
   url: /2025/05/25/tech-talk-kbank-stock-msa-langchain-mcp/
+- date: '2025-12-02'
+  title: '**Inference on AWS Trainium and Amazon EKS using vLLM**'
+  url: /2025/12/02/Inference on AWS Trainium and Amazon EKS using vLLM/
 2025-07-17-Pytorch:
 - date: '2025-07-14'
   title: conda 사용하는 이유
@@ -4079,9 +3806,9 @@
 - date: '2025-11-30'
   title: AWS Reinvent Las Vegas(2025)
   url: /2025/11/30/AWS Reinvent Las Vegas(2025)/
-- date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
+- date: '2025-07-01'
+  title: 케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇
+  url: /2025/07/01/kbank-ai-contest-rag-langchain/
 2025-07-18-recruitment-site-youtube-interview:
 - date: '2023-10-24'
   title: 경영계획 아이디어 회의 선발(20231031)
@@ -4108,19 +3835,13 @@
 - date: '2023-08-19'
   title: 참조 투명성 예제
   url: /2023/08/19/referential-transparency-example/
-- date: '2024-10-24'
-  title: KEDA ScaledJob + Kafka
-  url: /2024/10/24/KEDA ScaledJob + Kafka/
 - date: '2024-08-20'
   title: 거래량 불일치
   url: /2024/08/20/trading-volume-inconsistency/
+- date: '2024-10-11'
+  title: 1차 리팩토링 및 로직 개선 (~20241015)
+  url: /2024/10/11/first-refactoring-and-logic-improvement/
 2025-07-29-db-sync-improvement:
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2023-11-11'
   title: Transactional
   url: /2023/11/11/Transactional/
@@ -4130,6 +3851,12 @@
 - date: '2023-09-05'
   title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
   url: /2023/09/05/AA/
+- date: '2024-10-11'
+  title: 1차 리팩토링 및 로직 개선 (~20241015)
+  url: /2024/10/11/first-refactoring-and-logic-improvement/
+- date: '2025-01-20'
+  title: 스프링부트 배치) 공통 메타 DB + Multiple DataSource(20250120)
+  url: /2025/01/20/spring-batch-common-meta-db-multiple-datasource/
 2025-07-29-s3-logback-usage-plan:
 - date: '2024-06-25'
   title: EKS-IDCkafka-openApi 수신 구조 잡기
@@ -4163,9 +3890,6 @@
   title: mediation 패턴 도입기 - Reactor Non-blocking vs Multi Thread(virtual) 실험
   url: /2024/12/04/mediation-reactor-nonblocking-vs-virtual-thread/
 2025-08-12-eks-pod-deploy-port-already-in-use-exec-form:
-- date: '2024-10-11'
-  title: Kubernetes 노드 DNS 장애(20240920)
-  url: /2024/10/11/kubernetes-node-dns-failure-20240920/
 - date: '2024-04-04'
   title: RouteLocator로 Path 파싱 후 라우팅
   url: /2024/04/04/routelocator-path-parsing-routing/
@@ -4178,6 +3902,9 @@
 - date: '2024-03-21'
   title: MCI2api-gateway 개선(spring-cloud) 삽질기
   url: /2024/03/21/mci-api-gateway-spring-cloud-improvement/
+- date: '2025-12-04'
+  title: '**Lambda Managed Instances: EC2 Power with Serverless Simplicity**'
+  url: /2025/12/04/Lambda Managed Instances EC2 Power with Serverless Simplicity/
 2025-08-19-2025-financial-sector-job-fair:
 - date: '2024-01-08'
   title: 금융규제 샌드박스
@@ -4210,26 +3937,7 @@
 - date: '2023-12-26'
   title: EAI 전문 조립 관련
   url: /2023/12/26/eai-message-assembly/
-2025-09-05-Copilot Agent:
-- date: '2025-09-05'
-  title: M365 <> Confluence RAG 연동
-  url: /2025/09/05/m365-confluence-rag-integration/
-- date: '2025-06-18'
-  title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
-  url: /2025/06/18/ai-contest-2025-first-half-gold-prize/
-- date: '2025-04-29'
-  title: 비선형 처리기(AKA. AI)
-  url: /2025/04/29/nonlinear-processor-aka-ai/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
-- date: '2025-07-01'
-  title: 케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇
-  url: /2025/07/01/kbank-ai-contest-rag-langchain/
 2025-09-05-m365-confluence-rag-integration:
-- date: '2025-09-05'
-  title: Copilot Agent
-  url: /2025/09/05/Copilot Agent/
 - date: '2023-09-05'
   title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
   url: /2023/09/05/AA/
@@ -4242,6 +3950,9 @@
 - date: '2025-04-01'
   title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
   url: /2025/04/01/langchain-mcp-tech-talk/
+- date: '2025-07-01'
+  title: 케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇
+  url: /2025/07/01/kbank-ai-contest-rag-langchain/
 2025-09-08-cache-validation-period-and-missing-reference-data:
 - date: '2023-05-25'
   title: 운영리스크 관련 이슈
@@ -4255,9 +3966,9 @@
 - date: '2025-07-06'
   title: '@Transactional(readOnly=True)를 막 쓰지 말자'
   url: /2025/07/06/transactional-readonly-careful-usage/
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
+- date: '2025-10-16'
+  title: R2dbc Connection POOL 설정
+  url: /2025/10/16/r2dbc-connection-pool-configuration/
 2025-09-08-java-committed-memory-increase-investigation:
 - date: '2025-01-21'
   title: Netty Native memory 문제
@@ -4274,22 +3985,6 @@
 - date: '2025-03-29'
   title: 스택이 무진장 커진다면 힙은 필요없을까?
   url: /2025/03/29/if-stack-grows-huge-is-heap-unnecessary/
-2025-09-19-weekly-investment-king:
-- date: '2025-11-14'
-  title: MGM 처리관련 논의
-  url: /2025/11/14/mgm-processing-discussion/
-- date: '2025-10-31'
-  title: 채널 연동 관련 끄적
-  url: /2025/10/31/channel-integration-notes/
-- date: '2024-01-17'
-  title: 수신 캐시백 지급프로세스 트랜잭션
-  url: /2024/01/17/deposit-cashback-payment-transaction/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
-- date: '2025-11-16'
-  title: 왜 서비스가 토스처럼 부드럽지 못할까
-  url: /2025/11/16/why-is-our-service-not-as-smooth-as-toss/
 2025-09-22-20250922 scrum:
 - date: '2025-11-14'
   title: 집계
@@ -4314,14 +4009,14 @@
   title: 20250922 scrum
   url: /2025/09/22/20250922 scrum/
 - date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
-- date: '2025-09-19'
-  title: 주간 투자왕
-  url: /2025/09/19/weekly-investment-king/
-- date: '2025-11-14'
   title: 집계 후 푸시 발송
   url: /2025/11/14/push-notification-after-aggregation/
+- date: '2025-11-14'
+  title: 게임 초기화
+  url: /2025/11/14/game-initialization/
+- date: '2024-09-09'
+  title: 정기 작업이 꼭 배치 형태여야 하는가(20240909)
+  url: /2024/09/09/does-scheduled-job-have-to-be-batch/
 2025-09-26-api-specification:
 - date: '2025-09-26'
   title: api-spec-notion-format
@@ -4330,21 +4025,18 @@
   title: 20250922 scrum
   url: /2025/09/22/20250922 scrum/
 - date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
-- date: '2025-11-14'
   title: 집계 후 푸시 발송
   url: /2025/11/14/push-notification-after-aggregation/
 - date: '2025-11-14'
   title: 집계
   url: /2025/11/14/aggregation/
+- date: '2025-11-16'
+  title: 왜 서비스가 토스처럼 부드럽지 못할까
+  url: /2025/11/16/why-is-our-service-not-as-smooth-as-toss/
 2025-09-29-postgresql-partition-pk:
 - date: '2026-04-30'
   title: PostgreSQL 파티션 PK, 이제는 진짜 이해함
   url: /2026/04/30/postgresql-partition-pk-deep-dive/
-- date: '2024-03-04'
-  title: PostgreSQL
-  url: /2024/03/04/PostgreSQL/
 - date: '2024-10-22'
   title: JPA 복합 키 + JoinTable 응용
   url: /2024/10/22/jpa-composite-key-jointable/
@@ -4354,6 +4046,9 @@
 - date: '2025-03-29'
   title: Insert On Conflict(Upsert)는 과연 성능저하가 없을까?
   url: /2025/03/29/insert-on-conflict-upsert-performance-impact/
+- date: '2025-01-20'
+  title: 스프링부트 배치) 공통 메타 DB + Multiple DataSource(20250120)
+  url: /2025/01/20/spring-batch-common-meta-db-multiple-datasource/
 2025-10-10-unlucky-cqrs-pattern:
 - date: '2026-02-12'
   title: 공모주 메이트 2차 리팩토링
@@ -4374,9 +4069,6 @@
 - date: '2024-03-04'
   title: PostgreSQL 시퀀스 + 캐시 주의점
   url: /2024/03/04/postgresql-sequence-cache-caution/
-- date: '2024-03-04'
-  title: PostgreSQL
-  url: /2024/03/04/PostgreSQL/
 - date: '2024-04-29'
   title: 리팩토링1차(20240430)
   url: /2024/04/29/refactoring-1st-phase-20240430/
@@ -4386,23 +4078,9 @@
 - date: '2025-09-08'
   title: 'Java Committed Memory 부제 : 메모리가 왜 계속 증가함?'
   url: /2025/09/08/java-committed-memory-increase-investigation/
-2025-10-16-spring-reactive-redis-repo-implementation:
-- date: '2026-06-15'
-  title: Spring Boot(r2dbc) 업그레이드했더니 OTel 계측 비호환으로 ClassCastException 터진 이야기
-  url: /2026/06/15/otel-upgrade-classcastexception/
-- date: '2024-05-18'
-  title: Spring Cloud Config-Server + Spring Security (Basic Auth) 정리(Bootstrap 사용
-    안함)
-  url: /2024/05/18/spring-cloud-config-server-spring-security-basic-auth/
-- date: '2023-10-08'
-  title: Spring Batch 5.0.1(Spring 3.1.3)
-  url: /2023/10/08/Spring Batch 5.0.1(Spring 3.1.3)/
-- date: '2023-10-27'
-  title: Spring Batch + Cursor Based ItemReader 이슈
-  url: /2023/10/27/spring-batch-cursor-based-itemreader-issue/
-- date: '2025-02-19'
-  title: CI - Gradle&Sonar Pipeline 버전 업그레이드
-  url: /2025/02/19/ci-gradle-sonar-pipeline-version-upgrade/
+- date: '2025-05-30'
+  title: Redis 활용 이력 적재 RateLimit
+  url: /2025/05/30/redis-history-ingestion-rate-limit/
 2025-10-20-h100-qwen-load-test:
 - date: '2024-12-02'
   title: mediation 도입기 - 높은 부하 상황에서 자원 사용량
@@ -4442,15 +4120,15 @@
 - date: '2024-10-10'
   title: 리팩토링 2차 (20240910)
   url: /2024/10/10/refactoring-2nd-phase-20240910/
-- date: '2025-09-19'
-  title: 주간 투자왕
-  url: /2025/09/19/weekly-investment-king/
 - date: '2024-10-12'
   title: 주관사, 공동 주관사 문제
   url: /2024/10/12/ipo-lead-underwriter-joint-underwriter-issue/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
+- date: '2024-02-21'
+  title: 화면 명세(회의전 기획안)
+  url: /2024/02/21/screen-spec-pre-meeting/
+- date: '2023-07-01'
+  title: 공모주 청약 계산기 알고리즘 뻘짓
+  url: /2023/07/01/ipo-subscription-algorithm/
 2025-10-31-letter-to-business-managers-eda:
 - date: '2024-10-10'
   title: mediation 패턴 도입기 - 짬통은 어디에?
@@ -4471,34 +4149,18 @@
 - date: '2025-12-04'
   title: '**Building the Future Trading Platform leveraging AI and AWS**'
   url: /2025/12/04/Building the Future Trading Platform leveraging AI and AWS/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2025-02-20'
   title: api 분석
   url: /2025/02/20/api-analysis/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
 - date: '2024-06-11'
   title: 투자온도(구 공포탐욕지수)
   url: /2024/06/11/investment-temperature-fear-greed-index/
-2025-11-14-Batch:
-- date: '2025-11-14'
-  title: 집계 후 푸시 발송
-  url: /2025/11/14/push-notification-after-aggregation/
-- date: '2025-11-14'
-  title: 집계
-  url: /2025/11/14/aggregation/
-- date: '2025-11-14'
-  title: 게임 초기화
-  url: /2025/11/14/game-initialization/
-- date: '2025-11-16'
-  title: 왜 서비스가 토스처럼 부드럽지 못할까
-  url: /2025/11/16/why-is-our-service-not-as-smooth-as-toss/
+- date: '2025-02-17'
+  title: OpenDart - 전문투자자 대상 선별 방법
+  url: /2025/02/17/opendart-professional-investor-selection/
 - date: '2024-10-12'
-  title: 공모주 데이터의 지속적인 에러
-  url: /2024/10/12/ipo-data-persistent-errors/
+  title: 주관사, 공동 주관사 문제
+  url: /2024/10/12/ipo-lead-underwriter-joint-underwriter-issue/
 2025-11-14-aggregation:
 - date: '2025-09-22'
   title: 20250922 scrum
@@ -4509,12 +4171,12 @@
 - date: '2025-11-14'
   title: 집계 후 푸시 발송
   url: /2025/11/14/push-notification-after-aggregation/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
 - date: '2025-09-26'
   title: api명세
   url: /2025/09/26/api-specification/
+- date: '2024-04-15'
+  title: 권리변동에 따른 데이터 보정 필요
+  url: /2024/04/15/data-correction-for-rights-change/
 2025-11-14-cash-reward-expiry-warning-batch:
 - date: '2024-01-08'
   title: 금융규제 샌드박스
@@ -4528,9 +4190,9 @@
 - date: '2024-10-12'
   title: 파일 수신 시점 문제(대고객 인지 늦음)
   url: /2024/10/12/file-reception-timing-delay-issue/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
+- date: '2025-08-19'
+  title: 2025 금융권 공동채용 박람회
+  url: /2025/08/19/2025-financial-sector-job-fair/
 2025-11-14-game-initialization:
 - date: '2025-11-14'
   title: 집계 후 푸시 발송
@@ -4544,9 +4206,9 @@
 - date: '2025-11-16'
   title: 왜 서비스가 토스처럼 부드럽지 못할까
   url: /2025/11/16/why-is-our-service-not-as-smooth-as-toss/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
+- date: '2024-01-17'
+  title: 수신 캐시백 지급프로세스 트랜잭션
+  url: /2024/01/17/deposit-cashback-payment-transaction/
 2025-11-14-mgm-processing-discussion:
 - date: '2025-10-31'
   title: 채널 연동 관련 끄적
@@ -4554,15 +4216,15 @@
 - date: '2024-01-17'
   title: 수신 캐시백 지급프로세스 트랜잭션
   url: /2024/01/17/deposit-cashback-payment-transaction/
-- date: '2025-09-19'
-  title: 주간 투자왕
-  url: /2025/09/19/weekly-investment-king/
 - date: '2025-11-16'
   title: 왜 서비스가 토스처럼 부드럽지 못할까
   url: /2025/11/16/why-is-our-service-not-as-smooth-as-toss/
+- date: '2024-02-21'
+  title: 화면 명세(회의전 기획안)
+  url: /2024/02/21/screen-spec-pre-meeting/
 - date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
+  title: 게임 초기화
+  url: /2025/11/14/game-initialization/
 2025-11-14-push-notification-after-aggregation:
 - date: '2025-11-14'
   title: 게임 초기화
@@ -4573,12 +4235,12 @@
 - date: '2025-09-22'
   title: 20250922 scrum
   url: /2025/09/22/20250922 scrum/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
 - date: '2025-11-16'
   title: 왜 서비스가 토스처럼 부드럽지 못할까
   url: /2025/11/16/why-is-our-service-not-as-smooth-as-toss/
+- date: '2025-09-26'
+  title: api명세
+  url: /2025/09/26/api-specification/
 2025-11-16-why-is-our-service-not-as-smooth-as-toss:
 - date: '2025-11-14'
   title: 게임 초기화
@@ -4586,22 +4248,19 @@
 - date: '2025-11-14'
   title: 집계 후 푸시 발송
   url: /2025/11/14/push-notification-after-aggregation/
-- date: '2025-11-14'
-  title: Batch
-  url: /2025/11/14/Batch/
 - date: '2025-09-26'
   title: api명세
   url: /2025/09/26/api-specification/
 - date: '2025-11-14'
   title: MGM 처리관련 논의
   url: /2025/11/14/mgm-processing-discussion/
+- date: '2025-05-30'
+  title: 개인화정보 캐싱 전략
+  url: /2025/05/30/personalized-info-caching-strategy/
 2025-11-30-AWS Reinvent Las Vegas(2025):
 - date: '2025-12-01'
   title: Optimizing agentic aI apps with semantic caching in Amazon ElastiCache
   url: /2025/12/01/Optimizing agentic aI apps with semantic caching in Amazon ElastiCache/
-- date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
 - date: '2025-12-03'
   title: '**Advanced data modeling for Amazon ElastiCache **'
   url: /2025/12/03/Advanced data modeling for Amazon ElastiCache/
@@ -4611,13 +4270,13 @@
 - date: '2025-12-04'
   title: 'Mastering Fluent-bit: Performance at Scale'
   url: /2025/12/04/Mastering Fluent-bit Performance at Scale/
+- date: '2025-12-04'
+  title: '**Building the Future Trading Platform leveraging AI and AWS**'
+  url: /2025/12/04/Building the Future Trading Platform leveraging AI and AWS/
 2025-12-01-Behind the scenes How AWS drives operational excellence & reliability:
 - date: '2025-12-03'
   title: '**Building on AWS resilience: Innovations for critical success**'
   url: /2025/12/03/Building on AWS resilience Innovations for critical success/
-- date: '2025-12-04'
-  title: '**Building resilient deployment pipelines with Amazon ECS**'
-  url: /2025/12/04/Building resilient deployment pipelines with Amazon ECS/
 - date: '2025-11-30'
   title: AWS Reinvent Las Vegas(2025)
   url: /2025/11/30/AWS Reinvent Las Vegas(2025)/
@@ -4627,6 +4286,9 @@
 - date: '2025-07-16'
   title: Jflow - Control M AWS 연동
   url: /2025/07/16/jflow-control-m-aws-integration/
+- date: '2025-12-04'
+  title: '**Building the Future Trading Platform leveraging AI and AWS**'
+  url: /2025/12/04/Building the Future Trading Platform leveraging AI and AWS/
 2025-12-01-Evaluating architectural trade-offs Cloud patterns for flexibility:
 - date: '2025-12-04'
   title: '**Lambda Managed Instances: EC2 Power with Serverless Simplicity**'
@@ -4657,8 +4319,8 @@
   title: 'Mastering Fluent-bit: Performance at Scale'
   url: /2025/12/04/Mastering Fluent-bit Performance at Scale/
 - date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
+  title: '**Low-cost logging and observability with Amazon OpenSearch Service**'
+  url: /2025/12/02/Low-cost logging and observability with Amazon OpenSearch Service/
 2025-12-01-Supercharge Lambda functions for security and performance:
 - date: '2025-12-04'
   title: '**Lambda Managed Instances: EC2 Power with Serverless Simplicity**'
@@ -4685,12 +4347,12 @@
 - date: '2026-01-02'
   title: Postgresql CDC + Debezium + kafka 사용 EDA > transactional outbox 패턴
   url: /2026/01/02/postgresql-cdc-debezium-kafka-eda-transactional-outbox/
-- date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
 - date: '2025-12-03'
   title: '**Advanced data modeling for Amazon ElastiCache **'
   url: /2025/12/03/Advanced data modeling for Amazon ElastiCache/
+- date: '2024-10-12'
+  title: 스테이징 DB 장애(용량 부족)
+  url: /2024/10/12/staging-db-outage-disk-full/
 2025-12-02-Developing Unit Cost Metrics with Cloud Intelligence Dashboards:
 - date: '2025-12-04'
   title: '**Building the Future Trading Platform leveraging AI and AWS**'
@@ -4704,25 +4366,25 @@
 - date: '2025-12-01'
   title: 'Evaluating architectural trade-offs: Cloud patterns for flexibility'
   url: /2025/12/01/Evaluating architectural trade-offs Cloud patterns for flexibility/
-- date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
+- date: '2023-06-27'
+  title: POC회의록(20230627)
+  url: /2023/06/27/poc-meeting-notes-20230627/
 2025-12-02-Inference on AWS Trainium and Amazon EKS using vLLM:
 - date: '2025-12-03'
   title: '**Advanced data modeling for Amazon ElastiCache **'
   url: /2025/12/03/Advanced data modeling for Amazon ElastiCache/
-- date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
 - date: '2025-12-04'
   title: '**Lambda Managed Instances: EC2 Power with Serverless Simplicity**'
   url: /2025/12/04/Lambda Managed Instances EC2 Power with Serverless Simplicity/
-- date: '2025-12-04'
-  title: '**Building resilient deployment pipelines with Amazon ECS**'
-  url: /2025/12/04/Building resilient deployment pipelines with Amazon ECS/
 - date: '2025-11-30'
   title: AWS Reinvent Las Vegas(2025)
   url: /2025/11/30/AWS Reinvent Las Vegas(2025)/
+- date: '2025-01-22'
+  title: 202412) 현재 상황에서는 Reactor, 중기적으로는 VThread, 장기적으로는 둘다?
+  url: /2025/01/22/reactor-now-vthread-mid-term-both-long-term/
+- date: '2025-07-16'
+  title: Jflow - Control M AWS 연동
+  url: /2025/07/16/jflow-control-m-aws-integration/
 2025-12-02-Low-cost logging and observability with Amazon OpenSearch Service:
 - date: '2025-12-03'
   title: '**Advanced data modeling for Amazon ElastiCache **'
@@ -4739,29 +4401,10 @@
 - date: '2025-01-28'
   title: 아키텍쳐협의회 회의록(20241219)
   url: /2025/01/28/architecture-council-meeting-notes-20241219/
-2025-12-02-Vibe data modeling with Amazon DynamoDB:
-- date: '2025-11-30'
-  title: AWS Reinvent Las Vegas(2025)
-  url: /2025/11/30/AWS Reinvent Las Vegas(2025)/
-- date: '2025-12-03'
-  title: '**Advanced data modeling for Amazon ElastiCache **'
-  url: /2025/12/03/Advanced data modeling for Amazon ElastiCache/
-- date: '2025-12-02'
-  title: '**Inference on AWS Trainium and Amazon EKS using vLLM**'
-  url: /2025/12/02/Inference on AWS Trainium and Amazon EKS using vLLM/
-- date: '2025-12-01'
-  title: Optimizing agentic aI apps with semantic caching in Amazon ElastiCache
-  url: /2025/12/01/Optimizing agentic aI apps with semantic caching in Amazon ElastiCache/
-- date: '2025-12-04'
-  title: '**Building resilient deployment pipelines with Amazon ECS**'
-  url: /2025/12/04/Building resilient deployment pipelines with Amazon ECS/
 2025-12-03-Advanced data modeling for Amazon ElastiCache:
 - date: '2025-12-01'
   title: Optimizing agentic aI apps with semantic caching in Amazon ElastiCache
   url: /2025/12/01/Optimizing agentic aI apps with semantic caching in Amazon ElastiCache/
-- date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
 - date: '2025-11-30'
   title: AWS Reinvent Las Vegas(2025)
   url: /2025/11/30/AWS Reinvent Las Vegas(2025)/
@@ -4771,13 +4414,13 @@
 - date: '2025-12-02'
   title: '**Inference on AWS Trainium and Amazon EKS using vLLM**'
   url: /2025/12/02/Inference on AWS Trainium and Amazon EKS using vLLM/
+- date: '2025-12-02'
+  title: '**Low-cost logging and observability with Amazon OpenSearch Service**'
+  url: /2025/12/02/Low-cost logging and observability with Amazon OpenSearch Service/
 2025-12-03-Building on AWS resilience Innovations for critical success:
 - date: '2025-12-01'
   title: '**Behind the scenes: How AWS drives operational excellence & reliability**'
   url: /2025/12/01/Behind the scenes How AWS drives operational excellence & reliability/
-- date: '2025-12-04'
-  title: '**Building resilient deployment pipelines with Amazon ECS**'
-  url: /2025/12/04/Building resilient deployment pipelines with Amazon ECS/
 - date: '2025-12-04'
   title: '**Building the Future Trading Platform leveraging AI and AWS**'
   url: /2025/12/04/Building the Future Trading Platform leveraging AI and AWS/
@@ -4787,22 +4430,9 @@
 - date: '2025-12-01'
   title: 'Evaluating architectural trade-offs: Cloud patterns for flexibility'
   url: /2025/12/01/Evaluating architectural trade-offs Cloud patterns for flexibility/
-2025-12-04-Building resilient deployment pipelines with Amazon ECS:
-- date: '2025-12-03'
-  title: '**Building on AWS resilience: Innovations for critical success**'
-  url: /2025/12/03/Building on AWS resilience Innovations for critical success/
-- date: '2025-12-02'
-  title: '**Vibe data modeling with Amazon DynamoDB**'
-  url: /2025/12/02/Vibe data modeling with Amazon DynamoDB/
-- date: '2025-12-04'
-  title: '**Building the Future Trading Platform leveraging AI and AWS**'
-  url: /2025/12/04/Building the Future Trading Platform leveraging AI and AWS/
-- date: '2025-12-02'
-  title: '**Inference on AWS Trainium and Amazon EKS using vLLM**'
-  url: /2025/12/02/Inference on AWS Trainium and Amazon EKS using vLLM/
-- date: '2025-12-01'
-  title: '**Behind the scenes: How AWS drives operational excellence & reliability**'
-  url: /2025/12/01/Behind the scenes How AWS drives operational excellence & reliability/
+- date: '2025-11-30'
+  title: AWS Reinvent Las Vegas(2025)
+  url: /2025/11/30/AWS Reinvent Las Vegas(2025)/
 2025-12-04-Building the Future Trading Platform leveraging AI and AWS:
 - date: '2025-12-03'
   title: '**Advanced data modeling for Amazon ElastiCache **'
@@ -4964,21 +4594,21 @@
   title: 케이뱅크 MSA 전환을 위한 과제(IDC연동 및 패키지 구조)
   url: /2023/09/05/AA/
 2026-01-26-raptor-rag-disclosure-document-summarization:
-- date: '2025-04-29'
-  title: 비선형 처리기(AKA. AI)
-  url: /2025/04/29/nonlinear-processor-aka-ai/
-- date: '2025-04-30'
-  title: 주식서비스 RAG 파이프라인 구축
-  url: /2025/04/30/stock-service-rag-pipeline/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-03-12'
   title: MSA→EAI→OpenApi→두나무→OpenApi→EAI→MSA 데이터 수신 개발
   url: /2024/03/12/msa-eai-openapi-dunamu-data-reception/
 - date: '2024-09-11'
   title: 데이터 수신 pod에 KEDA 적용
   url: /2024/09/11/keda-on-data-reception-pod/
+- date: '2025-07-01'
+  title: 케이뱅크 AI 공모전 금상 후기 - RAG 파이프라인 + LangChain 챗봇
+  url: /2025/07/01/kbank-ai-contest-rag-langchain/
+- date: '2025-04-29'
+  title: 주식서비스 LANGRAPH
+  url: /2025/04/29/stock-service-langgraph/
+- date: '2025-06-18'
+  title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
+  url: /2025/06/18/ai-contest-2025-first-half-gold-prize/
 2026-02-12-ipo-mate-second-refactoring:
 - date: '2025-05-30'
   title: Redis 활용 이력 적재 RateLimit
@@ -4992,9 +4622,9 @@
 - date: '2024-03-04'
   title: PostgreSQL 시퀀스 + 캐시 주의점
   url: /2024/03/04/postgresql-sequence-cache-caution/
-- date: '2024-03-04'
-  title: PostgreSQL
-  url: /2024/03/04/PostgreSQL/
+- date: '2023-06-07'
+  title: 내부상품대분류관련
+  url: /2023/06/07/internal-product-category/
 2026-02-19-redis-pubsub-local-cache:
 - date: '2025-05-30'
   title: Redis 활용 이력 적재 RateLimit
@@ -5069,12 +4699,12 @@
 - date: '2026-07-07'
   title: 만 26세, 토허제 구역에서 아파트 산 이야기 (feat. 전세난민 위기 탈출)
   url: /2026/07/07/apartment-investment-story/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-09-09'
   title: 재무데이터 노출기준 정하기
   url: /2024/09/09/financial-data-exposure-criteria/
+- date: '2026-06-15'
+  title: 정부 정책으로 인해 전세난민이 될뻔한 썰
+  url: /2026/06/15/jonse-problem-with-government/
 2026-03-09-why-i-moved-from-notion-to-obsidian:
 - date: '2026-04-26'
   title: 하네스 엔지니어링 까지는 아니고 목줄 엔지니어링
@@ -5095,9 +4725,6 @@
 - date: '2026-03-20'
   title: MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유
   url: /2026/03/20/blog-ddd-refactoring-strategy/
-- date: '2024-02-21'
-  title: 비상장 주식 알림 서비스(두나무 제휴, ~ 202404)
-  url: /2024/02/21/unlisted-stock-alert-service-dunamu/
 - date: '2024-11-06'
   title: 20241208 정기 중단PM간 주식 업무 개선 마이그레이션사항(꽤큼)
   url: /2024/11/06/stock-service-migration-improvement-20241208/
@@ -5107,6 +4734,9 @@
 - date: '2026-03-29'
   title: Debezium CDC 연동 삽질기 - PostgreSQL + Kafka
   url: /2026/03/29/debezium-cdc-troubleshooting/
+- date: '2024-10-10'
+  title: STK업무 장애(DBA의 작업실수)
+  url: /2024/10/10/stk-service-outage-dba-mistake/
 2026-03-17-closed-network-eks-gitlab-ci-dns-lookup-issue:
 - date: '2024-01-26'
   title: 첫 GO 중 GitLab 이슈 (공모주 메이트)
@@ -5114,15 +4744,15 @@
 - date: '2025-01-27'
   title: Gradle 초기화 시점(settings.gradle → build.gradle)
   url: /2025/01/27/gradle-initialization-timing-settings-build/
-- date: '2024-10-11'
-  title: Kubernetes 노드 DNS 장애(20240920)
-  url: /2024/10/11/kubernetes-node-dns-failure-20240920/
 - date: '2023-10-27'
   title: Branch 전략 논의
   url: /2023/10/27/git-branch-strategy-discussion/
 - date: '2025-08-12'
   title: 'EKS Pod 배포 및 구동시 38080(server.port) already in use 발생: exec form'
   url: /2025/08/12/eks-pod-deploy-port-already-in-use-exec-form/
+- date: '2024-07-19'
+  title: Gradle Multi Module + Gitlab Submodule 도입기
+  url: /2024/07/19/gradle-multi-module-gitlab-submodule/
 2026-03-20-blog-ddd-refactoring-strategy:
 - date: '2026-03-16'
   title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
@@ -5272,9 +4902,6 @@
 - date: '2025-09-29'
   title: Postgresql 파티션 PK
   url: /2025/09/29/postgresql-partition-pk/
-- date: '2024-03-04'
-  title: PostgreSQL
-  url: /2024/03/04/PostgreSQL/
 - date: '2025-03-29'
   title: Insert On Conflict(Upsert)는 과연 성능저하가 없을까?
   url: /2025/03/29/insert-on-conflict-upsert-performance-impact/
@@ -5284,6 +4911,9 @@
 - date: '2024-08-20'
   title: 거래량 불일치
   url: /2024/08/20/trading-volume-inconsistency/
+- date: '2024-03-04'
+  title: PostgreSQL 시퀀스 + 캐시 주의점
+  url: /2024/03/04/postgresql-sequence-cache-caution/
 2026-05-10-blog-with-claude-code:
 - date: '2026-04-26'
   title: 하네스 엔지니어링 까지는 아니고 목줄 엔지니어링
@@ -5333,9 +4963,6 @@
   title: 금융규제 샌드박스
   url: /2024/01/08/financial-regulatory-sandbox/
 2026-06-15-otel-upgrade-classcastexception:
-- date: '2025-10-16'
-  title: Spring Reactive Redis Repo 구현
-  url: /2025/10/16/spring-reactive-redis-repo-implementation/
 - date: '2025-02-19'
   title: CI - Gradle&Sonar Pipeline 버전 업그레이드
   url: /2025/02/19/ci-gradle-sonar-pipeline-version-upgrade/
@@ -5349,10 +4976,10 @@
   title: Spring Cloud Config-Server + Spring Security (Basic Auth) 정리(Bootstrap 사용
     안함)
   url: /2024/05/18/spring-cloud-config-server-spring-security-basic-auth/
+- date: '2023-11-15'
+  title: 카드계 Bxm 자바8 로딩 하는방법(Spring Legacy 3, 부트아님)
+  url: /2023/11/15/card-bxm-java8-loading-spring-legacy/
 2026-06-25-http2-header-case-sensitivity:
-- date: '2024-10-12'
-  title: MCI <> api-gateway - 로깅 삽질기
-  url: /2024/10/12/mci-api-gateway-logging-troubleshooting/
 - date: '2025-08-25'
   title: RFC6570
   url: /2025/08/25/RFC6570/
@@ -5366,6 +4993,9 @@
   title: Spring Cloud Config-Server + Spring Security (Basic Auth) 정리(Bootstrap 사용
     안함)
   url: /2024/05/18/spring-cloud-config-server-spring-security-basic-auth/
+- date: '2024-10-14'
+  title: api-gateway netty - retry on post Fail
+  url: /2024/10/14/api-gateway netty - retry on post Fail/
 2026-07-07-apartment-investment-story:
 - date: '2024-10-20'
   title: 아파트 매수 후보지 선정 및 토지거래허가신청, 보금자리론 신청
