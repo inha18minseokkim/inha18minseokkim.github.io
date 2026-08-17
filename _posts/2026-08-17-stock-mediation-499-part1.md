@@ -17,7 +17,7 @@ Grafana Tempo 트레이스에 `499 connection prematurely closed BEFORE response
 
 - **1부 (이 글)**: idle 커넥션 이슈 → SCG 튜닝 → 코루틴 연쇄 취소 원인 아님
 - [**2부**]({% post_url 2026-08-17-stock-mediation-499-part2 %}): 재시도 계측 → 커넥션 풀 고갈 → Reactor Netty 내부 → 전부 아님
-- [**3부**]({% post_url 2026-08-17-stock-mediation-499-part3 %}): eBPF가 원인 → SCG에 재시도 추가 → 생긴 에러 → 결론
+- [**3부**]({% post_url 2026-08-17-stock-mediation-499-part3 %}): SCG 1초 설정 버그가 99% 원인 → eBPF 노이즈 → SCG에 재시도 추가 → 생긴 에러 → 결론
 
 ---
 

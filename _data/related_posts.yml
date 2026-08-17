@@ -1827,6 +1827,9 @@
 - date: '2024-10-10'
   title: STK업무 장애(DBA의 작업실수)
   url: /2024/10/10/stk-service-outage-dba-mistake/
+- date: '2026-08-17'
+  title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 여러 이슈들
+  url: /2026/08/17/stock-mediation-499-part2/
 - date: '2024-10-12'
   title: 파일 수신 시점 문제(대고객 인지 늦음)
   url: /2024/10/12/file-reception-timing-delay-issue/
@@ -1836,9 +1839,6 @@
 - date: '2024-02-21'
   title: 종목 단축코드
   url: /2024/02/21/stock-short-code/
-- date: '2024-10-12'
-  title: 스테이징 DB 장애(용량 부족)
-  url: /2024/10/12/staging-db-outage-disk-full/
 2024-06-11-investment-temperature-fear-greed-index:
 - date: '2025-05-07'
   title: 재무 데이터 처리
@@ -4510,9 +4510,9 @@
 - date: '2024-06-05'
   title: 환율 서비스 일시 장애(20240531)
   url: /2024/06/05/exchange-rate-service-outage-20240531/
-- date: '2026-02-19'
-  title: Redis pub/sub 활용해서 Local Cache 동기화 - 기본
-  url: /2026/02/19/redis-pubsub-local-cache/
+- date: '2026-08-17'
+  title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 여러 이슈들
+  url: /2026/08/17/stock-mediation-499-part2/
 2025-12-22-my-kids:
 - date: '2023-12-29'
   title: 밀리패스(프로젝트 캔슬됨 ㅜ)
@@ -5030,10 +5030,10 @@
   url: /2025/03/29/insert-on-conflict-upsert-performance-impact/
 2026-08-17-stock-mediation-499-part1:
 - date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 가설들의 무덤
+  title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 여러 이슈들
   url: /2026/08/17/stock-mediation-499-part2/
 - date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (3부) — eBPF가 범인이었다, 그리고 SCG 방어 확장 중 터진 버그
+  title: stock-mediation 499 트레이싱 일대기 (3부) — 두 가지 원인과 SCG 재시도 추가 중 생긴 에러
   url: /2026/08/17/stock-mediation-499-part3/
 - date: '2024-12-09'
   title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
@@ -5041,38 +5041,38 @@
 - date: '2024-11-30'
   title: mediation 패턴 도입기 - 케이뱅크 내부에서 webflux의 한계(20241130기준)
   url: /2024/11/30/mediation-webflux-limitations-in-kbank/
-- date: '2026-04-19'
-  title: Reactive 방식을 Virtual Thread에 그대로 적용해도 될까?
-  url: /2026/04/19/virtual-thread-reactive-migration/
+- date: '2024-12-02'
+  title: mediation 도입기 - 높은 부하 상황에서 자원 사용량
+  url: /2024/12/02/mediation-resource-usage-under-high-load/
 2026-08-17-stock-mediation-499-part2:
 - date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 가설에서 코루틴까지
-  url: /2026/08/17/stock-mediation-499-part1/
-- date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (3부) — eBPF가 범인이었다, 그리고 SCG 방어 확장 중 터진 버그
+  title: stock-mediation 499 트레이싱 일대기 (3부) — 두 가지 원인과 SCG 재시도 추가 중 생긴 에러
   url: /2026/08/17/stock-mediation-499-part3/
-- date: '2024-12-09'
-  title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
-  url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
+- date: '2026-08-17'
+  title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 이슈에서 코루틴까지
+  url: /2026/08/17/stock-mediation-499-part1/
 - date: '2024-06-05'
   title: 환율 서비스 일시 장애(20240531)
   url: /2024/06/05/exchange-rate-service-outage-20240531/
-- date: '2024-10-12'
-  title: 공모주 데이터의 지속적인 에러
-  url: /2024/10/12/ipo-data-persistent-errors/
+- date: '2024-12-09'
+  title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
+  url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
+- date: '2025-12-12'
+  title: DDONGLE) 메이플 서버 장애 후 롤백으로 보는 SAGA 패턴의 운영상 문제점
+  url: /2025/12/12/maplestory-saga-pattern/
 2026-08-17-stock-mediation-499-part3:
 - date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 가설들의 무덤
+  title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 여러 이슈들
   url: /2026/08/17/stock-mediation-499-part2/
 - date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 가설에서 코루틴까지
+  title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 이슈에서 코루틴까지
   url: /2026/08/17/stock-mediation-499-part1/
 - date: '2024-12-09'
   title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
   url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
-- date: '2024-04-22'
-  title: 메타 긴급반영건(컬럼 길이 변경)
-  url: /2024/04/22/emergency-meta-column-length-change/
 - date: '2025-12-12'
   title: DDONGLE) 메이플 서버 장애 후 롤백으로 보는 SAGA 패턴의 운영상 문제점
   url: /2025/12/12/maplestory-saga-pattern/
+- date: '2023-07-04'
+  title: 연합인포맥스 - 금감원 데이터 문제
+  url: /2023/07/04/ipo-yonhap-infomax-data-issue/

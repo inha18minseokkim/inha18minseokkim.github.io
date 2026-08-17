@@ -1,5 +1,5 @@
 ---
-title: stock-mediation 499 트레이싱 일대기 (3부) — eBPF가 원인이었다, 그리고 SCG 재시도 추가 중 생긴 에러
+title: stock-mediation 499 트레이싱 일대기 (3부) — 두 가지 원인과 SCG 재시도 추가 중 생긴 에러
 date: 2026-08-17
 tags:
   - Spring
@@ -11,11 +11,47 @@ category:
   - 실무경험
 ---
 
-[1부]({% post_url 2026-08-17-stock-mediation-499-part1 %}), [2부]({% post_url 2026-08-17-stock-mediation-499-part2 %})에서 이것저것 다 확인했는데 전부 아니었다. 이 글에서 진짜 원인을 확인하고, 그 이후에 한 SCG 재시도 추가 작업이랑 그 과정에서 생긴 에러까지 정리한다.
+[1부]({% post_url 2026-08-17-stock-mediation-499-part1 %}), [2부]({% post_url 2026-08-17-stock-mediation-499-part2 %})에서 이것저것 다 확인했는데 전부 아니었다. 이 글에서 진짜 원인들을 확인하고, 그 이후에 한 SCG 재시도 추가 작업이랑 그 과정에서 생긴 에러까지 정리한다.
+
+결론부터: **499는 두 케이스였다.**
+
+- **진짜 499**: SCG `server.netty.idle-timeout: 1s` 설정 버그. 전체 499 중 99%.
+- **eBPF 노이즈**: Reactor Netty 내부 재시도를 커널 레벨 계측이 못 봄. 실제 임팩트 없음.
 
 ---
 
-## 원인은 eBPF였다
+## 진짜 원인 — SCG server.netty.idle-timeout: 1s
+
+SCG 방어 작업을 하다가 기존 설정을 정리하는 중에 발견했다.
+
+`server.netty.idle-timeout`이 **1초**로 잡혀 있었다.
+
+1초 idle이면 실제 운영 트래픽에서 keep-alive 커넥션이 거의 항상 서버 쪽에서 끊기는 수준이다. 레거시 → SCG 구간에서 idle이 1초만 넘으면 SCG가 커넥션을 끊어버리고, 클라이언트는 이미 죽은 커넥션으로 요청을 보내게 됨 → premature close. 이게 Tempo에 499로 찍히는 주된 원인이었다.
+
+이 설정을 제거하고 httpclient 풀도 명시적으로 정리했다.
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 60000
+        response-timeout: 60000
+        pool:
+          max-connections: 500
+          max-idle-time: 45s
+          max-life-time: 50s
+          acquire-timeout: 5000
+          eviction-interval: 55s
+```
+
+배포 후 Tempo 499 건수가 확 줄었다. 실제로 에러가 났던 499들이 이게 원인이었다.
+
+---
+
+## 나머지 499 — eBPF 노이즈
+
+1초 설정 제거 이후에도 Tempo에 499가 간헐적으로 찍혔다. 건수가 훨씬 줄긴 했는데 완전히 사라지지는 않음.
 
 결정적 단서는 트레이스의 **리소스 속성**이었다. 클로드가 찾아줬는데 처음에 이게 뭔지 몰랐다.
 
@@ -27,20 +63,17 @@ telemetry.distro.name = opentelemetry-ebpf-instrumentation
 
 `opentelemetry-ebpf-instrumentation`(구 Grafana Beyla, 현재는 OpenTelemetry에 기증됨 — [공식 발표](https://grafana.com/blog/opentelemetry-ebpf-instrumentation-beyla-donation/))은 **JVM 애플리케이션 코드를 전혀 거치지 않고, 커널 레벨에서 실제 TCP 소켓 syscall(`connect`/`write`/`read`/`close`)을 eBPF 프로브로 직접 관측**해서 HTTP 트랜잭션을 재구성하는 도구다. "애플리케이션 코드의 협조 없이(without any cooperation from the application itself)" 작동한다고 벤더 스스로 명시하고 있다.
 
-이게 지금까지의 모든 관측을 한 방에 설명해준다.
-
 Reactor Netty는 풀에서 꺼낸 커넥션이 죽어있다는 걸 감지하면 **JVM 내부에서 조용히 새 커넥션으로 1회 재시도**한다(2부에서 바이트코드로 확인했던 그것). 애플리케이션 레이어에서는 결국 성공 → **최종 응답은 200**.
 
 eBPF는 이 전체 흐름에서 **"죽은 첫 번째 소켓"만 독립된 이벤트로 관측**한다. 그 소켓 위에서 요청은 나갔는데 응답 바이트를 하나도 못 받고 닫혔으니, nginx 컨벤션을 차용해서 **499를 합성해서 기록**한다. 소켓 #1(죽음)과 소켓 #2(재시도 성공)는 eBPF 입장에서 완전히 별개의 이벤트다 — 커널 소켓 레벨에선 JVM 내부에서 재시도로 복구됐다는 걸 알 방법이 없는 것.
 
 그래서:
 - 애플리케이션 로그에 안 남음 → JVM 내부에서 처리됨
-- Reactor Netty DEBUG 로그도 안 찍힘 → 실제로 라이브러리 내부에서 발동된 게 맞는데 eBPF는 커널 레벨이라 못 봄
 - 최종 응답 항상 200 → 재시도 성공
 - 특정 서비스 국한 없이 무차별적 → 커넥션 재사용은 모든 다운스트림에서 동일하게 발생
 - 499 항상 단독으로만 → 애플리케이션 레벨에선 에러가 없으니 희생자가 없는 게 당연
 
-**이 499는 실제 임팩트가 없다.** 코드 수정 대상이 아니라 알림/대시보드 쪽에서 "자식 span만 499, 최종 응답은 200"인 패턴을 별도 분류/제외하는 게 맞는 방향.
+**이 499는 실제 임팩트가 없다.** 알림/대시보드 쪽에서 "자식 span만 499, 최종 응답은 200"인 패턴을 별도 분류/제외하는 게 맞는 방향.
 
 클로드가 reactor-netty 이슈 트래커에서 비슷한 케이스들을 찾아줬는데, 전부 메인테이너가 "status/invalid"로 종료했다 — reactor-netty 자체 버그가 아니라 분산 시스템 커넥션 풀링에서 원래 그렇게 동작하는 것이라는 거 ([#1092](https://github.com/reactor/reactor-netty/issues/1092), [#1296](https://github.com/reactor/reactor-netty/issues/1296), [#1639](https://github.com/reactor/reactor-netty/issues/1639)).
 
@@ -48,7 +81,7 @@ eBPF는 이 전체 흐름에서 **"죽은 첫 번째 소켓"만 독립된 이벤
 
 ## SCG 단 방어 확장
 
-499 자체는 eBPF 노이즈로 결론 났지만, **레거시 → SCG → stock-mediation 전체 체인**에서도 같은 종류의 idle-timeout race가 원리상 똑같이 발생할 수 있어서 hop별로 방어를 맞추는 작업을 추가로 진행했다.
+원인을 잡은 김에 레거시 → SCG → stock-mediation 전체 체인에서도 같은 종류의 idle-timeout race가 원리상 똑같이 발생할 수 있어서 hop별로 방어를 맞추는 작업을 추가로 진행했다.
 
 ### 각 hop별 idle-timeout 정합
 
@@ -65,25 +98,6 @@ eBPF는 이 전체 흐름에서 **"죽은 첫 번째 소켓"만 독립된 이벤
 작업하면서 순서 버그를 하나 발견했다 — SCG 클라이언트 idle-time(45s)이 stock-mediation 서버 idle-timeout(당시 설정 자체 없음 → Reactor Netty 기본값)보다 길게 잡혀있던 역전 상태. SCG를 낮추는 대신 **stock-mediation 서버 쪽에 `server.netty.idle-timeout: 60s`를 새로 추가**해서 해결.
 
 그리고 `WebClientConfig.kt`의 `maxIdleTime`/`maxLifeTime`도 재조정했다. 2부에서 설정한 `20s`/`30s` 값이 문제가 있었음 — `maxLifeTime`이 `maxIdleTime`보다 짧으면 idle 여부와 무관하게 `maxLifeTime`에 먼저 걸려서 `maxIdleTime` 설정 자체를 무력화한다. **`maxIdleTime(40s)`, `maxLifeTime(90s)`로 최종 조정**.
-
-### SCG 자체 커넥션 풀 설정 정리
-
-SCG의 기존 설정에서 `server.netty.idle-timeout`이 **1초**로 잡혀있던 게 발견됐다. 제거하고 httpclient 풀을 명시적으로 정리.
-
-```yaml
-spring:
-  cloud:
-    gateway:
-      httpclient:
-        connect-timeout: 60000
-        response-timeout: 60000
-        pool:
-          max-connections: 500
-          max-idle-time: 45s
-          max-life-time: 50s
-          acquire-timeout: 5000
-          eviction-interval: 55s
-```
 
 ### SCG에 GET 요청 premature-close 1회 재시도 추가
 
@@ -155,14 +169,15 @@ class StockMediationRetryProperties(
 
 ## 최종 결론
 
-| 항목 | 내용 |
-|---|---|
-| **현상** | Tempo(eBPF 계측) 트레이스에 stock-mediation → 다운스트림 스팬이 간헐적으로 499 |
-| **원인** | eBPF 계측(`opentelemetry-ebpf-instrumentation`) — 커널 소켓 레벨 계측이라 JVM 내부 커넥션 재시도를 못 봄 |
-| **실제 임팩트** | 없음. 모든 케이스에서 stock-mediation 최종 응답은 200, 앱 로그에도 에러 없음 |
-| **진짜 문제** | 커넥션 풀 고갈(`pending acquire queue has reached its maximum size`) — `WebClientConfig.kt` `maxConnections`/`pendingAcquireMaxCount`/`pendingAcquireTimeout`/`maxLifeTime` 명시적 설정으로 수정 완료 |
-| **대응 방향** | 알림/대시보드에서 "자식 span만 499, 최종 응답은 200" 패턴을 별도 분류/제외 |
-| **추가 방어** | 레거시→SCG→stock-mediation 전체 체인 hop별 idle-timeout 정합, SCG에 GET premature-close 1회 재시도 추가 |
+| | 진짜 499 (99%) | eBPF 노이즈 (나머지) |
+|---|---|---|
+| **원인** | SCG `server.netty.idle-timeout: 1s` 설정 버그 | `opentelemetry-ebpf-instrumentation` — 커널 소켓 레벨이라 JVM 내부 재시도를 못 봄 |
+| **실제 임팩트** | 있음. 실제 premature close 에러 발생 | 없음. stock-mediation 최종 응답은 200, 앱 로그에도 에러 없음 |
+| **해결** | `server.netty.idle-timeout` 제거 | 알림/대시보드에서 "자식 span만 499, 최종 응답은 200" 패턴 분류/제외 |
+
+중간에 발견한 커넥션 풀 고갈(`pending acquire queue has reached its maximum size`)도 진짜 문제였다 — `WebClientConfig.kt` `maxConnections`/`pendingAcquireMaxCount`/`pendingAcquireTimeout`/`maxLifeTime` 명시적 설정으로 수정 완료 (2부).
+
+**추가 방어**: 레거시→SCG→stock-mediation 전체 체인 hop별 idle-timeout 정합, SCG에 GET premature-close 1회 재시도 추가.
 
 ## 원복된 변경
 
@@ -170,4 +185,4 @@ class StockMediationRetryProperties(
 
 ---
 
-이 499를 처음 봤을 때 뭔가 심각한 버그겠지 싶었는데 결국 eBPF가 원래 그렇게 보이는 것이었다는 것.. eBPF 기반 auto-instrumentation 쓰는 환경이라면 커넥션 재사용 재시도가 일어나는 스택에서는 이런 현상이 항상 나올 수 있다는 걸 알고 있어야 할 것 같다.
+처음에 Tempo에 499가 찍혔을 때 뭔가 심각한 버그겠지 했는데, 결론은 설정 버그 하나(1초 idle-timeout)랑 eBPF가 원래 그렇게 보이는 것 두 개였다. eBPF 기반 auto-instrumentation 쓰는 환경이라면 커넥션 재사용 재시도가 일어나는 스택에서는 이런 현상이 항상 나올 수 있다는 걸 알고 있어야 할 것 같다.
