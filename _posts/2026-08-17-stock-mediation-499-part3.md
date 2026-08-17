@@ -24,7 +24,7 @@ category:
 
 SCG 방어 작업을 하다가 기존 설정을 정리하는 중에 발견했다.
 
-`server.netty.idle-timeout`이 **1초**로 잡혀 있었다.
+`server.netty.idle-timeout`이 **1초**로 잡혀 있었다. ~~(MSA 처음 전환할때부터 있던 코드였는데 당연히 누가 이유가 있어서 그랬겠거니 했는데 이게 문제였다...)~~
 
 1초 idle이면 실제 운영 트래픽에서 keep-alive 커넥션이 거의 항상 서버 쪽에서 끊기는 수준이다. 레거시 → SCG 구간에서 idle이 1초만 넘으면 SCG가 커넥션을 끊어버리고, 클라이언트는 이미 죽은 커넥션으로 요청을 보내게 됨 → premature close. 이게 Tempo에 499로 찍히는 주된 원인이었다.
 
