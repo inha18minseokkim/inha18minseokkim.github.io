@@ -20,8 +20,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 POSTS_DIR = Path("_posts")
 OUTPUT_FILE = Path("_data/related_posts.yml")
-MODEL_NAME = "paraphrase-multilingual-mpnet-base-v2"
-SEARCH_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
+BASE_MODEL_NAME = "paraphrase-multilingual-mpnet-base-v2"
+FINETUNED_MODEL_DIR = Path("models/finetuned-embedding")
+# 검색 모델은 브라우저(_layouts/default.html SEARCH_MODEL)와 반드시 동일해야 한다
+SEARCH_MODEL_NAME = "paraphrase-multilingual-mpnet-base-v2"
 SEARCH_OUTPUT_FILE = Path("assets/search/embeddings.json")
 TOP_K = 5
 MAX_BODY_CHARS = 1000
@@ -93,8 +95,14 @@ def main():
     device = "mps" if torch.backends.mps.is_available() else "cpu"
     print(f"디바이스: {device}")
 
-    print(f"모델 로드 중: {MODEL_NAME}")
-    model = SentenceTransformer(MODEL_NAME, device=device)
+    if FINETUNED_MODEL_DIR.exists():
+        model_path = str(FINETUNED_MODEL_DIR)
+        print(f"파인튜닝 모델 로드: {model_path}")
+    else:
+        model_path = BASE_MODEL_NAME
+        print(f"기본 모델 로드: {model_path}")
+        print("  (파인튜닝하려면 python3 finetune_embedding.py 실행)")
+    model = SentenceTransformer(model_path, device=device)
 
     print("임베딩 생성 중...")
     texts = [p["text"] for p in posts]
