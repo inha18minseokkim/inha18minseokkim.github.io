@@ -23,7 +23,8 @@ OUTPUT_FILE = Path("_data/related_posts.yml")
 BASE_MODEL_NAME = "paraphrase-multilingual-mpnet-base-v2"
 FINETUNED_MODEL_DIR = Path("models/finetuned-embedding")
 # 검색 모델은 브라우저(_layouts/default.html SEARCH_MODEL)와 반드시 동일해야 한다
-SEARCH_MODEL_NAME = "paraphrase-multilingual-mpnet-base-v2"
+# MiniLM(117MB quantized)으로 유지 — mpnet(278MB)은 블로그 첫 방문자가 감당하기 과함
+SEARCH_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 SEARCH_OUTPUT_FILE = Path("assets/search/embeddings.json")
 TOP_K = 5
 MAX_BODY_CHARS = 1000
