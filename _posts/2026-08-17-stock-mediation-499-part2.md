@@ -33,11 +33,11 @@ category:
 [getList] pending acquire queue has reached its maximum size of 32
 ```
 
-Reactor Netty의 `PoolAcquirePendingLimitException` — **커넥션 풀 자체가 부족해서 대기열까지 꽉 찬 상황**이다. 499랑은 별도의 실제 에러고, 이것도 499를 만드는 원인 중 하나였다.
+Reactor Netty의 `PoolAcquirePendingLimitException` — **커넥션 풀 자체가 부족해서 대기열까지 꽉 찬 상황**이다. 499랑은 별개지만 모르고 있었던 이슈.
 
 원인을 추적했다. `WebClientConfig.kt`에서 `ConnectionProvider.builder(...)`에 `maxConnections`를 명시하지 않아서 Reactor Netty 기본값인 `Runtime.availableProcessors() * 2`를 쓰고 있었다. 그리고 이 기본값은 **다운스트림 host별로 적용**된다.
 
-k8s 환경에서 JVM이 파드의 CPU limit이 아니라 **노드 전체 코어 수**를 인식하는 경우가 흔한데, 그러면 이 기본값이 실제 동시 호출량 대비 지나치게 작거나 예측 불가능하게 잡힌다. 그리고 풀이 작으면 커넥션이 과도하게 재사용되면서 서버(Tomcat) 쪽의 `maxKeepAliveRequests`(요청 횟수 기반 keep-alive 한도)에 먼저 걸려서 서버가 끊을 수 있다. 이건 idle 시간과 **무관**하기 때문에 `maxIdleTime` 튜닝으로는 막을 수 없다 — 처음부터 가설이 틀렸던 거.
+k8s 환경에서 JVM이 파드의 CPU limit이 아니라 **노드 전체 코어 수**를 인식하는 경우가 흔한데, 그러면 이 기본값이 실제 동시 호출량 대비 지나치게 작거나 예측 불가능하게 잡힌다. 그리고 풀이 작으면 커넥션이 과도하게 재사용되면서 서버(Tomcat) 쪽의 `maxKeepAliveRequests`(요청 횟수 기반 keep-alive 한도)에 먼저 걸려서 서버가 끊을 수 있다. 이건 idle 시간과 **무관**하기 때문에 `maxIdleTime` 튜닝으로는 막을 수 없다 — 애초에 다른 종류의 문제였던 거.
 
 지금까지 이 이슈가 안 터진 건, 클라이언트 사이드 캐싱 요청도 있었고 서버사이드에서도 처리성 업무 제외하고 캐싱을 하고 있었어서 실제 동시 요청이 그렇게 많지 않았던 것. 부하가 좀 심한 상황이었으면 진작 터졌을 이슈.
 
@@ -99,7 +99,7 @@ logging:
 
 그러나 **`"Immediately aborted pooled channel, re-acquiring new channel"` 메시지는 한 번도 안 찍혔다.** 그 사이에도 Tempo 499는 계속 발생.
 
-원인이 아님. 기각.
+원인이 아니었다.
 
 ---
 
@@ -111,7 +111,7 @@ logging:
 
 추가로, 499가 찍히는 호출들이 대부분 말단 로직이라 그 호출에 종속된 하위 호출 자체가 없다는 것도 확인됐다. 연쇄 취소가 발생할 구조 자체가 없음.
 
-기각.
+아니었다.
 
 ---
 
@@ -123,7 +123,7 @@ logging:
 
 실제 관측 결과도 특정 캐시나 특정 서비스에 국한되지 않고, `stock-customer-service`, `overseas-stock-service` 등 **다양한 다운스트림에서 무차별적으로** 나타났다.
 
-기각.
+아니었다.
 
 ---
 

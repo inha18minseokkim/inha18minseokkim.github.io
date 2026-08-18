@@ -5033,7 +5033,7 @@
   title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 여러 이슈들
   url: /2026/08/17/stock-mediation-499-part2/
 - date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (3부) — 두 가지 원인과 SCG 재시도 추가 중 생긴 에러
+  title: stock-mediation 499 트레이싱 일대기 (3부) — 두 가지 원인과 SCG 재시도 추가
   url: /2026/08/17/stock-mediation-499-part3/
 - date: '2024-12-09'
   title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
@@ -5046,7 +5046,7 @@
   url: /2024/12/02/mediation-resource-usage-under-high-load/
 2026-08-17-stock-mediation-499-part2:
 - date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (3부) — 두 가지 원인과 SCG 재시도 추가 중 생긴 에러
+  title: stock-mediation 499 트레이싱 일대기 (3부) — 두 가지 원인과 SCG 재시도 추가
   url: /2026/08/17/stock-mediation-499-part3/
 - date: '2026-08-17'
   title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 이슈에서 코루틴까지
@@ -5070,9 +5070,9 @@
 - date: '2024-12-09'
   title: mediation 패턴 도입기 - Reactor에 대한 오해와 실수
   url: /2024/12/09/mediation-reactor-misconceptions-and-mistakes/
-- date: '2025-12-12'
-  title: DDONGLE) 메이플 서버 장애 후 롤백으로 보는 SAGA 패턴의 운영상 문제점
-  url: /2025/12/12/maplestory-saga-pattern/
-- date: '2023-07-04'
-  title: 연합인포맥스 - 금감원 데이터 문제
-  url: /2023/07/04/ipo-yonhap-infomax-data-issue/
+- date: '2025-01-22'
+  title: 202412) 현재 상황에서는 Reactor, 중기적으로는 VThread, 장기적으로는 둘다?
+  url: /2025/01/22/reactor-now-vthread-mid-term-both-long-term/
+- date: '2024-12-04'
+  title: mediation 패턴 도입기 - Reactor Non-blocking vs Multi Thread(virtual) 실험
+  url: /2024/12/04/mediation-reactor-nonblocking-vs-virtual-thread/
