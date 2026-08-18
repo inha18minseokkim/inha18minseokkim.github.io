@@ -30,7 +30,7 @@ java.lang.ClassCastException: class io.r2dbc.postgresql.PostgresqlConnection
 
 OTel Java Agent는 r2dbc랑 reactor를 계측할 때 **클래스 로딩 시점에 바이트코드를 변환**함. 근데 OTel 1.32.0의 계측 코드는 구버전 r2dbc/reactor 기준으로 짜여있었고, Spring Boot 업그레이드로 r2dbc-postgresql이랑 reactor 내부 API가 바뀌면서 OTel이 가로채던 지점 자체가 어긋나버림.
 
-구체적으로는 `ConnectionPool` 내부 스케줄러 콜백 연결 지점을 잘못 가로채면서, Connection 객체가 Scheduler 슬롯에 바인딩되는 상황이 만들어짐.
+`ConnectionPool` 내부 스케줄러 콜백 연결 지점을 잘못 가로채면서, Connection 객체가 Scheduler 슬롯에 바인딩되는 상황이 만들어짐.
 
 ```
 ConnectionPool.create()
@@ -41,9 +41,9 @@ ConnectionPool.create()
        → ClassCastException 발생
 ```
 
-에러 메시지에 r2dbc 클래스 이름이 나와서 처음엔 r2dbc 자체 문제인 줄 알았는데, 실제로 터진 위치는 reactor-pool 내부 scheduler 연결부였음. r2dbc 버그가 아니었던 거.
+에러 메시지에 r2dbc 클래스 이름이 나와서 r2dbc가 원인이겠지? 하고 봤는데, 실제로 터진 위치는 reactor-pool 내부 scheduler 연결부였음. r2dbc 버그가 아니었던 거.
 
-여기에 OTel export 실패(connection reset)까지 같이 발생하고 있으면 상황이 더 꼬임. export 실패 시 OTel 내부 span 종료 콜백이 예외를 던지고, 이 예외가 OTel이 심어놓은 reactor 훅을 타고 전파되면서 connection pool의 scheduler 처리 흐름에 섞여 들어감. 결국 두 문제가 겹쳐서 `PostgresqlConnection → Scheduler` cast 오류로 표면에 드러난 거였음.
+여기에 OTel export 실패(connection reset)까지 같이 발생하고 있으면 상황이 더 꼬임. export 실패 시 OTel 내부 span 종료 콜백이 예외를 던지고, 이 예외가 OTel이 심어놓은 reactor 훅을 타고 전파되면서 connection pool의 scheduler 처리 흐름에 섞여 들어감. 결국 두 문제가 겹쳐서 `PostgresqlConnection → Scheduler` cast 오류로 이렇게 튀어나온 거였음.
 
 ### 삽질한 것들
 
@@ -108,5 +108,6 @@ otelcol.receiver.otlp "default" {
 
 에이전트 버전 올릴 때 계측 대상 라이브러리 버전만 신경쓰지, export 프로토콜 기본값이 바뀌는 건 놓치기 쉬운 부분이라 따로 체크리스트에 넣어둬야겠음.
 
-SRE의 결론 중 하나는, 그래서 OTel Java Agent 갖다버리고 eBPF 기반 Beyla로 바꾼다고 한다. 애초에 애플리케이션 코드/클래스로더에 바이트코드 주입하는 방식 자체가 라이브러리 버전 올릴 때마다 이런 식으로 터질 여지를 계속 깔고 가는 거라, 커널 레벨에서 트래픽 잡는 쪽으로 가는 게 낫다고 판단한 듯. 관련 공부 해봐야할듯
-+ 이런식으로는 프로덕션에서 잘 안쓴다고 한다. 지금 otel이 @Observed로 쓰는것도 아니고 완전 인젝션되어서 내부에서 진행되는 자바 메서드 다 캐치해서 보내다보니 그라파나쪽 부하가 상당하다고 한다. 
+SRE는 이 이슈 계기로 OTel Java Agent 갖다버리고 eBPF 기반 Beyla로 갈아탄다고 한다. 애초에 애플리케이션 코드/클래스로더에 바이트코드 주입하는 방식 자체가 라이브러리 버전 올릴 때마다 이런 식으로 터질 여지를 계속 깔고 가는 거라, 커널 레벨에서 트래픽 잡는 쪽으로 가는 게 낫다고 판단한 듯.
+
+근데 이것도 결국 이런 식으로 프로덕션에서 쓰기엔 부담이 있긴 함. 지금 OTel이 `@Observed`로 쓰는 것도 아니고 완전 인젝션되어서 내부에서 진행되는 자바 메서드 다 캐치해서 보내다보니 그라파나쪽 부하가 상당하다고 한다. 관련 공부 해봐야할듯.
