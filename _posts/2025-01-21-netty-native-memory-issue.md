@@ -111,7 +111,7 @@ GC 가 구동되면 다음 순으로 정리함
 
 ### PhantomReference는 그럼 어떤 사이클을 타는거냐?
 
-다음시간에…
+다음시간에… → [Netty에서 PhantomReference 통한 GC](/2025/02/16/netty-phantom-reference-gc/)
 
 ### 그래서 왜 OutOfMemoryError가 났는가
 

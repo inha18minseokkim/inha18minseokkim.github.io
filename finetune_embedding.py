@@ -33,6 +33,23 @@ MAX_TAG_PAIRS = 3000  # 태그 공유 쌍 상한
 # 학습 데이터 마이닝에서 제외할 범용 태그 (너무 넓어서 의미 없는 쌍이 생김)
 GENERIC_TAGS = {"개발", "기술", "이슈정리", "삽질", "기타"}
 
+# 자동 마이닝으로 연결이 약한 시리즈/연관 포스팅을 명시적으로 지정
+# 코드 블록 위주 포스팅은 strip 후 텍스트가 적어 임베딩이 약해지는 문제를 보완
+MANUAL_SERIES: list[tuple[str, str]] = [
+    (
+        "2025-01-21-netty-native-memory-issue",
+        "2025-02-16-netty-phantom-reference-gc",
+    ),
+    (
+        "2025-01-21-netty-native-memory-issue",
+        "2025-09-08-java-committed-memory-increase-investigation",
+    ),
+    (
+        "2025-02-16-netty-phantom-reference-gc",
+        "2025-09-08-java-committed-memory-increase-investigation",
+    ),
+]
+
 
 def strip_markdown(text: str) -> str:
     text = re.sub(r"```[\s\S]*?```", "", text)
@@ -160,9 +177,24 @@ def mine_pairs(posts: list[dict]) -> list[tuple[str, str]]:
         pairs.append((posts[a]["summary"], posts[b]["summary"]))
         type_c += 1
 
+    # Type D: 수동 지정 시리즈 페어 (코드 위주 포스팅 임베딩 보완)
+    post_map = {p["key"]: p for p in posts}
+    type_d = 0
+    for key_a, key_b in MANUAL_SERIES:
+        pa, pb = post_map.get(key_a), post_map.get(key_b)
+        if not pa or not pb:
+            continue
+        # 제목↔제목, 요약↔요약, 본문↔본문 세 가지 표현으로 반복 학습
+        # body를 넉넉히 써야 코드 블록 위주 포스팅의 핵심 키워드가 학습에 반영됨
+        pairs.append((pa["title"], pb["title"]))
+        pairs.append((pa["summary"], pb["summary"]))
+        pairs.append((pa["body"][:1500], pb["body"][:1500]))
+        type_d += 3
+
     print(f"  Type A (제목→본문):    {type_a:4d}쌍")
     print(f"  Type B (섹션 구조):    {type_b:4d}쌍")
     print(f"  Type C (태그 공유):    {type_c:4d}쌍")
+    print(f"  Type D (수동 시리즈):  {type_d:4d}쌍")
 
     return pairs
 
