@@ -9,6 +9,8 @@ category:
 ---
 
 
+이전 글 → [Netty Native Memory 문제 (DirectBuffer OOM)](/2025/01/21/netty-native-memory-issue/)
+
 ### Java 객체의 참조를 간접적으로 유지, GC 받을때는 Notify 가능
 
 즉, ReferenceCount는 올라가지 않되 연결고리는 있음.

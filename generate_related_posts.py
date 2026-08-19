@@ -27,7 +27,7 @@ FINETUNED_MODEL_DIR = Path("models/finetuned-embedding")
 SEARCH_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 SEARCH_OUTPUT_FILE = Path("assets/search/embeddings.json")
 TOP_K = 5
-MAX_BODY_CHARS = 1000
+MAX_BODY_CHARS = 2000
 
 
 def strip_markdown(text: str) -> str:

@@ -53,4 +53,4 @@ JVM이 초기에 메모리를 할당해서 자바가 메모리를 런타임에 �
 ![이미지](/assets/images/Pasted%20image%2020260225084356.png)
 
 
-+) 요즘(이라고 해도 10년 넘음) 은 퍼포먼스를 향상시키기 위해 Native Memory를 사용하는 경우도 많다. 이런 경우 Off Heap, 즉 Heap 바깥 OS 의 메모리를 직접 사용해서 JVM 내부로의 데이터 이동 없이 레퍼런스만 바꿔버리는 식으로 처리하기도 함 ex) ehCache, Netty 등등..
++) 요즘(이라고 해도 10년 넘음) 은 퍼포먼스를 향상시키기 위해 Native Memory를 사용하는 경우도 많다. 이런 경우 Off Heap, 즉 Heap 바깥 OS 의 메모리를 직접 사용해서 JVM 내부로의 데이터 이동 없이 레퍼런스만 바꿔버리는 식으로 처리하기도 함 ex) ehCache, Netty 등등.. 실제로 Netty DirectBuffer OOM으로 터진 사례는 [여기](/2025/01/21/netty-native-memory-issue/)에 정리해뒀음.
