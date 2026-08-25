@@ -95,6 +95,8 @@ eBPF 입장에선 fd=17이랑 fd=23은 완전히 남남인 두 개의 독립된 
 
 기존 java agent에서 jar 주입을 통해 opentelemetry를 사용하는 경우에는 어플리케이션 함수 콜하는 레이어까지 다 알 수 있었지만, Beyla는 네트워크 IO만 볼 수 있기 때문에 기존처럼 완벽한 재구성이 안되는 것 같다.
 
+이게 Beyla(정확히는 이름 바뀐 opentelemetry-ebpf-instrumentation)라서 생기는 문제라기보단, **eBPF 기반 계측 방식 자체의 구조적인 문제**였던 거였다. 자바 쪽엔 바이트코드를 직접 조작하는 `opentelemetry-java-instrumentation`(그 `-javaagent`로 붙이는 agent)이 따로 있고, 여기엔 `netty-4.1`, `reactor-netty-1.0` 계측 모듈이 있어서 `retryWhen` 체인 안쪽까지 계측 대상이 된다고 한다. 이 방식이면 재시도 span을 애플리케이션이 스스로 알고 있는 상태에서 parent-child로 엮어낼 수 있으니까 지금 겪은 fd=17/fd=23 노이즈 자체가 안 생겼을 것. 결국 agent 기반(bytecode) vs eBPF 기반(syscall) 계측의 트레이드오프고, 언어 무관하게 코드 수정 없이 붙일 수 있다는 장점 대신 이런 애플리케이션 레벨 상관관계는 놓치는 셈인듯.
+
 ---
 
 ## Q4. 근데 그 설명대로면 재시도가 그만큼 자주 났을 텐데, DEBUG 로그는 왜 거의 안 남았나?
