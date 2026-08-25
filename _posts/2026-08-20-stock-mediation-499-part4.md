@@ -1,5 +1,5 @@
 ---
-title: stock-mediation 499 트레이싱 일대기 (4부) — Q&A: 커넥션 풀, idle-timeout 레이스, eBPF 관측
+title: stock-mediation 499 트레이싱 일대기 (4부) Q&A — 커넥션 풀, idle-timeout 레이스, eBPF 관측
 date: 2026-08-20
 tags:
   - Spring
