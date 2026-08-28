@@ -128,3 +128,19 @@ traceId=281a7c04cc196189591dd34eca4842d0,spanId=dc89c6a7ddf3c9b3  ← GlobalExce
 - 결론: 요청 진입 시점에 `Span.current()`를 딱 한 번 읽어서 CoroutineContext로 실어두면, 그 뒤로는 캡처/복원 없이 어디서든 안전하게 꺼내 씀 - KbankContext가 이미 쓰던 패턴 그대로
 
 같은 문제를 두고 "MDC를 억지로 채우는 법"을 찾다가 "애초에 MDC 말고 더 안전한 곳에 값을 실어두면 되지 않나"로 질문 자체가 바뀐 게 이번 편의 진짜 포인트인 것 같다. 처음부터 이렇게 짰으면 5부의 Proxy 삽질도 없었을 텐데.. 근데 그 삽질 없이 바로 이 결론에 도달했을 것 같지도 않고.
+
+## 그리고 며칠 뒤 — PR #5는 닫고 #7을 남기기로
+
+포스팅 올리고 며칠 지나서, 4~6부에서 다룬 OTel Context capture-restore 방식(PR #5)이랑 이번 편에서 새로 짠 CoroutineContext 방식(PR #7)을 나란히 놓고 "뭐가 더 낫다고 생각하냐"는 질문을 받았다. 실제 diff랑 커밋 히스토리까지 다시 열어보고 정리한 결론.
+
+**PR #5 (OTel Context capture-restore)**
+- 장점: Micrometer/OTel 표준 스택이라, 나중에 진짜 분산 트레이싱 백엔드(Zipkin/Tempo 등)에 span을 export하거나 span 트리·downstream latency 자동 계측이 필요해지면 그 투자를 그대로 이어갈 수 있다.
+- 단점: "자동 전파"라는 전제 자체가 실측으로 여러 번 깨졌다 — Reactor 시그널 사이 구간에서 MDC가 비는 문제(5부), `.timeout()` 재시도로 스케줄러가 `Schedulers.parallel()`로 넘어갈 때 `context-propagation:auto` 적용 대상에서 아예 빠지는 문제(6부 초반), `makeCurrent()`가 스코프 재부착 이벤트에 기대다가 스레드가 안 바뀐 경우엔 no-op으로 조용히 실패하는 문제(6부 후반). 커밋 7개 중 절반 가까이가 "안 찍히던 문제 수정"이었다 — 새 스케줄러 hop이 하나 더 생기면 또 같은 클래스의 버그가 날 수 있다는 게 구조적 리스크로 남는다.
+
+**PR #7 (CoroutineContext)**
+- 장점: suspend 함수 체인이라 컴파일러가 CoroutineContext 전달을 강제한다 — "전파가 빠지는 경로" 자체가 존재할 수 없다. 실측으로 버그를 찾아 패치한 이력이 없다(설계 자체가 그 클래스의 버그를 배제).
+- 단점: suspend 전파의 blast radius가 있다 — `WebClientManager`의 `*WithoutKbankContext` 3종, `EtfService`/`ListedStockService`/`OverseasStockService`의 `*ForJob()` 메서드, `ProductJob`/`PriceJob`까지 총 9개 파일을 건드려야 했고, 순수 Reactor 체인(`Flux.interval().flatMap{}`)과의 경계에서 `mono{}`/`awaitSingle()`로 다리를 놓다 보니 `ProductJob`/`PriceJob`의 실행 스케줄러가 `boundedElastic`에서 `Dispatchers.Default`로 바뀌는 부수효과도 생겼다(지금은 순수 non-blocking WebClient 호출뿐이라 무해하지만, 나중에 블로킹 코드가 들어가면 다시 봐야 함).
+
+지금 이 서비스가 필요한 건 "요청 하나에 대해 로그들이 같은 traceId로 묶이는 것"이지 진짜 분산 트레이싱 백엔드 연동은 아니라서, 정확성이 라이브러리의 자동전파 가정이 아니라 언어 차원에서 보장되는 PR #7 쪽에 손을 들어줬다. PR #5는 코멘트로 근거를 남기고 닫고, PR #7을 `master`에 머지했다.
+
+이 CoroutineContext 방식이 다음 편(stock-gateway)에서는 아예 못 쓰는 상황을 만나는데, 그 얘기는 [7부]({% post_url 2026-08-28-stock-mediation-499-part7 %})에서.

@@ -1,0 +1,125 @@
+---
+title: stock-mediation 499 트레이싱 일대기 (7부) — stock-gateway로 확장: CoroutineContext 대신 exchange
+date: 2026-08-28
+tags:
+  - Spring
+  - WebFlux
+  - Reactor
+  - Spring Cloud Gateway
+  - Kotlin
+  - OpenTelemetry
+  - 실무경험
+category:
+  - 실무경험
+---
+
+[6부]({% post_url 2026-08-26-stock-mediation-499-part6 %})에서 stock-mediation의 traceId/spanId 전파를 CoroutineContext 기반으로 다시 짜고, PR #7을 `master`에 머지했다. 다음 요청은 같은 로그 포맷을 `stock-gateway`에도 적용해달라는 것. 근데 gateway는 코루틴을 아예 안 쓰는 순수 Reactor(WebFlux + Spring Cloud Gateway) 앱이라, 6부에서 짠 CoroutineContext 방식을 그대로 옮겨 붙일 수가 없었다. 이번 편은 그 대안을 짜고, 실제로 붙이는 과정에서 나온 버그 세 개를 잡은 이야기.
+
+---
+
+## CoroutineContext를 못 쓰는 이유
+
+6부의 결론은 "요청 진입 시점에 `Span.current()`를 한 번 읽어서 CoroutineContext로 실어두면, 그 뒤로는 캡처/복원 없이 어디서든 안전하게 꺼내 쓴다"였다. 이게 되는 이유는 `suspend fun` 체인을 컴파일러가 강제하기 때문이다 — `CoroutineContext`는 `Continuation` 객체 자체가 들고 다니는 구조라, 스레드가 몇 번을 넘어가든 재부착 없이 안전하다.
+
+그런데 gateway 코드베이스를 열어보니 `suspend` 키워드가 단 하나도 없었다. `WebFilter.filter()`도, `GatewayFilter.filter()`도 전부 `Mono<Void>`를 반환하는 순수 Reactor 인터페이스 메서드다. CoroutineContext는 코루틴 빌더(`launch`, `async`, suspend 함수 체인) 없이는 애초에 존재하지 않는 개념이라, "여기에 값을 실어두자"고 할 대상 자체가 없다. mediation의 문제가 "CoroutineContext는 있는데 그 값이 전파 도중에 깨진다"였다면, gateway의 문제는 "CoroutineContext 자체가 없다"로 완전히 다른 층위였다.
+
+그럼 mediation이 5~6부에서 겪었던 것처럼 Reactor Context 자동전파(`spring.reactor.context-propagation: auto`)에 기대는 방식으로 가면 되지 않냐 싶었는데, 이것도 안 맞았다. gateway는 mediation보다 스케줄러가 바뀌는 지점(hop)이 오히려 더 많다:
+
+- `LoggingWebFilter`의 요청/응답 바디 캡처가 `.publishOn(Schedulers.boundedElastic())`을 씀
+- 라우트에 `.modifyRequestBody`/`.modifyResponseBody`가 각자 독립적인 디코딩 경로를 탐
+- (이 시점엔 아직 있었던) GET premature-close 재시도용 `.retry()`
+
+mediation의 PR #5가 "자동 전파는 새 hop을 만날 때마다 실측으로 빈 값을 찾아 패치해야 한다"는 걸 이미 세 번이나 증명했는데(6부), gateway에서 그 방식을 또 쓰면 같은 클래스의 버그를 더 자주 겪을 게 뻔했다.
+
+## 그래서 택한 방식: ServerWebExchange attribute
+
+gateway 코드를 실제로 보면, 로그를 남기는 지점이 전부 `ServerWebExchange`를 이미 파라미터로 들고 있었다 — `LoggingWebFilter.filter(exchange, chain)`, `LogService.saveTransactionLog(body, exchange)`, `ApiGatewayConfig`의 `getModifiedRequestBody`/`getModifiedResponseBody(exchange, ...)`. 그래서 traceId/spanId를 CoroutineContext 대신 `exchange`의 attribute에 담아두고, 로그를 남기는 모든 지점이 그 `exchange`에서 명시적으로 꺼내 쓰는 방식으로 갔다.
+
+```kotlin
+@Component
+class TraceContextFilter : WebFilter {
+    override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
+        val spanContext = Span.current().spanContext
+        if (spanContext.isValid) {
+            exchange.attributes[TRACE_INFO_ATTR] = TraceInfo(spanContext.traceId, spanContext.spanId)
+        }
+        return chain.filter(exchange)
+    }
+}
+```
+
+당시엔 `ApiGatewayConfig`에 이미 비슷한 선례가 있었다 — GET premature-close 재시도(`.retry()`) 때문에 생긴 `ORIGINAL_REQUEST_BODY_ATTR`가 `.mutate()`/`.retry()`를 거쳐도 살아남는 걸로 검증돼 있었다(그 코드는 이후 retry 로직 자체를 되돌리면서 같이 사라졌지만, "exchange attribute는 `ServerWebExchange.mutate()`의 표준 동작상 원본 delegate의 attribute map을 공유한다"는 원리 자체는 프레임워크 계약이라 여전히 유효하다).
+
+## CoroutineContext vs exchange attribute, 뭐가 다른가
+
+둘 다 "스레드가 바뀌어도 값이 안 깨진다"는 결과는 같은데, 그 보장이 나오는 층위가 완전히 다르다.
+
+**CoroutineContext**는 값이 `Continuation` 객체를 타고 흐른다. suspend 함수를 호출하는 순간 컴파일러가 CPS(continuation-passing style) 변환을 해주기 때문에, 어느 스레드/디스패처에서 재개되든 그 값은 항상 같이 붙어 있다. "이 함수가 CoroutineContext를 볼 수 있느냐"는 컴파일 타임에 `suspend` 키워드로 강제된다 — 실수로 빠뜨리면 컴파일이 안 된다.
+
+**exchange attribute**는 값이 `ServerWebExchange` 객체 하나의 `Map<String, Object>`에 들어있고, 그 객체 참조가 WebFilter/GatewayFilter 체인 전체를 프레임워크 계약에 따라 관통해서 넘어간다. 스레드가 몇 번을 넘어가든 상관없는 이유가 애초에 스레드 얘기가 아니기 때문이다 — "이 코드가 `exchange`를 들고 있느냐"의 문제일 뿐이고, WebFlux/SCG 필터 체인에 참여하는 코드는 설계상 전부 `exchange`를 들고 있다. 대신 이건 컴파일러가 강제해주는 게 아니라, "로그를 남기려는 지점이 실제로 `exchange` 파라미터를 받고 있느냐"를 사람이 챙겨야 한다 — 이번에 발견한 버그들 중 하나가 정확히 이 지점(뒤에서 다룸)에서 났다.
+
+정리하면: CoroutineContext는 "언어가 보장하는 전파", exchange attribute는 "프레임워크 계약이 보장하는 참조 공유". 코루틴이 없는 앱에서는 후자가 유일한 선택지였는데, 결과적으로 mediation이 5~6부 내내 겪은 "자동 전파의 암묵적 가정이 깨지는" 클래스의 버그 자체가 발생할 수 없는 설계이기도 했다.
+
+## 실제로 붙이면서 잡은 버그 세 개
+
+설계까지는 깔끔했는데, 실제로 붙여서 테스트해보니 세 가지가 순서대로 터졌다.
+
+### 1. traceId/spanId가 항상 비어있었음
+
+가장 먼저 나온 리포트는 "gateway 로그엔 traceId/spanId가 아예 안 찍히는데 mediation은 잘 찍힌다"였다. 원인은 `TraceContextFilter`에 준 `@Order(Ordered.HIGHEST_PRECEDENCE)`였다. Spring Boot Actuator가 `micrometer-tracing-bridge-otel` + `spring-boot-starter-actuator` 조합만 있으면(OTel javaagent 없이도) 자동 등록하는 tracing용 WebFilter가 요청마다 span을 만드는데, 내가 `TraceContextFilter`를 억지로 제일 먼저 실행시키는 바람에 그 tracing 필터보다 먼저 돌면서 아직 만들어지지도 않은 span을 읽고 있었다.
+
+mediation의 `TraceContextFilter.kt`를 다시 보니 애초에 `@Order`가 없었다 — 기본값(가장 늦게 실행)으로 두면 tracing 필터가 span을 만든 다음에 실행되니 문제가 없었던 거다. 동일하게 `@Order`를 제거했다.
+
+여기서 나온 질문이 하나 있었다 — "그럼 `spring.reactor.context-propagation: auto`도 필요한 거 아니냐"는 것. 확인해보니 맞았다. gateway의 `application-stg.yml`에는 이 설정이 빠져 있었다(mediation엔 있었음). tracing 필터가 만든 span이 WebFilter 체인 안의 스레드/비동기 경계를 못 넘어가면 그다음 필터에서 `Span.current()`가 비어버릴 수 있어서, mediation과 동일하게 추가했다.
+
+### 2. gateway의 traceId가 mediation으로 안 이어짐
+
+두 가지를 고치고 나니 gateway 자체 로그는 정상이었는데, gateway가 stock-mediation으로 보낸 요청의 traceId가 mediation 쪽에서는 완전히 다른 값으로 찍혔다. mediation의 ACCESS 로그를 보면 요청 헤더 안에 `traceparent`가 **두 개** 들어있었다 — 하나는 gateway 자신이 로그에 찍는 값과 일치했고, 다른 하나는 mediation이 새로 만든, gateway와는 무관한 값이었다.
+
+원인은 `MciToRestURIFilter`였다.
+
+```java
+ServerHttpRequest newServerHttpRequest = exchange.getRequest().mutate()
+        .path(...)
+        .method(...)
+        .headers(h -> h.addAll(this.getModifiedHeaders(exchange, headerJson)))
+        .build();
+```
+
+```java
+public HttpHeaders getModifiedHeaders(ServerWebExchange exchange, JsonNode kBankHeaderJson) {
+    HttpHeaders modifiedHeaders = new HttpHeaders();
+    modifiedHeaders.putAll(exchange.getRequest().getHeaders());  // 원본 헤더 전체 복사
+    modifiedHeaders.set("Kbank-Header", kBankHeaderJson.toString());
+    return modifiedHeaders;
+}
+```
+
+`.mutate().headers(h -> ...)`가 넘겨주는 `h`는 이미 원본 요청 헤더로 초기화된 상태로 들어온다. 그런데 `getModifiedHeaders()`도 원본 헤더를 통째로 복사한 사본을 새로 만들어 반환하니, `h.addAll(modifiedHeaders)`는 "이미 원본 헤더가 들어있는 h" 위에 "원본 헤더를 복사한 사본"을 한 번 더 얹는 꼴이었다. 이 필터를 거치는 모든 요청에서 헤더가 전부 두 벌씩 찍히고 있었던 거다.
+
+대부분의 헤더는 값이 중복돼도 어차피 서버가 대충 첫 값만 쓰거나 넘어가서 티가 안 났는데, W3C Trace Context 스펙은 "한 요청에 `traceparent`가 두 개 이상 있으면 파싱하지 말고 아예 없는 것으로 취급"하도록 정해져 있다. gateway가 SCG 자체 계측으로 붙인 `traceparent`가 이 필터를 거치며 중복됐고, mediation의 tracing 라이브러리가 스펙대로 그 중복을 통째로 무시하고 새 trace를 시작해버린 것이었다.
+
+처음엔 `h.clear()`로 싹 비운 뒤 다시 채우는 식으로 고쳤는데, 실사용 중 이번엔 `415 Unsupported Media Type` 에러가 났다. `Content-Type`처럼 이 필터가 건드릴 필요 없는 헤더까지 같이 날아간 뒤 `addAll`만으로는 온전히 복구되지 않는 것으로 보였다(`ServerHttpRequest.Builder` 내부에서 `Content-Type`을 별도 필드로 캐싱해두는 구현일 가능성이 있는데, 정확한 내부 동작까지는 추적하지 않았다). 그래서 전부 비우는 대신, `modifiedHeaders`에 실제로 들어있는 키만 골라 지운 뒤 다시 채우는 방식으로 바꿨다:
+
+```java
+.headers(h -> {
+    HttpHeaders modifiedHeaders = this.getModifiedHeaders(exchange, headerJson);
+    modifiedHeaders.keySet().forEach(h::remove);
+    h.addAll(modifiedHeaders);
+})
+```
+
+손대지 않는 헤더는 원본 그대로 남고, 중복될 헤더만 정확히 한 벌로 덮어써지는 방식.
+
+## 곁다리 — javaagent 대신 eBPF(Beyla)
+
+이 과정에서 확인한 것 중 하나: 사내 인프라가 더 이상 OTel javaagent를 안 쓴다는 것. mediation/gateway의 Dockerfile엔 여전히 `-javaagent:opentelemetry-javaagent.jar`가 붙어있지만, 실제로는 더 이상 그 경로로 배포되지 않고 eBPF 기반 관측 도구(Beyla)로 전환됐다고 한다. 처음엔 이게 `Span.current()` 메커니즘 자체를 깨는 줄 알고(eBPF는 프로세스 밖에서 관측하는 방식이라 앱 코드에 아무것도 안 심어준다) `traceparent` 헤더를 직접 파싱/발급하는 방식으로 갈아타려고 했는데, mediation이 javaagent 없이도 이미 잘 동작한다는 확인을 받고 원래 방식(`Span.current()` 기반)으로 되돌렸다. `micrometer-tracing-bridge-otel` + `spring-boot-starter-actuator` 조합은 Spring Boot Actuator 자체의 tracing 자동설정만으로 span을 만들기 때문에, javaagent/eBPF 유무와 무관하게 독립적으로 동작한다 — 이걸 짚어보지 않았으면 애먼 방향으로 더 갈아탈 뻔했다.
+
+## 정리
+
+- gateway는 CoroutineContext가 아예 없는 앱이라 mediation의 방식을 그대로 못 가져왔고, Reactor Context 자동전파도 mediation보다 hop이 많아서 안 맞았다 — 그래서 `ServerWebExchange` attribute로 값을 옮기는 방식을 택함
+- CoroutineContext는 언어(컴파일러)가 전파를 보장하고, exchange attribute는 프레임워크 계약(필터 체인 전체가 같은 exchange 참조를 공유)이 전파를 보장한다 — 층위가 다를 뿐 둘 다 "스레드 hop에 안전"하다는 결론은 같음
+- 실제로 붙이면서 버그 세 개를 잡음: `@Order` 때문에 span 생성 전에 읽던 문제, `context-propagation:auto` 누락, `MciToRestURIFilter`의 헤더 중복으로 W3C `traceparent` 스펙을 위반해 mediation이 새 trace를 시작해버리던 문제(+ 그 수정이 415를 유발해서 다시 고친 것까지)
+- OTel javaagent가 eBPF(Beyla)로 바뀐 인프라 변화도 확인함 - 다행히 지금 쓰는 메커니즘(Micrometer Tracing bridge)은 그거랑 무관하게 동작함
+
+한 서비스에서 검증된 패턴을 다른 서비스에 그대로 옮기려다가, 그 서비스의 근본 제약(코루틴 없음)을 마주치고 다른 층위의 해법으로 갈아탄 편. 그리고 설계를 아무리 잘 잡아도, 실제로 붙여보기 전엔 안 보이는 버그들이 꼭 있다 — 이번엔 그게 필터 순서 하나, 설정 한 줄, 그리고 15줄짜리 헤더 복사 로직 안에 숨어있었다.
