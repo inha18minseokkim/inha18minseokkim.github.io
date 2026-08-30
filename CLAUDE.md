@@ -260,7 +260,19 @@ title: 만 26세, 토허제 구역에서 아파트 산 이야기
 
 ### 배경
 
-맥북(집)과 서피스(회사) 두 기기에서 작업하며, 작업 결과물이 Google Drive로 동기화된다. `.git` 디렉토리도 같이 동기화되기 때문에, 한 기기에서 커밋하면 다른 기기의 변경사항이 덮어써지는 문제가 있었다.
+맥북(집)과 서피스(회사) 두 기기에서 작업하며, `minseokkim/` 전체가 Google Drive로 동기화된다. `.git` 데이터는 `~/.gitdirs/blog/`에 분리되어 있어 Drive 동기화 대상이 아니다. Drive 안의 `.git`은 8바이트 pointer 파일이라 동기화가 일어나도 충돌이 없다.
+
+```
+Drive 동기화 폴더/
+└── minseokkim/        ← Drive로 자동 동기화
+    ├── .git           ← "gitdir: ~/.gitdirs/blog" pointer 파일 (8바이트)
+    ├── _posts/        ← 서피스에서 편집하면 Drive 경유 자동 반영
+    └── ...
+
+~/.gitdirs/blog/       ← 실제 git 데이터 (Drive 밖, 맥북 로컬)
+```
+
+서피스에서 `_posts/` 수정 → Drive 자동 동기화 → 맥북 working tree 즉시 반영 → `git status`에 바로 뜸.
 
 ### 브랜치 전략
 
