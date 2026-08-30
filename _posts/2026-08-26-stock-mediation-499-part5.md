@@ -22,10 +22,6 @@ category:
 
 먼저 연습 삼아 별도 레포에서 검증부터 했는데 여기서부터 이미 삽질이 시작됐다.
 
-### CGLIB이 생성자를 못 찾는다
-
-`@Configuration` 클래스에 `ObservationRegistry`를 생성자 주입으로 넣었더니 `No default constructor found` 에러. Kotlin 기본값 파라미터(`val log: Logger = logger()`) 있는 클래스에 새 필수 파라미터를 같이 넣으니까 CGLIB이 프록시 서브클래스 만들 때 생성자 매칭을 못 하는 거였음. 필드 주입(`@Autowired lateinit var`)으로 바꾸니 해결. 이거 하나로 삼십분 넘게 씀..
-
 ### 로그에 아무것도 안 찍힘 → 근데 문법 오타였다
 
 MDC 찍는 패턴을 `%X{traceId:-} spanId:%X{spanId:-}` 이런 식으로 썼는데 (Logback에서 흔히 보던 문법이라 별 생각 없이 그대로 씀) 아무리 해도 traceId가 안 찍혔다. 그래서 `Slf4JEventListener`, OTel `ContextStorage` 래퍼, coroutine 스레드 홉 이런 것들을 한참 팠는데 전부 정상이었고, 알고보니 이 레포는 Log4j2 썼는데 `%X{key:-default}` 문법은 **Logback 전용**이고 Log4j2는 지원을 안 함 — `"traceId:-"`를 통째로 (존재하지도 않는) 리터럴 키 이름으로 취급해서 항상 빈 값이 찍히는 거였음. `%X{traceId}`로 고치니 바로 됨. 삽질의 8할이 오타 하나 때문이었다..
