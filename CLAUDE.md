@@ -31,6 +31,7 @@ category:
 - 기술 포스팅: 해당 기술 이름 (Java, Spring, JPA, Redis, Kotlin 등)
 - 기타 포스팅: 주제 키워드 (Obsidian, 자동화, 블로그 등)
 - AI/ML 관련: AI/ML 태그 사용
+- **태그에 띄어쓰기 금지.** Jekyll 태그는 공백을 구분자로 처리하므로 `Spring Cloud Gateway` 같은 다단어 태그는 쓰지 않는다. 약어(`SCG`)나 붙여쓰기(`SpringCloudGateway`)로 대체.
 
 ---
 

@@ -5,7 +5,7 @@ tags:
   - Spring
   - WebFlux
   - Reactor
-  - Spring Cloud Gateway
+  - SCG
   - Kotlin
   - OpenTelemetry
   - 실무경험
