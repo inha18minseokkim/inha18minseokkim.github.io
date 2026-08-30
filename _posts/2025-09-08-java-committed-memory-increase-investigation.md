@@ -1,5 +1,5 @@
 ---
-title: "Java Committed Memory 부제 : 메모리가 왜 계속 증가함?"
+title: Java Committed Memory 부제 : 메모리가 왜 계속 증가함?
 date: 2025-09-08
 tags:
   - Java
