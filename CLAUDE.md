@@ -273,14 +273,33 @@ title: 만 26세, 토허제 구역에서 아파트 산 이야기
 GitHub PR 생성 → 검토 → master 머지
 ```
 
+### _posts 동기화 구조
+
+Google Drive에 `_posts/` 폴더가 따로 존재하며, git 저장소와 같은 계층에 위치한다.
+
+```
+내 노트북/
+├── _posts/          ← Google Drive 동기화 폴더 (다른 기기에서 편집)
+└── minseokkim/      ← git 저장소
+    ├── _posts/      ← 작업 전 sync_posts_from_drive.sh로 동기화
+    └── sync_posts_from_drive.sh
+```
+
+다른 기기(서피스 등)에서 작성한 포스팅은 Google Drive를 통해 상위 `_posts/`에 반영되므로, 작업 전 반드시 아래 스크립트를 실행한다.
+
+```bash
+bash sync_posts_from_drive.sh
+```
+
 ### 포스팅 작업 순서
 
-1. 작업 브랜치 생성: `git checkout -b macbook/post-제목`
-2. 포스팅 작성 및 커밋
-3. `python3 generate_related_posts.py` 실행 → `_data/related_posts.yml` 갱신
-4. 갱신된 yml 파일도 같이 커밋
-5. `git push origin <브랜치명>`
-6. GitHub에서 PR 생성 → master 머지
+1. Google Drive 동기화: `bash sync_posts_from_drive.sh`
+2. 작업 브랜치 생성: `git checkout -b macbook/post-제목`
+3. 포스팅 작성 및 커밋
+4. `python3 generate_related_posts.py` 실행 → `_data/related_posts.yml` 갱신
+5. 갱신된 yml 파일도 같이 커밋
+6. `git push origin <브랜치명>`
+7. GitHub에서 PR 생성 → master 머지
 
 ### CI/CD 파이프라인
 
