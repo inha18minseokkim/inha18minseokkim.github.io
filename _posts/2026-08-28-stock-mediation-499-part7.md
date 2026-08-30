@@ -1,5 +1,5 @@
 ---
-title: stock-mediation 499 트레이싱 일대기 (7부) — stock-gateway로 확장: CoroutineContext 대신 exchange
+title: Spring Cloud Gateway에서 traceId 전파 — ServerWebExchange attribute
 date: 2026-08-28
 tags:
   - Spring
@@ -13,7 +13,7 @@ category:
   - 실무경험
 ---
 
-[6부]({% post_url 2026-08-26-stock-mediation-499-part6 %})에서 stock-mediation의 traceId/spanId 전파를 CoroutineContext 기반으로 다시 짜고, PR #7을 `master`에 머지했다. 다음 요청은 같은 로그 포맷을 `stock-gateway`에도 적용해달라는 것. 근데 gateway는 코루틴을 아예 안 쓰는 순수 Reactor(WebFlux + Spring Cloud Gateway) 앱이라, 6부에서 짠 CoroutineContext 방식을 그대로 옮겨 붙일 수가 없었다. 이번 편은 그 대안을 짜고, 실제로 붙이는 과정에서 나온 버그 세 개를 잡은 이야기.
+[이전 글]({% post_url 2026-08-26-stock-mediation-499-part6 %})에서 stock-mediation은 CoroutineContext로 해결했는데, 같은 로그 포맷을 stock-gateway에도 적용해달라는 요청이 왔다. gateway는 코루틴을 아예 안 쓰는 순수 Reactor(WebFlux + Spring Cloud Gateway) 앱이라 같은 방식을 그대로 쓸 수가 없었다. 대안을 짜고 실제로 붙이면서 버그 세 개를 잡은 이야기.
 
 ---
 
@@ -21,7 +21,7 @@ category:
 
 6부의 결론은 "요청 진입 시점에 `Span.current()`를 한 번 읽어서 CoroutineContext로 실어두면, 그 뒤로는 캡처/복원 없이 어디서든 안전하게 꺼내 쓴다"였다. 이게 되는 이유는 `suspend fun` 체인을 컴파일러가 강제하기 때문이다 — `CoroutineContext`는 `Continuation` 객체 자체가 들고 다니는 구조라, 스레드가 몇 번을 넘어가든 재부착 없이 안전하다.
 
-이건 코틀린 기반이 아니라 reactor에서 제공하는 context를 써야 한다. 심지어 이건 내가 3년 전에 짠 코드야 ㅋㅋ. `WebFilter.filter()`도, `GatewayFilter.filter()`도 전부 `Mono<Void>`를 반환하는 순수 Reactor 인터페이스 메서드다. CoroutineContext는 코루틴 빌더(`launch`, `async`, suspend 함수 체인) 없이는 애초에 존재하지 않는 개념이라, "여기에 값을 실어두자"고 할 대상 자체가 없다. mediation의 문제가 "CoroutineContext는 있는데 그 값이 전파 도중에 깨진다"였다면, gateway의 문제는 "CoroutineContext 자체가 없다"로 완전히 달랐다.
+이건 코틀린 기반이 아니라 reactor에서 제공하는 context를 써야 한다. 심지어 이건 내가 3년 전에 짠 코드야 ㅋㅋ. 그리고 이 코드가 팀내 여러 게이트웨이의 레퍼런스라서 나 혼자 갑자기 코틀린 코루틴으로 감 ㅅㄱ 이러고 갈 수도 없는 상황이다. `WebFilter.filter()`도, `GatewayFilter.filter()`도 전부 `Mono<Void>`를 반환하는 순수 Reactor 인터페이스 메서드다. CoroutineContext는 코루틴 빌더(`launch`, `async`, suspend 함수 체인) 없이는 애초에 존재하지 않는 개념이라, "여기에 값을 실어두자"고 할 대상 자체가 없다.
 
 그럼 mediation이 5~6부에서 겪었던 것처럼 Reactor Context 자동전파(`spring.reactor.context-propagation: auto`)에 기대는 방식으로 가면 되지 않냐 싶었는데, 이것도 안 맞았다. gateway는 mediation보다 스케줄러가 바뀌는 지점(hop)이 오히려 더 많다:
 
@@ -54,7 +54,7 @@ class TraceContextFilter : WebFilter {
 
 **CoroutineContext**는 값이 `Continuation` 객체를 타고 흐른다. suspend 함수를 호출하는 순간 컴파일러가 CPS(continuation-passing style) 변환을 해주기 때문에, 어느 스레드/디스패처에서 재개되든 그 값은 항상 같이 붙어 있다. "이 함수가 CoroutineContext를 볼 수 있느냐"는 컴파일 타임에 `suspend` 키워드로 강제된다 — 실수로 빠뜨리면 컴파일이 안 된다.
 
-**exchange attribute**는 값이 `ServerWebExchange` 객체 하나의 `Map<String, Object>`에 들어있고, 그 객체 참조가 WebFilter/GatewayFilter 체인 전체를 프레임워크 계약에 따라 관통해서 넘어간다. 스레드가 몇 번을 넘어가든 상관없는 이유가 애초에 스레드 얘기가 아니기 때문이다 — "이 코드가 `exchange`를 들고 있느냐"의 문제일 뿐이고, WebFlux/SCG 필터 체인에 참여하는 코드는 설계상 전부 `exchange`를 들고 있다. 대신 이건 컴파일러가 강제해주는 게 아니라, "로그를 남기려는 지점이 실제로 `exchange` 파라미터를 받고 있느냐"를 사람이 챙겨야 한다 — 이번에 발견한 버그들 중 하나가 정확히 이 지점(뒤에서 다룸)에서 났다.
+**exchange attribute**는 값이 `ServerWebExchange` 객체 하나의 `Map<String, Object>`에 들어있고, 그 객체 참조가 WebFilter/GatewayFilter 체인 전체를 프레임워크가 보장하는 방식으로 넘어간다. 스레드가 몇 번을 넘어가든 상관없는 이유가 애초에 스레드 얘기가 아니기 때문이다 — "이 코드가 `exchange`를 들고 있느냐"의 문제일 뿐이고, WebFlux/SCG 필터 체인에 참여하는 코드는 설계상 전부 `exchange`를 들고 있다. 대신 이건 컴파일러가 강제해주는 게 아니라, "로그를 남기려는 지점이 실제로 `exchange` 파라미터를 받고 있느냐"를 사람이 챙겨야 한다 — 이번에 발견한 버그들 중 하나가 정확히 이 지점(뒤에서 다룸)에서 났다.
 
 정리하면: CoroutineContext는 "언어가 보장하는 전파", exchange attribute는 "프레임워크가 보장하는 참조 공유". 코루틴이 없는 앱에서는 후자가 유일한 선택지였는데, 스레드로컬·코루틴 컨텍스트 같은 기능이 없어서 리액티브 라이브러리에서 제공하는 프레임워크 기능을 활용해야 했던 거고, 결과적으로 mediation이 5~6부 내내 겪은 자동 전파가 안 되는 클래스의 버그 자체가 발생할 수 없는 설계이기도 했다.
 
@@ -107,9 +107,10 @@ public HttpHeaders getModifiedHeaders(ServerWebExchange exchange, JsonNode kBank
 
 ## 정리
 
-- gateway는 CoroutineContext가 아예 없는 앱이라 mediation의 방식을 그대로 못 가져왔고, Reactor Context 자동전파도 mediation보다 hop이 많아서 안 맞았다 — 그래서 `ServerWebExchange` attribute로 값을 옮기는 방식을 택함
-- CoroutineContext는 언어(컴파일러)가 전파를 보장하고, exchange attribute는 프레임워크 계약(필터 체인 전체가 같은 exchange 참조를 공유)이 전파를 보장한다 — 층위가 다를 뿐 둘 다 "스레드 hop에 안전"하다는 결론은 같음
-- 실제로 붙이면서 버그 세 개를 잡음: `@Order` 때문에 span 생성 전에 읽던 문제, `context-propagation:auto` 누락, `MciToRestURIFilter`의 헤더 중복으로 W3C `traceparent` 스펙을 위반해 mediation이 새 trace를 시작해버리던 문제(+ 그 수정이 415를 유발해서 다시 고친 것까지)
-- OTel javaagent가 eBPF(Beyla)로 바뀐 인프라 변화도 확인함 - 다행히 지금 쓰는 메커니즘(Micrometer Tracing bridge)은 그거랑 무관하게 동작함
+- gateway는 CoroutineContext가 아예 없는 앱이라 mediation의 방식을 그대로 못 가져왔고, Reactor Context 자동전파도 hop이 많아서 안 맞았다 — 그래서 `ServerWebExchange` attribute로 값을 옮기는 방식을 택함
+- CoroutineContext는 언어(컴파일러)가 전파를 보장하고, exchange attribute는 프레임워크가 보장한다 — 둘 다 "스레드 hop에 안전"하다는 결론은 같음
+- 실제로 붙이면서 버그 세 개를 잡음: `context-propagation:auto` 누락, 헤더 중복으로 W3C `traceparent` 스펙을 위반해 mediation이 새 trace를 시작해버리던 문제(+ 그 수정이 415를 유발해서 다시 고친 것까지)
 
-한 서비스에서 검증된 패턴을 다른 서비스에 그대로 옮기려다가, 그 서비스의 근본 제약(코루틴 없음)을 마주치고 다른 층위의 해법으로 갈아탄 편. 그리고 설계를 아무리 잘 잡아도, 실제로 붙여보기 전엔 안 보이는 버그들이 꼭 있다 — 이번엔 그게 필터 순서 하나, 설정 한 줄, 그리고 15줄짜리 헤더 복사 로직 안에 숨어있었다.
+BFF(mediation)서버는 코틀린 코루틴을 활용해서 MDC 로그를 찍었고 SCG는 reactor 스택이므로 spring cloud gateway 프레임워크에서 제공해주는 기능으로 로그를 찍었다.
+
+스레드로컬 기반 MDC를 coroutine이나 Reactor context로 전파시키려니 쉽지 않지만 행내에서 로깅이나 관제 표준이 MDC 기반으로 되어있어 불가피하게 이런 행위를 하였다. 하지만 이 로직들은 단순히 Logback을 concurrent 스택에 호환시킬 목적으로 만든 것이므로 확장성은 없다고 볼 수 있지만, 로그 목적 외에 MDC를 해당 프로젝트에서 쓸 이유가 없기 때문에 일단 이쯤에서 그만하기로 하였다.

@@ -1,5 +1,5 @@
 ---
-title: stock-mediation 499 트레이싱 일대기 (6부) — traceId를 CoroutineContext에 태우기까지
+title: CoroutineContext로 traceId 전파하기 — MDC 대신
 date: 2026-08-26
 tags:
   - Spring
@@ -12,7 +12,7 @@ category:
   - 실무경험
 ---
 
-[5부]({% post_url 2026-08-26-stock-mediation-499-part5 %})에서 `Span.current()`를 로그 찍는 순간마다 직접 읽어서 MDC 채우는 Proxy 방식(`tracingLogger`)으로 일단 해결했다고 적었는데, 실제로 적용하고 리뷰받는 과정에서 로그 포맷도 다시 잡고 Proxy도 걷어내고, 결국 트레이싱 전파 방식 자체를 완전히 다르게 다시 짰다. 이번 편은 그 뒷이야기.
+[이전 글]({% post_url 2026-08-26-stock-mediation-499-part5 %})에서 Proxy 방식(`tracingLogger`)으로 일단 해결했는데, 리뷰받으면서 로그 포맷도 다시 잡고 Proxy도 걷어내고, 결국 traceId 전파 방식 자체를 다르게 다시 짰다.
 
 ---
 
@@ -65,9 +65,9 @@ fun <T> Context.restoring(block: () -> T): T {
 
 logback 패턴이 MDC 기반이니까, 아예 `LoggerFactory` 쪽에서 CoroutineContext 값을 직접 꺼내와서 MDC 대신 쓰면 되지 않냐는 아이디어. 이건 SLF4J `Logger`의 `info()`/`warn()`/`error()`가 전부 일반(non-suspend) 인터페이스 메서드라는 데서 막힘 - `coroutineContext`는 suspend 함수 안이나 CoroutineScope 안에서만 접근 가능한데, `LoggingWebFilter`나 `GlobalExceptionHandler`(당시엔 suspend 아니었음) 같은 non-suspend 경로에서도 로그를 찍어야 해서, 로거 자체를 CoroutineContext 인지하게 만들려면 SLF4J API를 아예 갈아엎어야 함. 커스텀 suspend 전용 로깅 API를 새로 만드는 것도 너무 침습적이라 기각.
 
-### "들어온 요청의 traceparent 헤더를 KbankContext의 guid처럼 직접 파싱하면?"
+### "들어온 요청의 traceparent 헤더를 직접 파싱하면?"
 
-실제로 들어오는 요청엔 `traceparent: 00-{traceId}-{parentSpanId}-01` 헤더가 있으니, 이걸 KbankContext가 guid 만드는 것처럼 직접 파싱해서 쓰면 되지 않냐는 아이디어. 괜찮은 방향이긴 한데 몇 가지 짚을 게 있었음 - 헤더의 parent-id는 **호출한 쪽(예: stock-gateway)의 span**이지 우리 서비스 자신의 span이 아니라서 spanId 의미가 다르고, 진짜 OTel span/export를 대체하는 것도 아니고, `traceparent` 헤더가 없는 요청(배치, 내부 스케줄러)엔 fallback이 따로 필요함. 바로 구현하기보단 일단 GitHub 이슈로만 정리해두기로 함(관련 이슈는 뒤에서 다시 나옴).
+실제로 들어오는 요청엔 `traceparent: 00-{traceId}-{parentSpanId}-01` 헤더가 있으니, 이걸 직접 파싱해서 쓰면 되지 않냐는 아이디어. 괜찮은 방향이긴 한데 몇 가지 짚을 게 있었음 - 헤더의 parent-id는 **호출한 쪽(예: stock-gateway)의 span**이지 우리 서비스 자신의 span이 아니라서 spanId 의미가 다르고, 진짜 OTel span/export를 대체하는 것도 아니고, `traceparent` 헤더가 없는 요청(배치, 내부 스케줄러)엔 fallback이 따로 필요함. 바로 구현하기보단 일단 GitHub 이슈로만 정리해두기로 함(관련 이슈는 뒤에서 다시 나옴).
 
 ### "이거 Tempo에 아직도 보이는 499 이랑 관련있는거 아니냐"
 
@@ -83,13 +83,13 @@ logback 패턴이 MDC 기반이니까, 아예 `LoggerFactory` 쪽에서 Coroutin
 
 ### "CoroutineContext propagate 랑 비슷한 맥락인데, 왜 로그 찍을 때 traceId가 안보이는거?"
 
-Reactor의 자체 `Context`(KbankContext가 쓰는 것)는 Subscriber/subscription 관계를 타고 흐르는 거라 스케줄러 hop이랑 무관하게 안전한데, OTel의 `io.opentelemetry.context.Context`는 근본적으로 **ThreadLocal 기반**이라서 스레드가 바뀔 때마다 명시적으로(혹은 `context-propagation: auto`로 자동) 다시 부착해줘야 함. CoroutineContext는 `Continuation` 객체 자체가 스레드 hop과 무관하게 값을 들고 다니는 구조인데, OTel Context는 그런 보장이 전혀 없는 것 - 이 차이가 지금까지의 모든 삽질의 뿌리였다.
+Reactor의 자체 `Context`(사내 컨텍스트 연동에 쓰는 것)는 Subscriber/subscription 관계를 타고 흐르는 거라 스케줄러 hop이랑 무관하게 안전한데, OTel의 `io.opentelemetry.context.Context`는 근본적으로 **ThreadLocal 기반**이라서 스레드가 바뀔 때마다 명시적으로(혹은 `context-propagation: auto`로 자동) 다시 부착해줘야 함. CoroutineContext는 `Continuation` 객체 자체가 스레드 hop과 무관하게 값을 들고 다니는 구조인데, OTel Context는 그런 보장이 전혀 없다.
 
 ## 그러다 나온 아이디어
 
 "내부에서 만들어지는 호출은 헤더에 traceId가 없어서 못 쓴다고 했는데, 게이트웨이에서 받은 요청은 traceId가 있잖아. 그러면 WebFlux/WebFilter에서 요청을 받는 시점에 OTel Context를 까서 그 값을 CoroutineContext에 넣어두면 되는 거 아니냐"
 
-AI를 통해 빠른 검색을 하면서 아이디어들을 모으다 보니 이런 생각이 들었다. `Span.current()`는 WebFilter 진입 시점엔 항상 유효하다는 걸 클로드 시켜서 확인해놨고(`LoggingWebFilter`의 `doFinally`도 마찬가지), KbankContext가 이미 이 정확한 패턴(요청 진입 시점에 값 하나 읽어서 Reactor Context → CoroutineContext로 실어두기)을 써서 검증된 상태였다. OTel이 "정확한 값을 어디서 읽어야 하는지"를 알려주고, CoroutineContext가 "그 값을 어디까지 들고 다닐지"를 책임지는 조합.
+AI를 통해 빠른 검색을 하면서 아이디어들을 모으다 보니 이런 생각이 들었다. `Span.current()`는 WebFilter 진입 시점엔 항상 유효하다는 걸 클로드 시켜서 확인해놨고(`LoggingWebFilter`의 `doFinally`도 마찬가지), 이 패턴은 사내 컨텍스트 연동 방식에서 이미 검증된 패턴이었다. OTel이 "정확한 값을 어디서 읽어야 하는지"를 알려주고, CoroutineContext가 "그 값을 어디까지 들고 다닐지"를 책임지는 조합.
 
 ```kotlin
 // WebFilter 진입 시점에 딱 한 번
@@ -123,7 +123,7 @@ traceId=281a7c04cc196189591dd34eca4842d0,spanId=dc89c6a7ddf3c9b3  ← GlobalExce
 - 로그 포맷은 `[traceId=,spanId=]` + `kbankSeverity`/`kbankLogType`을 logback 패턴 레벨로 옮겼고, AccessLog만 JSON 유지
 - Proxy 기반 `tracingLogger`는 원복하고, `Context.restoring{}`으로 옮기는 과정에서 `makeCurrent()` no-op 버그를 하나 더 잡음
 - OTel Context → MDC라는 방향, CoroutineContext(Continuation 자체가 들고 다님) vs OTel Context(ThreadLocal, 매 hop마다 재부착 필요)라는 구조 차이를 짚고 나니 답이 나왔음
-- 결론: 요청 진입 시점에 `Span.current()`를 딱 한 번 읽어서 CoroutineContext로 실어두면, 그 뒤로는 캡처/복원 없이 어디서든 안전하게 꺼내 씀 - KbankContext가 이미 쓰던 패턴 그대로
+- 결론: 요청 진입 시점에 `Span.current()`를 딱 한 번 읽어서 CoroutineContext로 실어두면, 그 뒤로는 캡처/복원 없이 어디서든 안전하게 꺼내 씀 - 사내 컨텍스트 연동 방식에서 이미 쓰던 패턴 그대로
 
 같은 문제를 두고 "MDC를 억지로 채우는 법"을 찾다가 "애초에 MDC 말고 더 안전한 곳에 값을 실어두면 되지 않나"로 생각이 바뀐 게 이번 편의 핵심이었다. 처음부터 이렇게 짰으면 5부의 Proxy 삽질도 없었을 텐데.. 근데 그 삽질 없이 바로 이 결론에 도달했을 것 같지도 않고.
 
@@ -142,4 +142,4 @@ traceId=281a7c04cc196189591dd34eca4842d0,spanId=dc89c6a7ddf3c9b3  ← GlobalExce
 
 지금 이 서비스가 필요한 건 "요청 하나에 대해 로그들이 같은 traceId로 묶이는 것"이지 진짜 분산 트레이싱 백엔드 연동은 아니라서, 정확성이 라이브러리의 자동전파 가정이 아니라 언어 차원에서 보장되는 PR #7 쪽에 손을 들어줬다. PR #5는 코멘트로 근거를 남기고 닫고, PR #7을 `master`에 머지했다.
 
-이 CoroutineContext 방식이 다음 편(stock-gateway)에서는 아예 못 쓰는 상황을 만나는데, 그 얘기는 [7부]({% post_url 2026-08-28-stock-mediation-499-part7 %})에서.
+이 CoroutineContext 방식이 다음 편(stock-gateway)에서는 아예 못 쓰는 상황을 만나는데, 그 얘기는 [다음 글]({% post_url 2026-08-28-stock-mediation-499-part7 %})에서.
