@@ -21,7 +21,7 @@ category:
 
 6부의 결론은 "요청 진입 시점에 `Span.current()`를 한 번 읽어서 CoroutineContext로 실어두면, 그 뒤로는 캡처/복원 없이 어디서든 안전하게 꺼내 쓴다"였다. 이게 되는 이유는 `suspend fun` 체인을 컴파일러가 강제하기 때문이다 — `CoroutineContext`는 `Continuation` 객체 자체가 들고 다니는 구조라, 스레드가 몇 번을 넘어가든 재부착 없이 안전하다.
 
-그런데 gateway 코드베이스를 열어보니 `suspend` 키워드가 단 하나도 없었다. `WebFilter.filter()`도, `GatewayFilter.filter()`도 전부 `Mono<Void>`를 반환하는 순수 Reactor 인터페이스 메서드다. CoroutineContext는 코루틴 빌더(`launch`, `async`, suspend 함수 체인) 없이는 애초에 존재하지 않는 개념이라, "여기에 값을 실어두자"고 할 대상 자체가 없다. mediation의 문제가 "CoroutineContext는 있는데 그 값이 전파 도중에 깨진다"였다면, gateway의 문제는 "CoroutineContext 자체가 없다"로 완전히 다른 층위였다.
+이건 코틀린 기반이 아니라 reactor에서 제공하는 context를 써야 한다. 심지어 이건 내가 3년 전에 짠 코드야 ㅋㅋ. `WebFilter.filter()`도, `GatewayFilter.filter()`도 전부 `Mono<Void>`를 반환하는 순수 Reactor 인터페이스 메서드다. CoroutineContext는 코루틴 빌더(`launch`, `async`, suspend 함수 체인) 없이는 애초에 존재하지 않는 개념이라, "여기에 값을 실어두자"고 할 대상 자체가 없다. mediation의 문제가 "CoroutineContext는 있는데 그 값이 전파 도중에 깨진다"였다면, gateway의 문제는 "CoroutineContext 자체가 없다"로 완전히 달랐다.
 
 그럼 mediation이 5~6부에서 겪었던 것처럼 Reactor Context 자동전파(`spring.reactor.context-propagation: auto`)에 기대는 방식으로 가면 되지 않냐 싶었는데, 이것도 안 맞았다. gateway는 mediation보다 스케줄러가 바뀌는 지점(hop)이 오히려 더 많다:
 
@@ -48,17 +48,15 @@ class TraceContextFilter : WebFilter {
 }
 ```
 
-당시엔 `ApiGatewayConfig`에 이미 비슷한 선례가 있었다 — GET premature-close 재시도(`.retry()`) 때문에 생긴 `ORIGINAL_REQUEST_BODY_ATTR`가 `.mutate()`/`.retry()`를 거쳐도 살아남는 걸로 검증돼 있었다(그 코드는 이후 retry 로직 자체를 되돌리면서 같이 사라졌지만, "exchange attribute는 `ServerWebExchange.mutate()`의 표준 동작상 원본 delegate의 attribute map을 공유한다"는 원리 자체는 프레임워크 계약이라 여전히 유효하다).
-
 ## CoroutineContext vs exchange attribute, 뭐가 다른가
 
-둘 다 "스레드가 바뀌어도 값이 안 깨진다"는 결과는 같은데, 그 보장이 나오는 층위가 완전히 다르다.
+클로드가 찾아준 구분인데, 둘 다 "스레드가 바뀌어도 값이 안 깨진다"는 결과는 같은데, 그 보장이 나오는 방식이 완전히 다르다.
 
 **CoroutineContext**는 값이 `Continuation` 객체를 타고 흐른다. suspend 함수를 호출하는 순간 컴파일러가 CPS(continuation-passing style) 변환을 해주기 때문에, 어느 스레드/디스패처에서 재개되든 그 값은 항상 같이 붙어 있다. "이 함수가 CoroutineContext를 볼 수 있느냐"는 컴파일 타임에 `suspend` 키워드로 강제된다 — 실수로 빠뜨리면 컴파일이 안 된다.
 
 **exchange attribute**는 값이 `ServerWebExchange` 객체 하나의 `Map<String, Object>`에 들어있고, 그 객체 참조가 WebFilter/GatewayFilter 체인 전체를 프레임워크 계약에 따라 관통해서 넘어간다. 스레드가 몇 번을 넘어가든 상관없는 이유가 애초에 스레드 얘기가 아니기 때문이다 — "이 코드가 `exchange`를 들고 있느냐"의 문제일 뿐이고, WebFlux/SCG 필터 체인에 참여하는 코드는 설계상 전부 `exchange`를 들고 있다. 대신 이건 컴파일러가 강제해주는 게 아니라, "로그를 남기려는 지점이 실제로 `exchange` 파라미터를 받고 있느냐"를 사람이 챙겨야 한다 — 이번에 발견한 버그들 중 하나가 정확히 이 지점(뒤에서 다룸)에서 났다.
 
-정리하면: CoroutineContext는 "언어가 보장하는 전파", exchange attribute는 "프레임워크 계약이 보장하는 참조 공유". 코루틴이 없는 앱에서는 후자가 유일한 선택지였는데, 결과적으로 mediation이 5~6부 내내 겪은 "자동 전파의 암묵적 가정이 깨지는" 클래스의 버그 자체가 발생할 수 없는 설계이기도 했다.
+정리하면: CoroutineContext는 "언어가 보장하는 전파", exchange attribute는 "프레임워크가 보장하는 참조 공유". 코루틴이 없는 앱에서는 후자가 유일한 선택지였는데, 스레드로컬·코루틴 컨텍스트 같은 기능이 없어서 리액티브 라이브러리에서 제공하는 프레임워크 기능을 활용해야 했던 거고, 결과적으로 mediation이 5~6부 내내 겪은 자동 전파가 안 되는 클래스의 버그 자체가 발생할 수 없는 설계이기도 했다.
 
 ## 실제로 붙이면서 잡은 버그 세 개
 
@@ -66,17 +64,13 @@ class TraceContextFilter : WebFilter {
 
 ### 1. traceId/spanId가 항상 비어있었음
 
-가장 먼저 나온 리포트는 "gateway 로그엔 traceId/spanId가 아예 안 찍히는데 mediation은 잘 찍힌다"였다. 원인은 `TraceContextFilter`에 준 `@Order(Ordered.HIGHEST_PRECEDENCE)`였다. Spring Boot Actuator가 `micrometer-tracing-bridge-otel` + `spring-boot-starter-actuator` 조합만 있으면(OTel javaagent 없이도) 자동 등록하는 tracing용 WebFilter가 요청마다 span을 만드는데, 내가 `TraceContextFilter`를 억지로 제일 먼저 실행시키는 바람에 그 tracing 필터보다 먼저 돌면서 아직 만들어지지도 않은 span을 읽고 있었다.
-
-mediation의 `TraceContextFilter.kt`를 다시 보니 애초에 `@Order`가 없었다 — 기본값(가장 늦게 실행)으로 두면 tracing 필터가 span을 만든 다음에 실행되니 문제가 없었던 거다. 동일하게 `@Order`를 제거했다.
-
-여기서 나온 질문이 하나 있었다 — "그럼 `spring.reactor.context-propagation: auto`도 필요한 거 아니냐"는 것. 확인해보니 맞았다. gateway의 `application-stg.yml`에는 이 설정이 빠져 있었다(mediation엔 있었음). tracing 필터가 만든 span이 WebFilter 체인 안의 스레드/비동기 경계를 못 넘어가면 그다음 필터에서 `Span.current()`가 비어버릴 수 있어서, mediation과 동일하게 추가했다.
+가장 먼저 나온 리포트는 "gateway 로그엔 traceId/spanId가 아예 안 찍히는데 mediation은 잘 찍힌다"였다. gateway의 `application-stg.yml`에 `spring.reactor.context-propagation: auto` 설정이 빠져 있었다(mediation엔 있었음). tracing 필터가 만든 span이 WebFilter 체인 안의 스레드/비동기 경계를 못 넘어가면 그다음 필터에서 `Span.current()`가 비어버리기 때문. mediation과 동일하게 추가해서 해결.
 
 ### 2. gateway의 traceId가 mediation으로 안 이어짐
 
 두 가지를 고치고 나니 gateway 자체 로그는 정상이었는데, gateway가 stock-mediation으로 보낸 요청의 traceId가 mediation 쪽에서는 완전히 다른 값으로 찍혔다. mediation의 ACCESS 로그를 보면 요청 헤더 안에 `traceparent`가 **두 개** 들어있었다 — 하나는 gateway 자신이 로그에 찍는 값과 일치했고, 다른 하나는 mediation이 새로 만든, gateway와는 무관한 값이었다.
 
-원인은 `MciToRestURIFilter`였다.
+원인은 POST 요청을 받아 새로운 RESTful 요청(GET, POST, PUT, DELETE, PATCH)으로 매핑하는 필터였다.
 
 ```java
 ServerHttpRequest newServerHttpRequest = exchange.getRequest().mutate()
@@ -110,10 +104,6 @@ public HttpHeaders getModifiedHeaders(ServerWebExchange exchange, JsonNode kBank
 ```
 
 손대지 않는 헤더는 원본 그대로 남고, 중복될 헤더만 정확히 한 벌로 덮어써지는 방식.
-
-## 곁다리 — javaagent 대신 eBPF(Beyla)
-
-이 과정에서 확인한 것 중 하나: 사내 인프라가 더 이상 OTel javaagent를 안 쓴다는 것. mediation/gateway의 Dockerfile엔 여전히 `-javaagent:opentelemetry-javaagent.jar`가 붙어있지만, 실제로는 더 이상 그 경로로 배포되지 않고 eBPF 기반 관측 도구(Beyla)로 전환됐다고 한다. 처음엔 이게 `Span.current()` 메커니즘 자체를 깨는 줄 알고(eBPF는 프로세스 밖에서 관측하는 방식이라 앱 코드에 아무것도 안 심어준다) `traceparent` 헤더를 직접 파싱/발급하는 방식으로 갈아타려고 했는데, mediation이 javaagent 없이도 이미 잘 동작한다는 확인을 받고 원래 방식(`Span.current()` 기반)으로 되돌렸다. `micrometer-tracing-bridge-otel` + `spring-boot-starter-actuator` 조합은 Spring Boot Actuator 자체의 tracing 자동설정만으로 span을 만들기 때문에, javaagent/eBPF 유무와 무관하게 독립적으로 동작한다 — 이걸 짚어보지 않았으면 애먼 방향으로 더 갈아탈 뻔했다.
 
 ## 정리
 

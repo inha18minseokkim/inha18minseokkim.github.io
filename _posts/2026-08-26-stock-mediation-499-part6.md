@@ -18,17 +18,15 @@ category:
 
 ## 로그 포맷부터 다시 잡음
 
-`[traceId=~,spanId=~]` 이렇게 대괄호로 앞에 붙이고, 기존에 `[ACCESS]` 문자열로 박아넣던 걸 `kbankSeverity=P9`(기본값), `kbankLogType=ACCESS_LOG`/`APPLICATION_LOG`로 바꿔달라는 요청을 받음. 근데 이게 그냥 로그 앞에 문자열 몇 개 더 붙이는 문제가 아니었던 게, 5부에서 짠 Proxy는 로그 메시지 자체를 JSON으로 감싸고 있었어서(`{"message": "..."}`) 이 구조로는 "본문 그대로 찍히면서 앞에 메타정보만 붙는" 요구사항을 못 맞춤.
+`[traceId=~,spanId=~]` 이렇게 대괄호로 앞에 붙이는 요청을 받음. 근데 5부에서 짠 Proxy는 로그 메시지 자체를 JSON으로 감싸고 있었어서(`{"message": "..."}`) 이 구조로는 "본문 그대로 찍히면서 앞에 메타정보만 붙는" 요구사항을 못 맞춤.
 
-거기다 AccessLog랑 ApplicationLog를 다르게 가야 한다는 피드백도 왔음 — AccessLog는 필드가 많은 구조화 로그니까 JSON으로 찍는 게 검색/파싱에 맞고, ApplicationLog는 그냥 본문을 바로 찍는 게 맞다고. 즉 "LoggerFactory에서 무조건 JSON으로 나가게 하지 말고, AccessLog 찍는 `LoggingWebFilter`에서 그 객체만 JSON화하면 된다"는 것.
-
-이 두 가지를 반영하려니 kbankSeverity/kbankLogType을 로그 메시지 문자열에 끼워넣는 방식 자체가 안 맞았음. 그래서 이걸 `LoggerFactory`가 아니라 **logback 패턴 레벨**로 옮김:
+그래서 traceId/spanId 주입 로직을 `LoggerFactory`가 아니라 **logback 패턴 레벨**로 옮김:
 
 ```
-[traceId=%X{traceId},spanId=%X{spanId}] %logger : kbankSeverity=%X{kbankSeverity:-P9} kbankLogType=%X{kbankLogType:-APPLICATION_LOG} %m
+[traceId=%X{traceId},spanId=%X{spanId}] %logger : %m
 ```
 
-`%X{key:-default}` 문법(Logback 전용, 5부에서 Log4j2랑 헷갈려서 삽질했던 그 문법)을 여기서도 그대로 씀. 기본값은 패턴이 알아서 채워주고, `LoggingWebFilter`가 ACCESS_LOG 찍을 때만 `MDC.put(KBANK_LOG_TYPE_MDC_KEY, "ACCESS_LOG")`로 그 한 줄만 override하고 `finally`에서 지움. `LoggerFactory`는 다시 원래대로 얇아짐 — `infoLog`/`warnLog`/`errorLog`가 그냥 본문 문자열(+예외는 Throwable 그대로 넘겨서 `%wEx`가 스택트레이스 붙이게)만 넘기는 헬퍼로 돌아옴.
+`LoggerFactory`는 다시 원래대로 얇아지고, Reactive ↔ MDC 간 연동은 `Slf4JEventListener`가 담당하는 구조로 정리됨.
 
 ## Proxy 걷어내고 GlobalExceptionHandler에도 확장
 
@@ -57,7 +55,7 @@ fun <T> Context.restoring(block: () -> T): T {
 
 ## 근데 이게 정확히 무슨 원리로 되는거임?
 
-여기서부터는 코드 안 고치고 순수하게 원리를 다시 짚어본 구간. 나온 질문들을 순서대로 정리함.
+나의 순수한 궁금증을 클로드를 통해 문답으로 정리함.
 
 ### "OTel이 정보를 가져갈 때 MDC 정보를 가져가는거 아니냐"
 
@@ -85,13 +83,13 @@ logback 패턴이 MDC 기반이니까, 아예 `LoggerFactory` 쪽에서 Coroutin
 
 ### "CoroutineContext propagate 랑 비슷한 맥락인데, 왜 로그 찍을 때 traceId가 안보이는거?"
 
-여기서 진짜 핵심 구조 차이를 짚었음. Reactor의 자체 `Context`(KbankContext가 쓰는 것)는 Subscriber/subscription 관계를 타고 흐르는 거라 스케줄러 hop이랑 무관하게 안전한데, OTel의 `io.opentelemetry.context.Context`는 근본적으로 **ThreadLocal 기반**이라서 스레드가 바뀔 때마다 명시적으로(혹은 `context-propagation: auto`로 자동) 다시 부착해줘야 함. CoroutineContext는 `Continuation` 객체 자체가 스레드 hop과 무관하게 값을 들고 다니는 구조인데, OTel Context는 그런 보장이 전혀 없는 것 - 이 차이가 지금까지의 모든 삽질의 뿌리였다.
+Reactor의 자체 `Context`(KbankContext가 쓰는 것)는 Subscriber/subscription 관계를 타고 흐르는 거라 스케줄러 hop이랑 무관하게 안전한데, OTel의 `io.opentelemetry.context.Context`는 근본적으로 **ThreadLocal 기반**이라서 스레드가 바뀔 때마다 명시적으로(혹은 `context-propagation: auto`로 자동) 다시 부착해줘야 함. CoroutineContext는 `Continuation` 객체 자체가 스레드 hop과 무관하게 값을 들고 다니는 구조인데, OTel Context는 그런 보장이 전혀 없는 것 - 이 차이가 지금까지의 모든 삽질의 뿌리였다.
 
 ## 그러다 나온 아이디어
 
 "내부에서 만들어지는 호출은 헤더에 traceId가 없어서 못 쓴다고 했는데, 게이트웨이에서 받은 요청은 traceId가 있잖아. 그러면 WebFlux/WebFilter에서 요청을 받는 시점에 OTel Context를 까서 그 값을 CoroutineContext에 넣어두면 되는 거 아니냐"
 
-이게 그 동안 나온 질문들을 다 관통하는 답이었음. `Span.current()`는 WebFilter 진입 시점엔 항상 유효하다는 걸 이미 실측으로 확인해놨고(`LoggingWebFilter`의 `doFinally`도 마찬가지), KbankContext가 이미 이 정확한 패턴(요청 진입 시점에 값 하나 읽어서 Reactor Context → CoroutineContext로 실어두기)을 써서 검증된 상태였다. OTel이 "정확한 값을 어디서 읽어야 하는지"를 알려주고, CoroutineContext가 "그 값을 어디까지 들고 다닐지"를 책임지는 조합.
+AI를 통해 빠른 검색을 하면서 아이디어들을 모으다 보니 이런 생각이 들었다. `Span.current()`는 WebFilter 진입 시점엔 항상 유효하다는 걸 클로드 시켜서 확인해놨고(`LoggingWebFilter`의 `doFinally`도 마찬가지), KbankContext가 이미 이 정확한 패턴(요청 진입 시점에 값 하나 읽어서 Reactor Context → CoroutineContext로 실어두기)을 써서 검증된 상태였다. OTel이 "정확한 값을 어디서 읽어야 하는지"를 알려주고, CoroutineContext가 "그 값을 어디까지 들고 다닐지"를 책임지는 조합.
 
 ```kotlin
 // WebFilter 진입 시점에 딱 한 번
@@ -127,19 +125,20 @@ traceId=281a7c04cc196189591dd34eca4842d0,spanId=dc89c6a7ddf3c9b3  ← GlobalExce
 - OTel Context → MDC라는 방향, CoroutineContext(Continuation 자체가 들고 다님) vs OTel Context(ThreadLocal, 매 hop마다 재부착 필요)라는 구조 차이를 짚고 나니 답이 나왔음
 - 결론: 요청 진입 시점에 `Span.current()`를 딱 한 번 읽어서 CoroutineContext로 실어두면, 그 뒤로는 캡처/복원 없이 어디서든 안전하게 꺼내 씀 - KbankContext가 이미 쓰던 패턴 그대로
 
-같은 문제를 두고 "MDC를 억지로 채우는 법"을 찾다가 "애초에 MDC 말고 더 안전한 곳에 값을 실어두면 되지 않나"로 질문 자체가 바뀐 게 이번 편의 진짜 포인트인 것 같다. 처음부터 이렇게 짰으면 5부의 Proxy 삽질도 없었을 텐데.. 근데 그 삽질 없이 바로 이 결론에 도달했을 것 같지도 않고.
+같은 문제를 두고 "MDC를 억지로 채우는 법"을 찾다가 "애초에 MDC 말고 더 안전한 곳에 값을 실어두면 되지 않나"로 생각이 바뀐 게 이번 편의 핵심이었다. 처음부터 이렇게 짰으면 5부의 Proxy 삽질도 없었을 텐데.. 근데 그 삽질 없이 바로 이 결론에 도달했을 것 같지도 않고.
 
 ## 그리고 며칠 뒤 — PR #5는 닫고 #7을 남기기로
 
-포스팅 올리고 며칠 지나서, 4~6부에서 다룬 OTel Context capture-restore 방식(PR #5)이랑 이번 편에서 새로 짠 CoroutineContext 방식(PR #7)을 나란히 놓고 "뭐가 더 낫다고 생각하냐"는 질문을 받았다. 실제 diff랑 커밋 히스토리까지 다시 열어보고 정리한 결론.
+대충 구현해놓고 다른 일 하다가, 4~6부에서 다룬 OTel Context capture-restore 방식(PR #5)이랑 이번 편에서 새로 짠 CoroutineContext 방식(PR #7)을 나란히 놓고 뭐가 더 낫냐고 내가 고민했다. 장단점 비교.
 
 **PR #5 (OTel Context capture-restore)**
 - 장점: Micrometer/OTel 표준 스택이라, 나중에 진짜 분산 트레이싱 백엔드(Zipkin/Tempo 등)에 span을 export하거나 span 트리·downstream latency 자동 계측이 필요해지면 그 투자를 그대로 이어갈 수 있다.
-- 단점: "자동 전파"라는 전제 자체가 실측으로 여러 번 깨졌다 — Reactor 시그널 사이 구간에서 MDC가 비는 문제(5부), `.timeout()` 재시도로 스케줄러가 `Schedulers.parallel()`로 넘어갈 때 `context-propagation:auto` 적용 대상에서 아예 빠지는 문제(6부 초반), `makeCurrent()`가 스코프 재부착 이벤트에 기대다가 스레드가 안 바뀐 경우엔 no-op으로 조용히 실패하는 문제(6부 후반). 커밋 7개 중 절반 가까이가 "안 찍히던 문제 수정"이었다 — 새 스케줄러 hop이 하나 더 생기면 또 같은 클래스의 버그가 날 수 있다는 게 구조적 리스크로 남는다.
+- 단점: 구현하다보니 안 되는 곳이 많았다 — Reactor 시그널 사이 구간에서 MDC가 비는 문제(5부), `.timeout()` 재시도로 스케줄러가 `Schedulers.parallel()`로 넘어갈 때 `context-propagation:auto` 적용 대상에서 아예 빠지는 문제(6부 초반), `makeCurrent()`가 스코프 재부착 이벤트에 기대다가 스레드가 안 바뀐 경우엔 no-op으로 조용히 실패하는 문제(6부 후반). 커밋 7개 중 절반 가까이가 "안 찍히던 문제 수정"이었다 — 언젠가 나 포함 누군가가 스코프 밖의 스레드나 태스크에 작업을 할당하면 문제가 생길 것이다.
 
 **PR #7 (CoroutineContext)**
-- 장점: suspend 함수 체인이라 컴파일러가 CoroutineContext 전달을 강제한다 — "전파가 빠지는 경로" 자체가 존재할 수 없다. 실측으로 버그를 찾아 패치한 이력이 없다(설계 자체가 그 클래스의 버그를 배제).
-- 단점: suspend 전파의 blast radius가 있다 — `WebClientManager`의 `*WithoutKbankContext` 3종, `EtfService`/`ListedStockService`/`OverseasStockService`의 `*ForJob()` 메서드, `ProductJob`/`PriceJob`까지 총 9개 파일을 건드려야 했고, 순수 Reactor 체인(`Flux.interval().flatMap{}`)과의 경계에서 `mono{}`/`awaitSingle()`로 다리를 놓다 보니 `ProductJob`/`PriceJob`의 실행 스케줄러가 `boundedElastic`에서 `Dispatchers.Default`로 바뀌는 부수효과도 생겼다(지금은 순수 non-blocking WebClient 호출뿐이라 무해하지만, 나중에 블로킹 코드가 들어가면 다시 봐야 함).
+- 장점: suspend 함수 체인이라 컴파일러가 CoroutineContext 전달을 강제한다 — "전파가 빠지는 경로" 자체가 존재할 수 없다.
+- 단점: suspend 함수로 다 바꿔야 하다보니 영향도가 있다 — `WebClientManager`의 `*WithoutKbankContext` 3종, `EtfService`/`ListedStockService`/`OverseasStockService`의 `*ForJob()` 메서드, `ProductJob`/`PriceJob`까지 총 9개 파일을 건드려야 했고, 순수 Reactor 체인(`Flux.interval().flatMap{}`)과의 경계에서 `mono{}`/`awaitSingle()`로 다리를 놓다 보니 `ProductJob`/`PriceJob`의 실행 스케줄러가 `boundedElastic`에서 `Dispatchers.Default`로 바뀌는 부수효과도 생겼다(지금은 순수 non-blocking WebClient 호출뿐이라 무해하지만, 나중에 블로킹 코드가 들어가면 다시 봐야 함). 그냥 suspend로 다 바꿨다. 아 이래서 사람들이 suspend 쓰면 다 suspend 써야 하는구나를 뼈저리게 느꼈다.
+- 단점: 확장성이 없다. 지금 이건 순수 로그를 찍기 위한 목적으로 코루틴 컨텍스트에 박아넣는 건데, 나중에 어떤 개발자(미래 다른 시간속의 나 포함)가 "어 여기는 MDC 전파 되네?" 하고 MDC 기반으로 되어있는 어떤 기능을 이식하는 순간 개판오분전이 될 것 같아서 좀 우려스럽다.
 
 지금 이 서비스가 필요한 건 "요청 하나에 대해 로그들이 같은 traceId로 묶이는 것"이지 진짜 분산 트레이싱 백엔드 연동은 아니라서, 정확성이 라이브러리의 자동전파 가정이 아니라 언어 차원에서 보장되는 PR #7 쪽에 손을 들어줬다. PR #5는 코멘트로 근거를 남기고 닫고, PR #7을 `master`에 머지했다.
 
