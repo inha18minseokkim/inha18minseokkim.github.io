@@ -274,6 +274,16 @@ title: "만 26세, 토허제 구역에서 아파트 산 이야기"
 title: 만 26세, 토허제 구역에서 아파트 산 이야기
 ```
 
+**예외 — 제목에 `: ` (콜론+공백)이 들어가면 반드시 처리할 것.** 따옴표 없이 `: `가 있으면 YAML 매핑 구분자로 오인돼 frontmatter 파싱이 깨지고, 포스팅 title이 사라지고 날짜도 오늘 날짜로 fallback된다. `: `는 em dash(`—`)로 대체하는 게 기본.
+
+```yaml
+# 깨짐 — ": " 가 YAML 매핑으로 오인됨
+title: Java Committed Memory 부제 : 메모리가 왜 계속 증가함?
+
+# OK — em dash로 대체
+title: Java Committed Memory — 메모리가 왜 계속 증가함?
+```
+
 ---
 
 ## Git 워크플로우
