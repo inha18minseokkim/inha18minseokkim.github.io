@@ -290,19 +290,16 @@ title: Java Committed Memory — 메모리가 왜 계속 증가함?
 
 ### 배경
 
-맥북(집)과 서피스(회사) 두 기기에서 작업하며, `minseokkim/` 전체가 Google Drive로 동기화된다. `.git` 데이터는 `~/.gitdirs/blog/`에 분리되어 있어 Drive 동기화 대상이 아니다. Drive 안의 `.git`은 8바이트 pointer 파일이라 동기화가 일어나도 충돌이 없다.
+맥북(집)과 서피스(회사) 두 기기에서 작업한다. 예전엔 `minseokkim/` 폴더 전체를 Google Drive로 동기화했는데, `.git`까지 같이 동기화되면서 두 기기 간 `.git 2/` 충돌 복사본이 생기는 문제가 있었음. `.git`을 Drive 밖으로 분리하는 우회로 막아뒀었는데, 지금은 **Syncthing으로 `_posts/` 폴더만 동기화**하는 방식으로 바꿈. `.git`은 애초에 동기화 대상이 아니라서 더 이상 분리할 필요 없이 각 기기에 그냥 로컬로 둠.
 
 ```
-Drive 동기화 폴더/
-└── minseokkim/        ← Drive로 자동 동기화
-    ├── .git           ← "gitdir: ~/.gitdirs/blog" pointer 파일 (8바이트)
-    ├── _posts/        ← 서피스에서 편집하면 Drive 경유 자동 반영
-    └── ...
-
-~/.gitdirs/blog/       ← 실제 git 데이터 (Drive 밖, 맥북 로컬)
+맥북                                서피스
+├── .git/     (로컬, 기기별 독립)   ├── .git/     (로컬, 기기별 독립)
+├── _posts/   ⇄  Syncthing  ⇄      ├── _posts/
+└── ...                            └── ...
 ```
 
-서피스에서 `_posts/` 수정 → Drive 자동 동기화 → 맥북 working tree 즉시 반영 → `git status`에 바로 뜸.
+서피스에서 `_posts/` 수정 → Syncthing이 맥북 `_posts/`에 반영 → 맥북 `git status`에 바로 뜸.
 
 ### 브랜치 전략
 
