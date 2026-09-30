@@ -1,5 +1,5 @@
 ---
-title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 이슈에서 코루틴까지
+title: stock-mediation 499 트레이싱 삽질 (1부) — idle 커넥션 이슈에서 코루틴까지
 date: 2026-08-17
 tags:
   - Spring
@@ -23,7 +23,7 @@ Grafana Tempo 트레이스에 `499 connection prematurely closed BEFORE response
 
 ## 최초 증상
 
-관측 도구는 Grafana Tempo(트레이스)와 Loki(stdout 로그).
+도구는 Grafana Tempo(트레이스)와 Loki(stdout 로그).
 
 stock-mediation이 downstream 서비스들을 호출할 때 `499 connection prematurely close BEFORE response`가 반복적으로 찍힘. 처음엔 이걸 전형적인 **idle 커넥션 race** 문제로 봤다 — 커넥션 풀에 남아있던 idle 커넥션을, 다운스트림 LB/nginx이 자기 idle timeout으로 이미 끊어버린 뒤에 클라이언트가 그걸 모르고 재사용하는 패턴.
 
@@ -68,7 +68,7 @@ spring:
           eviction-interval: 20s
 ```
 
-재기동 직후엔 499가 잠깐 없다가, **얼마 안 가 다시 몰려서 발생**. idle-timeout 가설이 맞다면 설정 반영 직후부터 효과가 있어야 하는데, 재기동 후 잠깐 조용하다가 다시 터지는 패턴은 이 가설로 설명이 안 된다는 걸 여기서 처음 인지했다.
+재기동 직후엔 499가 잠깐 없다가, 얼마 안 가 다시 몰려서 발생한다. idle-timeout 가설이 맞다면 설정 반영 직후부터 효과가 있어야 하는데, 재기동 후 잠깐 조용하다가 다시 터지는 패턴은 이 가설로 설명이 안 된다는 걸 여기서 처음 인지했다.
 
 ---
 
@@ -99,15 +99,15 @@ coroutineScope {
 
 `InvestingHomeController.kt`의 모든 `coroutineScope { }` → `supervisorScope { }`로 변경. 형제 하나가 실패해도 나머지 형제는 계속 실행되도록.
 
-### 근데 트레이스가 이걸 반박함
+### 아님
 
-클로드가 세운 가설인데, 코드 원작자인 내가 두 가지를 정정했다.
+클로드가 세운 가설인데, 코드 원작자인 내가 봤을때는 아니었다.
 
 첫째, `tryCatchAsync`가 필수 데이터 없을 때 500을 주는 건 **의도된 설계**임. 그게 문제가 아니다.
 
 둘째가 결정적이었는데 — 실제 트레이스를 보면 detail/rank 등 **다른 엔드포인트**에서도 똑같이 "정상 호출들 중 딱 하나만 499, 나머지는 전부 정상"이 **100%** 관측된다. 이 이론이 맞다면 "진짜 원인이 된 실패 호출(에러 상태) + 그로 인해 끊긴 희생자(499)"가 최소 2개는 트레이스에 같이 찍혀야 한다. 근데 실제로는 **원인이 될 만한 실패가 트레이스 어디에도 없이 499 하나만 단독으로** 나온다.
 
-이론이 틀렸다. `InvestingHomeController.kt` `coroutineScope`로 원복.
+이론이 틀렸다. `InvestingHomeController.kt` `coroutineScope`로 원복했다.. supervisorScope가 여기서 필요한 이유는 없었따.
 
 ---
 

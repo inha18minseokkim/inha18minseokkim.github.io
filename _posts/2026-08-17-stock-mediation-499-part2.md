@@ -1,5 +1,5 @@
 ---
-title: stock-mediation 499 트레이싱 일대기 (2부) — 커넥션 풀 고갈과 여러 이슈들
+title: stock-mediation 499 트레이싱 삽질 (2부) — 커넥션 풀 고갈과 여러 이슈들
 date: 2026-08-17
 tags:
   - Spring
@@ -17,9 +17,9 @@ category:
 
 ---
 
-## 재시도 로직에 계측 추가
+## 재시도 로직에 로그 추가
 
-뭔가를 고치기 전에, 먼저 현상을 제대로 관측할 수 있는 장치를 달았다. `WebClientManager.kt`의 `PREMATURE_CLOSE_RETRY` 재시도 로직에 `.doBeforeRetry { }` 로그를 추가해서, 재시도가 실제로 발동하면 `[WebClientManager][retry]` 로그가 남도록.
+뭔가를 고치기 전에, 먼저 현상을 제대로 관측할 수 있는 장치를 달았다. `WebClientManager.kt`의 `PREMATURE_CLOSE_RETRY` 재시도 로직에 `.doBeforeRetry { }` 로그를 추가해서, 재시도가 실제로 발동하면 `[WebClientManager][retry]` 로그가 남도록 했다.
 
 이후 발생한 499 건들에서 `[WebClientManager][retry]` 로그는 **총 1건만** 나왔다. 진짜 `PrematureCloseException`이 우리 코드 레이어까지 올라오는 경우는 극히 드물다는 거다. 499가 Tempo에는 계속 찍히는데 애플리케이션 로그에는 거의 안 남는다 — 이것도 나중에 중요한 단서가 된다.
 
@@ -27,7 +27,7 @@ category:
 
 ## 커넥션 풀 고갈 발견
 
-그냥 목표 TPS 테스트가 아니라 **의도적으로 시스템을 터뜨릴려고** 부하 테스트를 수행하다가 앱 로그에서 우연히 발견한 에러.
+그냥 목표 TPS 테스트가 아니라 **의도적으로 시스템을 터뜨릴려고** 부하 테스트를 수행하다가 앱 로그에서 우연히 발견한 에러다
 
 ```
 [getList] pending acquire queue has reached its maximum size of 32
@@ -35,11 +35,11 @@ category:
 
 Reactor Netty의 `PoolAcquirePendingLimitException` — **커넥션 풀 자체가 부족해서 대기열까지 꽉 찬 상황**이다. 499랑은 별개지만 모르고 있었던 이슈.
 
-원인을 추적했다. `WebClientConfig.kt`에서 `ConnectionProvider.builder(...)`에 `maxConnections`를 명시하지 않아서 Reactor Netty 기본값인 `Runtime.availableProcessors() * 2`를 쓰고 있었다. 그리고 이 기본값은 **다운스트림 host별로 적용**된다.
+원인을 추적했다. `WebClientConfig.kt`에서 `ConnectionProvider.builder(...)`에 `maxConnections`를 명시하지 않아서 Reactor Netty 기본값인 `Runtime.availableProcessors() * 2`를 쓰고 있었다. 그리고 이 기본값은 **다운스트림 host별로 적용**된다고 한다.
 
 k8s 환경에서 JVM이 파드의 CPU limit이 아니라 **노드 전체 코어 수**를 인식하는 경우가 흔한데, 그러면 이 기본값이 실제 동시 호출량 대비 지나치게 작거나 예측 불가능하게 잡힌다. 그리고 풀이 작으면 커넥션이 과도하게 재사용되면서 서버(Tomcat) 쪽의 `maxKeepAliveRequests`(요청 횟수 기반 keep-alive 한도)에 먼저 걸려서 서버가 끊을 수 있다. 이건 idle 시간과 **무관**하기 때문에 `maxIdleTime` 튜닝으로는 막을 수 없다 — 애초에 다른 종류의 문제였던 거.
 
-지금까지 이 이슈가 안 터진 건, 클라이언트 사이드 캐싱 요청도 있었고 서버사이드에서도 처리성 업무 제외하고 캐싱을 하고 있었어서 실제 동시 요청이 그렇게 많지 않았던 것. 부하가 좀 심한 상황이었으면 진작 터졌을 이슈.
+지금까지 이 이슈가 안 터진 건, 클라이언트 사이드 캐싱 요청도 있었고 서버사이드에서도 처리성 업무 제외하고 캐싱을 하고 있었어서 실제 동시 요청이 그렇게 많지 않았던 것. 부하가 좀 심한 상황이었으면 진작 터졌을 것이다.
 
 [Reactor Netty 공식 FAQ](https://projectreactor.io/docs/netty/release/reference/faq.html)에도 499 디버깅 체크리스트로 "서버의 최대 keep-alive 요청 수 제한"을 명시적으로 언급하고 있다.
 
@@ -117,7 +117,7 @@ logging:
 
 ## 캐시/스케줄 잡 이슈인가
 
-`Price.domestic[...]` 같은 캐시성 데이터를 쓰는 `getLatestPriceCached` 계열도 살펴봤는데, 내부를 보면 순수 인메모리 조회(`Price.domestic[key] ?: raise(...)`)라서 **네트워크 호출 자체가 없다.** 애초에 499 스팬이 생길 수 없음.
+`Price.domestic[...]` 같은 캐시성 데이터를 쓰는 `getLatestPriceCached` 계열도 살펴봤는데, 내부를 보면 순수 인메모리 조회(`Price.domestic[key] ?: raise(...)`)라서 **네트워크 호출 자체가 없다.** 애초에 499 span이 생길 수 없음.
 
 클로드가 `Flux.interval`로 구현된 Job도 의심했는데, 내부 보면 네트워크 호출이 없다고 정정했음.
 
