@@ -73,10 +73,6 @@ logback 패턴이 MDC 기반이니까, 아예 `LoggerFactory` 쪽에서 Coroutin
 
 4부/5부에서 계속 봐온 그 499랑 이번 MDC 문제가 같은 뿌리 아니냐는 질문. 무관하다고 결론. 지금 붙인 Micrometer 트레이싱 브릿지는 OTLP exporter가 설정 안 돼있어서, span이 로컬 JVM 안에서만 만들어졌다 사라짐 - 어디로도 안 나감. Tempo에 찍히는 499는 여전히 4부에서 다룬 eBPF(Beyla) 관측 노이즈일 확률이 훨씬 높음.
 
-### "OTel의 span 부모-자식 연결도 결국 Span.current() 기반이면, exporter 나중에 붙이면 이것도 같이 끊기는거 아니냐"
-
-로깅 말고 진짜 span 자체의 parent-child 연결도 같은 `Span.current()`/ThreadLocal 메커니즘을 쓰니까, 나중에 exporter를 실제로 붙이면 지금 겪은 것과 똑같은 스레드 hop 문제로 span 트리 자체가 끊길 수 있는 거 아니냐는 지적. 맞는 얘기고, 지금 당장 겪는 문제는 아니지만 exporter를 붙이는 순간 진짜 리스크가 되는 부분. 이것도 나중에 신경 써야 할 것으로 남겨둠.
-
 ### "그 두 의존성 정말 로그 찍으려고 넣은거임?"
 
 `micrometer-registry-prometheus`, `micrometer-tracing-bridge-otel` 이 두 개가 결국 로그 찍는 용도로만 쓰인 거 아니냐는 질문. `micrometer-registry-prometheus`는 메트릭 전용이라 로깅이랑 무관하고, `micrometer-tracing-bridge-otel`은 실제로 진짜 OTel SDK를 붙여서 인바운드 `traceparent` 파싱 + 아웃바운드 주입까지 다 하는 물건임 - 지금 로컬 상태에선 exporter가 없어서 눈에 보이는 효과가 로그뿐인 거지, "원래 로깅용"은 아니라고 정정.
@@ -89,7 +85,7 @@ Reactor의 자체 `Context`(사내 컨텍스트 연동에 쓰는 것)는 Subscri
 
 "내부에서 만들어지는 호출은 헤더에 traceId가 없어서 못 쓴다고 했는데, 게이트웨이에서 받은 요청은 traceId가 있잖아. 그러면 WebFlux/WebFilter에서 요청을 받는 시점에 OTel Context를 까서 그 값을 CoroutineContext에 넣어두면 되는 거 아니냐"
 
-AI를 통해 빠른 검색을 하면서 아이디어들을 모으다 보니 이런 생각이 들었다. `Span.current()`는 WebFilter 진입 시점엔 항상 유효하다는 걸 클로드 시켜서 확인해놨고(`LoggingWebFilter`의 `doFinally`도 마찬가지), 이 패턴은 사내 컨텍스트 연동 방식에서 이미 검증된 패턴이었다. OTel이 "정확한 값을 어디서 읽어야 하는지"를 알려주고, CoroutineContext가 "그 값을 어디까지 들고 다닐지"를 책임지는 조합.
+AI를 통해 빠른 검색을 하면서 아이디어들을 모으다 보니 이런 생각이 들었다. `Span.current()`는 WebFilter 진입 시점엔 항상 유효하다는 걸 클로드 시켜서 확인해놨고(`LoggingWebFilter`의 `doFinally`도 마찬가지), 이 패턴은 사내 컨텍스트 연동 방식에서 사용하고 있던 패턴이었다. 그래서 부담없이 기존 필터와 비슷한 필터 하나를 더 만들고 중단함수를 만들었다.
 
 ```kotlin
 // WebFilter 진입 시점에 딱 한 번
@@ -107,16 +103,16 @@ suspend fun currentTraceInfo(): TraceInfo? =
 
 ## 실제로 짜서 검증까지 함
 
-이 아이디어를 master에서 새 브랜치 파서 그대로 구현함. `WebClientManager`/`CoroutineUtil`의 catch 블록에서 `Context.current()` 캡처 + `restoring{}` 하던 걸 전부 `withTraceMdc { currentTraceInfo() }` 호출로 바꿨고, `GlobalExceptionHandler.handleRunTimeException`도 `suspend fun`으로 바꿔서 같은 걸 쓰게 함(Spring WebFlux가 `@ExceptionHandler` suspend fun도 컨트롤러 메서드랑 같은 경로로 지원한다는 것도 이번에 확인함). `async{}`로 넘어갈 때 미리 캡처해두는 코드가 통째로 없어짐 - CoroutineContext는 자식 코루틴한테 자동으로 상속되니까 그럴 필요가 아예 없어짐.
+이 아이디어를 새 브랜치 파서 그대로 구현함. `WebClientManager`/`CoroutineUtil`의 catch 블록에서 `Context.current()` 캡처 + `restoring{}` 하던 걸 전부 `withTraceMdc { currentTraceInfo() }` 호출로 바꿨고, `GlobalExceptionHandler.handleRunTimeException`도 `suspend fun`으로 바꿔서 같은 걸 쓰게 함(Spring WebFlux가 `@ExceptionHandler` suspend fun도 컨트롤러 메서드랑 같은 경로로 지원한다는 것도 이번에 확인함). `async{}`로 넘어갈 때 미리 캡처해두는 코드가 통째로 없어짐 - CoroutineContext는 자식 코루틴한테 자동으로 상속되니까 그럴 필요가 아예 없어짐.
 
-로컬에서 `bootRun`으로 직접 기동해서 검증함(다운스트림 서비스가 로컬엔 없어서 connection-refused로 실제 에러 경로를 태우는 식으로). ~~그러다 백그라운드로 띄운 프로세스를 못 찾아서 `taskkill /F /IM java.exe`로 눈에 보이는 java 프로세스를 다 죽여버렸는데, 다른 서비스 gradle daemon들까지 같이 죽은 건 안 비밀..~~ 아무튼 결과는:
+로컬에서 `bootRun`으로 직접 기동해서 검증함(다른 서비스가 로컬엔 없어서 connection-refused로 실제 에러 경로를 태우는 식으로). ~~그러다 백그라운드로 띄운 프로세스를 못 찾아서 `taskkill /F /IM java.exe`로 눈에 보이는 java 프로세스를 다 죽여버렸는데, 다른 서비스 gradle daemon들까지 같이 죽은 건 안 비밀..~~ 아무튼 결과는:
 
 ```
 traceId=281a7c04cc196189591dd34eca4842d0,spanId=dc89c6a7ddf3c9b3  ← ACCESS_LOG (LoggingWebFilter)
 traceId=281a7c04cc196189591dd34eca4842d0,spanId=dc89c6a7ddf3c9b3  ← GlobalExceptionHandler
 ```
 
-같은 요청 안에서 서로 완전히 다른 두 경로(하나는 OTel Context 기반, 하나는 CoroutineContext 기반)로 읽은 traceId가 정확히 일치함. 그리고 가장 확인하고 싶었던 케이스 - `WebClientManager.getList`가 `DefaultDispatcher-worker-3`(코루틴 워커 스레드, 요청을 처음 받은 `reactor-http-nio-*`가 아님)로 넘어간 뒤에도 traceId/spanId가 그대로 유지됨. 이게 바로 5부에서부터 계속 쫓아온 "스레드 넘어가면 사라지는" 문제 그 자체라서 제일 중요한 검증 포인트였음.
+같은 요청 안에서 서로 완전히 다른 두 경로(하나는 OTel Context 기반, 하나는 CoroutineContext 기반)로 읽은 traceId가 정확히 일치함. 그리고 가장 확인하고 싶었던 케이스 - `WebClientManager.getList`가 `DefaultDispatcher-worker-3`(코루틴 워커 스레드, 요청을 처음 받은 `reactor-http-nio-*`가 아님)로 넘어간 뒤에도 traceId/spanId가 그대로 유지됨. 그렇게 놀랍지는 않음 그냥 기존 헤더 내용 요청에서 받아서 코루틴 컨텍스트로 전파한거랑 크게 다르지않긴함
 
 ## 정리
 
@@ -129,10 +125,10 @@ traceId=281a7c04cc196189591dd34eca4842d0,spanId=dc89c6a7ddf3c9b3  ← GlobalExce
 
 ## 그리고 며칠 뒤 — PR #5는 닫고 #7을 남기기로
 
-대충 구현해놓고 다른 일 하다가, 4~6부에서 다룬 OTel Context capture-restore 방식(PR #5)이랑 이번 편에서 새로 짠 CoroutineContext 방식(PR #7)을 나란히 놓고 뭐가 더 낫냐고 내가 고민했다. 장단점 비교.
+대충 구현해놓고 다른 일 하다가, 4~6부에서 다룬 OTel Context capture-restore 방식(PR #5)이랑 이번 편에서 새로 짠 CoroutineContext 방식(PR #7)을 나란히 놓고 뭐가 더 나은지 생각을 좀 해봤다(약간 날로먹는게 아닐까 라는 고민이 들어서)
 
 **PR #5 (OTel Context capture-restore)**
-- 장점: Micrometer/OTel 표준 스택이라, 나중에 진짜 분산 트레이싱 백엔드(Zipkin/Tempo 등)에 span을 export하거나 span 트리·downstream latency 자동 계측이 필요해지면 그 투자를 그대로 이어갈 수 있다.
+- 장점: Micrometer/OTel 표준 스택이라, 나중에 진짜 분산 트레이싱 백엔드(Zipkin/Tempo 등)에 span을 export하거나 span 트리·downstream latency 자동 수집이 필요해지면 이 구현을 그대로 이어갈 수 있다.
 - 단점: 구현하다보니 안 되는 곳이 많았다 — Reactor 시그널 사이 구간에서 MDC가 비는 문제(5부), `.timeout()` 재시도로 스케줄러가 `Schedulers.parallel()`로 넘어갈 때 `context-propagation:auto` 적용 대상에서 아예 빠지는 문제(6부 초반), `makeCurrent()`가 스코프 재부착 이벤트에 기대다가 스레드가 안 바뀐 경우엔 no-op으로 조용히 실패하는 문제(6부 후반). 커밋 7개 중 절반 가까이가 "안 찍히던 문제 수정"이었다 — 언젠가 나 포함 누군가가 스코프 밖의 스레드나 태스크에 작업을 할당하면 문제가 생길 것이다.
 
 **PR #7 (CoroutineContext)**

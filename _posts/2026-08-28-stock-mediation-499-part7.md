@@ -29,7 +29,7 @@ category:
 - 라우트에 `.modifyRequestBody`/`.modifyResponseBody`가 각자 독립적인 디코딩 경로를 탐
 - (이 시점엔 아직 있었던) GET premature-close 재시도용 `.retry()`
 
-mediation의 PR #5가 "자동 전파는 새 hop을 만날 때마다 실측으로 빈 값을 찾아 패치해야 한다"는 걸 이미 세 번이나 증명했는데(6부), gateway에서 그 방식을 또 쓰면 같은 클래스의 버그를 더 자주 겪을 게 뻔했다.
+mediation의 PR #5가 "자동 전파는 새 hop을 만날 때마다 빈 값을 찾아 패치해야 한다"는 걸 이미 세 번이나 증명했는데(6부), gateway에서 그 방식을 또 쓰면 같은 클래스의 버그를 더 자주 겪을 게 뻔했다.
 
 ## 그래서 택한 방식: ServerWebExchange attribute
 
@@ -56,7 +56,9 @@ class TraceContextFilter : WebFilter {
 
 **exchange attribute**는 값이 `ServerWebExchange` 객체 하나의 `Map<String, Object>`에 들어있고, 그 객체 참조가 WebFilter/GatewayFilter 체인 전체를 프레임워크가 보장하는 방식으로 넘어간다. 스레드가 몇 번을 넘어가든 상관없는 이유가 애초에 스레드 얘기가 아니기 때문이다 — "이 코드가 `exchange`를 들고 있느냐"의 문제일 뿐이고, WebFlux/SCG 필터 체인에 참여하는 코드는 설계상 전부 `exchange`를 들고 있다. 대신 이건 컴파일러가 강제해주는 게 아니라, "로그를 남기려는 지점이 실제로 `exchange` 파라미터를 받고 있느냐"를 사람이 챙겨야 한다 — 이번에 발견한 버그들 중 하나가 정확히 이 지점(뒤에서 다룸)에서 났다.
 
-정리하면: CoroutineContext는 "언어가 보장하는 전파", exchange attribute는 "프레임워크가 보장하는 참조 공유". 코루틴이 없는 앱에서는 후자가 유일한 선택지였는데, 스레드로컬·코루틴 컨텍스트 같은 기능이 없어서 리액티브 라이브러리에서 제공하는 프레임워크 기능을 활용해야 했던 거고, 결과적으로 mediation이 5~6부 내내 겪은 자동 전파가 안 되는 클래스의 버그 자체가 발생할 수 없는 설계이기도 했다.
+정리하면: CoroutineContext는 "언어가 보장하는 전파", exchange attribute는 "프레임워크가 보장하는 참조 공유". 
+코루틴이 없는 앱에서는 후자가 유일한 선택지였는데, 스레드로컬·코루틴 컨텍스트 같은 기능이 없어서 리액티브 라이브러리에서 제공하는 프레임워크 기능을 활용해야 한다.
+그리고 이 질문이 어리석은 질문인게 그냥 내가 webflux와 coroutine 플러그인을 사용해 자동 전파가 되는 환경에서 개발을 하다보니깐 지금까지 당연히 implementation 딸깍으로 공유된다고 안일하게 생각한거였음;;
 
 ## 실제로 붙이면서 잡은 버그 세 개
 
@@ -114,3 +116,5 @@ public HttpHeaders getModifiedHeaders(ServerWebExchange exchange, JsonNode kBank
 BFF(mediation)서버는 코틀린 코루틴을 활용해서 MDC 로그를 찍었고 SCG는 reactor 스택이므로 spring cloud gateway 프레임워크에서 제공해주는 기능으로 로그를 찍었다.
 
 스레드로컬 기반 MDC를 coroutine이나 Reactor context로 전파시키려니 쉽지 않지만 행내에서 로깅이나 관제 표준이 MDC 기반으로 되어있어 불가피하게 이런 행위를 하였다. 하지만 이 로직들은 단순히 Logback을 concurrent 스택에 호환시킬 목적으로 만든 것이므로 확장성은 없다고 볼 수 있지만, 로그 목적 외에 MDC를 해당 프로젝트에서 쓸 이유가 없기 때문에 일단 이쯤에서 그만하기로 하였다.
+
+그리고 더욱 적극적으로 MDC를 사용하지 않아도 해당 포맷을 준수할 수 있게 포맷을 바꾸는걸 검토하기 시작했다.

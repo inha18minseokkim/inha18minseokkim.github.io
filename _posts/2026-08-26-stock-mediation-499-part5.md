@@ -29,7 +29,7 @@ DIAGNOSTIC span=ImmutableSpanContext{traceId=4c7843b28c44457d38eb3e0e90c491a3, .
 DIAGNOSTIC MDC.get(traceId)=null
 ```
 
-`Span.current()`(OTel 원시 API)는 정확한 값을 주는데 `MDC.get("traceId")`는 `null`. 리포트 그대로 재현됨. 여기서부터 가설을 하나씩 세우고 지웠다:
+`Span.current()`(OTel API)는 정확한 값을 주는데 `MDC.get("traceId")`는 `null`. 리포트 그대로 재현됨. 여기서부터 가설을 하나씩 세우고 지웠다:
 
 | 가설 | 확인 결과 |
 |---|---|
@@ -88,3 +88,7 @@ traceId=afbcc821ad0d479c85b3ffc1b7de1904 spanId=e6516a9945f0074f ... [ACCESS] {.
 - 결국 MDC가 채워지길 기다리지 않고 로그 시점마다 `Span.current()`를 직접 읽는 쪽으로 우회
 
 에이전트 없이 순수 Micrometer로 트레이싱 계측할 때 이런 "MDC는 signal 단위로만 잠깐 채워진다"는 게 생각보다 덜 알려진 함정인 것 같다. 검색해봐도 딱 이 케이스로 정리된 글을 못 찾았는데.. 다음에 비슷한 거 또 겪으면 바로 `Span.current()` 직접 읽는 쪽으로 갈 듯.
+
+
+그리고 로그 포맷을 좀 유동적으로 만들어서 MDC를 사용하지 않는 방법을 검토해보는 중이다..
+현재 위치상 [traceId,spanId] 이 부분만 뒤로 옮기면 될듯..
