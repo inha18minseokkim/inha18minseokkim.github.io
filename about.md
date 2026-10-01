@@ -82,13 +82,18 @@ permalink: /about
             </div>
 
             <div class="about-proj-item">
-              <p class="about-proj-title">게임 센터 서비스 개발 <span class="about-exp-period">(2026.04 ~ 진행 중)</span></p>
+              <p class="about-proj-title">게임 센터 서비스 개발 <span class="about-exp-period">(2026.04 ~ 2026.07)</span></p>
               <p class="about-exp-tech">Java 21, Spring Boot, Spring Data JDBC, Debezium(CDC), Kafka</p>
               <ul class="about-exp-desc">
                 <li><strong>Virtual Thread 및 Spring Data JDBC 도입:</strong> JDK 21의 Virtual Thread와 헥사고날 아키텍처에 적합한 Spring Data JDBC로 기술 스택 전환</li>
                 <li><strong>CDC 기반 EDA 입출금 아키텍처:</strong> Debezium CDC 도입, 데이터 정합성이 최우선인 입출금 로직을 Outbox 패턴으로 구현</li>
                 <li><strong>도메인 중심 아키텍처 및 로직 통합:</strong> 헥사고날 아키텍처 적용으로 기존 주간 투자왕 서비스에 파편화되어 있던 입출금 처리 로직 통합 성공</li>
               </ul>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">eBPF 기반 Spring Boot 애플리케이션 로깅 정책 표준 수립 <span class="about-exp-period">(2026.08 ~ 진행 중)</span></p>
+              <p class="about-exp-tech">eBPF, Spring Boot</p>
             </div>
 
           </div>
