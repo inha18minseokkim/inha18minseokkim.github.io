@@ -92,7 +92,6 @@ permalink: /about
                 <li>stock-customer-service RESTful 리팩토링 및 도메인 통합 테스트 작성</li>
                 <li>폐쇄망 환경에서 사내 AI 모델로 테스트 코드 작성과 리팩토링 공수 절감</li>
               </ul>
-              <p class="about-proj-link">관련 글: <a href="/2026/03/16/refactoring-overseas-etf-ddd/">overseas-stock, ETF 서비스 DDD 리팩토링 작업기</a></p>
             </div>
 
             <div class="about-proj-item">

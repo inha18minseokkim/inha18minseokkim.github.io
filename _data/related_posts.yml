@@ -1624,9 +1624,6 @@
 - date: '2025-10-10'
   title: 어쩌다 보니 언럭키 CQRS 패턴이 되어버린 건에 관하여
   url: /2025/10/10/unlucky-cqrs-pattern/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 - date: '2025-02-03'
   title: 스프링부트 배치) 배치 메타테이블이 필요할까
   url: /2025/02/03/spring-batch-is-meta-table-necessary/
@@ -2187,9 +2184,6 @@
 - date: '2026-03-20'
   title: MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유
   url: /2026/03/20/blog-ddd-refactoring-strategy/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 2024-09-11-keda-on-data-reception-pod:
 - date: '2024-10-21'
   title: KEDA Job(20241021)
@@ -2459,9 +2453,6 @@
 - date: '2026-02-12'
   title: 공모주 메이트 2차 리팩토링
   url: /2026/02/12/ipo-mate-second-refactoring/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 2024-10-10-working-on-public-network-wishlist:
 - date: '2024-09-04'
   title: EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)
@@ -3227,9 +3218,6 @@
 - date: '2026-05-15'
   title: Aurora에서 Debezium CDC 포기하고 Polling으로 간 이야기
   url: /2026/05/15/aurora-debezium-cdc-to-polling/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 2025-02-12-argo-workflow-jflow-integration-improvement-2-202502:
 - date: '2024-10-20'
   title: 1차 완성본
@@ -4050,9 +4038,6 @@
 - date: '2026-03-20'
   title: MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유
   url: /2026/03/20/blog-ddd-refactoring-strategy/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 - date: '2026-08-17'
   title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 이슈에서 코루틴까지
   url: /2026/08/17/stock-mediation-499-part1/
@@ -4718,22 +4703,6 @@
 - date: '2025-02-13'
   title: 단일 이미지 빌드 환경에서 멀티모듈 빌드(뻘)
   url: /2025/02/13/single-image-multi-module-build/
-2026-03-16-refactoring-overseas-etf-ddd:
-- date: '2026-03-20'
-  title: MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유
-  url: /2026/03/20/blog-ddd-refactoring-strategy/
-- date: '2025-10-10'
-  title: 어쩌다 보니 언럭키 CQRS 패턴이 되어버린 건에 관하여
-  url: /2025/10/10/unlucky-cqrs-pattern/
-- date: '2026-06-15'
-  title: Spring Boot(r2dbc) 업그레이드했더니 OTel 계측 비호환으로 ClassCastException 터진 이야기
-  url: /2026/06/15/otel-upgrade-classcastexception/
-- date: '2026-08-17'
-  title: stock-mediation 499 트레이싱 일대기 (1부) — idle 커넥션 이슈에서 코루틴까지
-  url: /2026/08/17/stock-mediation-499-part1/
-- date: '2026-05-15'
-  title: Aurora에서 Debezium CDC 포기하고 Polling으로 간 이야기
-  url: /2026/05/15/aurora-debezium-cdc-to-polling/
 2026-03-17-closed-network-eks-gitlab-ci-dns-lookup-issue:
 - date: '2024-01-26'
   title: 첫 GO 중 GitLab 이슈 (공모주 메이트)
@@ -4751,9 +4720,6 @@
   title: 'Python + Argo Event (결과 : 원하는대로 안됨)'
   url: /2025/01/14/python-argo-event-failed-result/
 2026-03-20-blog-ddd-refactoring-strategy:
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 - date: '2025-10-10'
   title: 어쩌다 보니 언럭키 CQRS 패턴이 되어버린 건에 관하여
   url: /2025/10/10/unlucky-cqrs-pattern/
@@ -4802,9 +4768,6 @@
 - date: '2023-10-01'
   title: MockBean
   url: /2023/10/01/MockBean/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 - date: '2025-10-10'
   title: 어쩌다 보니 언럭키 CQRS 패턴이 되어버린 건에 관하여
   url: /2025/10/10/unlucky-cqrs-pattern/
@@ -4837,9 +4800,6 @@
 - date: '2026-01-02'
   title: Postgresql CDC + Debezium + kafka 사용 EDA > transactional outbox 패턴
   url: /2026/01/02/postgresql-cdc-debezium-kafka-eda-transactional-outbox/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 - date: '2025-02-11'
   title: Spring Batch 5.2에서 ResourcelessJobRepository로 DB 없이 배치 실행하기
   url: /2025/02/11/spring-batch-resourceless-job-repository/
@@ -4907,9 +4867,6 @@
 - date: '2026-03-20'
   title: MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유
   url: /2026/03/20/blog-ddd-refactoring-strategy/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 2026-05-10-blog-with-claude-code:
 - date: '2026-03-09'
   title: Notion에서 Obsidian으로 옮긴 이유
@@ -4930,9 +4887,6 @@
 - date: '2026-03-20'
   title: MDD + MVC에서 DDD + Hexagonal로 — 과감하게 리팩토링한 이유
   url: /2026/03/20/blog-ddd-refactoring-strategy/
-- date: '2026-03-16'
-  title: overseas-stock, ETF 서비스 DDD 리팩토링 작업기
-  url: /2026/03/16/refactoring-overseas-etf-ddd/
 - date: '2026-03-29'
   title: Debezium CDC 연동 삽질기 - PostgreSQL + Kafka
   url: /2026/03/29/debezium-cdc-troubleshooting/
