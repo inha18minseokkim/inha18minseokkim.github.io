@@ -1,5 +1,5 @@
 ---
-title: AI 공모전 - 2025상반기 (금상, 400만원 + 싱가폴 Fintech week 참가)
+title: AI 공모전 - 2025상반기 (금상, 400만원 + AWS re:Invent 참가)
 date: 2025-06-18
 tags:
   - 케이뱅크
