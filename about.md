@@ -144,7 +144,6 @@ permalink: /about
                 <li>IDC 대외계와 EKS 환경 연결을 위해 EAI-OpenAPI 릴레이 구조 도입</li>
                 <li>레거시 MCI 어댑터의 URI 매핑 한계를 Spring Cloud Gateway RouteLocator 라우팅 로직 개선으로 해결</li>
                 <li>Spring Cloud Gateway와 Redis 간 불필요한 연동을 파악·제거해 장애 시 가용성 확보</li>
-                <li>JPA Audit으로 표준 공통 컬럼(GUID 등) 적재 자동화</li>
               </ul>
             </div>
 
