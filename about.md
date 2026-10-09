@@ -31,6 +31,16 @@ permalink: /about
       </div>
 
       <div class="about-section-block">
+        <h2 class="about-section-title">Core Competencies</h2>
+        <ul class="about-exp-desc">
+          <li><strong>MSA · EKS 서비스 설계/운영:</strong> IDC 레거시와 EKS 연계, Spring Cloud Gateway, BFF 패턴, 헥사고날 아키텍처</li>
+          <li><strong>Kafka 기반 EDA · 데이터 파이프라인:</strong> 폐쇄망 대외 데이터 수신 파이프라인, 계정계 입출금 비동기화, Transactional Outbox</li>
+          <li><strong>배치 · CI/CD 표준화:</strong> 정기작업 솔루션과 Argo Workflow/Kubernetes 잡 연동 표준, KEDA, Helm</li>
+          <li><strong>모니터링 · 로깅 표준:</strong> 데브옵스와 Spring Boot 로깅 표준 합의, traceId 전파, 커넥션 풀·idle-timeout 장애 분석</li>
+        </ul>
+      </div>
+
+      <div class="about-section-block">
         <h2 class="about-section-title">Experience</h2>
         <div class="about-exp-item">
           <div class="about-exp-header">
@@ -41,61 +51,130 @@ permalink: /about
           <div class="about-proj-list">
 
             <div class="about-proj-item">
-              <p class="about-proj-title">초기 서비스 개발 및 MSA 전환 <span class="about-exp-period">(2023.01 ~ 2024.01)</span></p>
+              <p class="about-proj-title">eBPF 기반 Spring Boot 애플리케이션 로깅 표준 수립 <span class="about-exp-period">(2026.08 ~ 진행 중)</span></p>
+              <p class="about-proj-role">역할: 개발 측 표준 협의 (데브옵스와 공동 수립)</p>
+              <p class="about-exp-tech">Spring Boot, Spring WebFlux, Kotlin Coroutines, Spring Cloud Gateway</p>
               <ul class="about-exp-desc">
-                <li><strong>신규 서비스 런칭:</strong> 공모주 메이트, 식품물가 알림, 돈나무 키우기 등의 백엔드 서비스와 계정계/카드계 포털 관리자 화면 및 푸시 배치 기능 개발</li>
-                <li><strong>MSA 추진 TF 활동:</strong> 레거시 시스템을 Spring Boot 3, PostgreSQL 환경으로 마이그레이션하는 작업에 참여</li>
-                <li><strong>MSA 배치 구동 아키텍처 개선:</strong> 사내 정기 작업 관제 시스템(jflow)과 Argo-Workflow를 연동하여 MSA 환경에 배치 어플리케이션을 구동시키는 표준 수립</li>
+                <li>데브옵스와 Spring Boot 로깅 표준 합의 (<strong>행내 EKS 애플리케이션 전체</strong> 대상)</li>
+                <li>eBPF 수집 전환에 맞춰 OTel 에이전트 제거, traceId 전파를 MDC·CoroutineContext·SCG에서 직접 구현</li>
+              </ul>
+              <p class="about-proj-link">관련 글: <a href="/2026/08/26/stock-mediation-499-part5/">Reactor에서 MDC가 안 찍히는 이유 (traceId 전파 시리즈)</a></p>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">주간 투자왕 서비스 리뉴얼 <span class="about-exp-period">(2026.08 ~ 진행 중)</span></p>
+              <p class="about-proj-role">역할: 백엔드 단독 개발</p>
+              <ul class="about-exp-desc">
+                <li>기존 주간 투자왕 서비스에 한국 시장 리그 추가</li>
               </ul>
             </div>
 
             <div class="about-proj-item">
-              <p class="about-proj-title">비상장 주식 서비스 구축 및 레거시-MSA 연동 아키텍처 개선 <span class="about-exp-period">(2024.03 ~ 2024.04)</span></p>
-              <p class="about-exp-tech">Java/Kotlin, Spring Boot, Spring Cloud Gateway, JPA</p>
+              <p class="about-proj-title">게임 라운지 서비스 개발 <span class="about-exp-period">(2026.04 ~ 2026.07)</span></p>
+              <p class="about-proj-role">역할: 설계 주도</p>
+              <p class="about-exp-tech">Java 21, Spring Boot, Spring Data JDBC, Kafka, Aurora PostgreSQL</p>
               <ul class="about-exp-desc">
-                <li><strong>EKS 간 대외 연동 구조 확립:</strong> IDC 대외계와 EKS 환경을 연결하기 위해 EAI-OpenAPI 릴레이 구조 도입</li>
-                <li><strong>API 게이트웨이 라우팅 한계 극복:</strong> 레거시 MCI 어댑터의 URI 매핑 한계를 Spring Cloud Gateway 라우팅 로직 개선으로 해결</li>
-                <li><strong>오버엔지니어링 식별 및 최적화:</strong> Spring Cloud Gateway와 Redis 간 불필요한 연동을 선제적으로 파악, 제거하여 장애 시 가용성 확보</li>
-                <li><strong>공통 데이터 변경 표준화:</strong> JPA Audit 기능을 활용하여 표준 공통 컬럼(GUID 등) 적재 자동화</li>
-                <li><strong>프로젝트 매니지먼트:</strong> 백엔드 핵심 설계 및 유관 부서 간 일정/비즈니스 요건 조율 주도</li>
+                <li><strong>배경:</strong> 주간 투자왕에 입출금 처리 로직이 흩어져 있었고, 서비스 DB 저장과 Kafka 발행이 별개로 동작해 한쪽만 성공하면 리워드가 누락될 수 있었음. <strong>순간 TPS 400</strong> 수준을 버티는 것을 목표로 설계</li>
+                <li>JDK 21 Virtual Thread와 헥사고날 아키텍처에 맞는 Spring Data JDBC로 기술 스택 전환</li>
+                <li>Transactional Outbox 적용. Aurora wal_level 제약으로 CDC 대신 크론잡 기반 Polling 방식 채택</li>
+                <li>헥사고날 아키텍처로 주간 투자왕에 흩어져 있던 입출금 처리 로직을 하나로 통합</li>
+                <li><strong>성과:</strong> 계정계 순단 시에도 게임 서비스들이 정상 동작하도록 구조 변경</li>
+              </ul>
+              <p class="about-proj-link">관련 글: <a href="/2026/05/15/aurora-debezium-cdc-to-polling/">Aurora에서 Debezium CDC 포기하고 Polling으로 간 이야기</a></p>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">주식 서비스 DDD 리팩토링 <span class="about-exp-period">(2025.12 ~ 2026.03)</span></p>
+              <p class="about-proj-role">역할: 주식 서비스 주담당자로서 구조 개선</p>
+              <p class="about-exp-tech">Kotlin, Spring Boot</p>
+              <ul class="about-exp-desc">
+                <li>공모주 메이트, 해외주식/ETF 서비스를 MDD + MVC 구조에서 DDD + 헥사고날 구조로 리팩토링</li>
+                <li>stock-customer-service RESTful 리팩토링 및 도메인 통합 테스트 작성</li>
+                <li>폐쇄망 환경에서 사내 AI 모델로 테스트 코드 작성과 리팩토링 공수 절감</li>
+              </ul>
+              <p class="about-proj-link">관련 글: <a href="/2026/03/16/refactoring-overseas-etf-ddd/">overseas-stock, ETF 서비스 DDD 리팩토링 작업기</a></p>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">주간 투자왕 서비스 개발 <span class="about-exp-period">(2025.06 ~ 2025.12)</span></p>
+              <p class="about-proj-role">역할: 설계 참여</p>
+              <p class="about-exp-tech">Kotlin, Spring WebFlux, R2DBC, Kafka</p>
+              <ul class="about-exp-desc">
+                <li><strong>배경:</strong> 계정계 동기 호출 구조라 계정계 지연 시 EAI 적체로 행 전체에 영향</li>
+                <li>대량 트래픽 처리를 위해 Spring WebFlux와 R2DBC 도입, 논블로킹 I/O 기반으로 DB 병목 제거</li>
+                <li>Kafka 기반으로 계정계 입출금 연동을 비동기화해 계정계 호출 부하 분산</li>
+                <li>고객 ID를 파티션 키로 사용해 고객별 순서 보장, 중복 처리 방지</li>
+                <li>헥사고날 아키텍처 도입으로 도메인 로직과 인프라 간 결합 해제</li>
               </ul>
             </div>
 
             <div class="about-proj-item">
               <p class="about-proj-title">투자홈/투자캘린더 서비스 개발, 고도화 <span class="about-exp-period">(2024.04 ~ 2025.07)</span></p>
-              <p class="about-exp-tech">Kotlin suspend, Kafka, KEDA, Redis</p>
+              <p class="about-proj-role">역할: BFF 설계 및 구현 주도</p>
+              <p class="about-exp-tech">Kotlin Coroutines, Spring WebFlux, Kafka, KEDA</p>
               <ul class="about-exp-desc">
-                <li><strong>대외기관 API 병목 현상 해결:</strong> 폐쇄망 제약(10 TPS)을 극복하기 위해 Kafka 기반 OpenAPI 수신 파이프라인 구축, KEDA 도입으로 EKS 자원 효율화</li>
-                <li><strong>MSA 하위 도메인 디커플링:</strong> 주식 도메인 내 하위 업무(공모주, 비상장 등) 간 복잡도를 낮추기 위해 BFF 패턴 설계 및 적용</li>
-                <li><strong>조회 성능 개선:</strong> 논블로킹 아키텍처와 Redis Lua Script 도입으로 준실시간 국내 주식 데이터 조회 성능 대폭 개선</li>
+                <li>폐쇄망 대외기관 API 제약(<strong>10 TPS</strong>)을 극복하기 위해 Kafka 기반 OpenAPI 수신 파이프라인 구축</li>
+                <li>데이터 수신 Pod에 KEDA를 적용해 EKS 자원 효율화</li>
+                <li>주식 도메인 하위 업무(공모주, 비상장 등) 간 복잡도를 낮추기 위해 BFF 패턴 설계·적용</li>
+                <li>FeignClient/WebClient, Reactor/Virtual Thread 비교 실험 후 Kotlin 코루틴 + WebFlux 채택</li>
+              </ul>
+              <p class="about-proj-link">관련 글: <a href="/2024/10/10/mediation-pattern-where-is-the-common-handler/">mediation 패턴 도입기 시리즈</a></p>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">MSA 배치 실행 표준화 (정기작업 솔루션 ↔ Kubernetes 잡 연동 개선) <span class="about-exp-period">(2024.09 ~ 2025.02)</span></p>
+              <p class="about-proj-role">역할: 표준 수립 주도</p>
+              <p class="about-exp-tech">Spring Boot, Spring Batch, Argo Workflow, Kubernetes, KEDA, Helm, GitLab CI</p>
+              <ul class="about-exp-desc">
+                <li><strong>배경:</strong> 2023년 최초 연동 시 배치 하나당 프로젝트 하나를 만드는 구조로 구성되어, 1년 만에 서브도메인별 배치 프로젝트가 5개, 많게는 30개까지 늘어남. 행내 배치 표준이 jar 기동 방식이라 IDC 정기작업 솔루션에서 EKS를 트리거하려면 점프호스트 쉘 호출만 가능했음</li>
+                <li>맥미니 홈서버에 구축해 둔 Minikube에서 Argo Workflow 연동 구조를 먼저 POC한 뒤 내부망 서버에 반영</li>
+                <li>@ConditionalOnProperty에 파라미터를 전달해 특정 잡 빈만 기동하는 JobLauncher 표준을 만들어 한 프로젝트에서 다수의 잡을 관리, 가이드 문서화</li>
+                <li>데브옵스 엔지니어와 협의해 CI 스크립트가 폴더 단위로 N개의 workflow yaml을 배포하도록 개선, KEDA ScaledObject 배포용 Helm Chart 구성</li>
+                <li>점프호스트 스크립트용 CI 파이프라인 신설, 데브옵스·개발팀 역할 분리</li>
+                <li><strong>성과:</strong> 서브도메인별 배치 프로젝트 5~30개 → 1~2개로 통합, 현재 다른 팀에서도 사용 중</li>
+              </ul>
+              <p class="about-proj-link">관련 글: <a href="/2024/10/20/first-complete-version/">@ConditionalOnProperty 기반 잡 실행 표준 + Argo Workflow 템플릿</a> · <a href="/2024/08/19/regrets-and-apologies/">배치 1:1 구조의 문제와 개선 방향</a></p>
+            </div>
+
+            <div class="about-proj-item">
+              <p class="about-proj-title">비상장 주식 서비스 구축 및 레거시-MSA 연동 아키텍처 개선 <span class="about-exp-period">(2024.03 ~ 2024.04)</span></p>
+              <p class="about-proj-role">역할: 백엔드 핵심 설계 및 일정 조율 주도</p>
+              <p class="about-exp-tech">Java/Kotlin, Spring Boot, Spring Cloud Gateway, JPA</p>
+              <ul class="about-exp-desc">
+                <li>IDC 대외계와 EKS 환경 연결을 위해 EAI-OpenAPI 릴레이 구조 도입</li>
+                <li>레거시 MCI 어댑터의 URI 매핑 한계를 Spring Cloud Gateway RouteLocator 라우팅 로직 개선으로 해결</li>
+                <li>Spring Cloud Gateway와 Redis 간 불필요한 연동을 파악·제거해 장애 시 가용성 확보</li>
+                <li>JPA Audit으로 표준 공통 컬럼(GUID 등) 적재 자동화</li>
               </ul>
             </div>
 
             <div class="about-proj-item">
-              <p class="about-proj-title">주간 투자왕 서비스 개발 <span class="about-exp-period">(2025.06 ~ 2025.12)</span></p>
-              <p class="about-exp-tech">Kotlin, Spring WebFlux, R2DBC, Kafka</p>
+              <p class="about-proj-title">초기 서비스 개발 및 MSA 전환 <span class="about-exp-period">(2023.01 ~ 2024.01)</span></p>
+              <p class="about-proj-role">역할: 개발 참여</p>
+              <p class="about-exp-tech">Java 17, Spring Boot 3, PostgreSQL, Docker, Kubernetes, Kafka</p>
               <ul class="about-exp-desc">
-                <li><strong>Full Reactive 스택:</strong> 대량 트래픽 처리를 위해 Spring WebFlux와 R2DBC 도입, 논블로킹 I/O 기반으로 DB 병목 제거</li>
-                <li><strong>Hexagonal Architecture 도입:</strong> 도메인 로직과 인프라 간 결합을 끊어 비즈니스 변화에 민첩하게 대응할 수 있는 구조 구축</li>
-                <li><strong>이벤트 기반 아키텍처(EDA) 적용:</strong> 계정계 입출금 연동을 위해 Kafka 활용, 서비스 간 결합도를 낮추고 응답 지연 최소화</li>
+                <li>공모주 메이트, 식품물가 알림, 돈나무 키우기 등 신규 서비스 백엔드 개발</li>
+                <li>계정계/카드계 포털 관리자 화면 및 푸시 배치 기능 개발</li>
+                <li>MSA 추진 TF에서 레거시 시스템을 Spring Boot 3, PostgreSQL 환경으로 마이그레이션</li>
               </ul>
             </div>
 
-            <div class="about-proj-item">
-              <p class="about-proj-title">게임 센터 서비스 개발 <span class="about-exp-period">(2026.04 ~ 2026.07)</span></p>
-              <p class="about-exp-tech">Java 21, Spring Boot, Spring Data JDBC, Debezium(CDC), Kafka</p>
-              <ul class="about-exp-desc">
-                <li><strong>Virtual Thread 및 Spring Data JDBC 도입:</strong> JDK 21의 Virtual Thread와 헥사고날 아키텍처에 적합한 Spring Data JDBC로 기술 스택 전환</li>
-                <li><strong>CDC 기반 EDA 입출금 아키텍처:</strong> Debezium CDC 도입, 데이터 정합성이 최우선인 입출금 로직을 Outbox 패턴으로 구현</li>
-                <li><strong>도메인 중심 아키텍처 및 로직 통합:</strong> 헥사고날 아키텍처 적용으로 기존 주간 투자왕 서비스에 파편화되어 있던 입출금 처리 로직 통합 성공</li>
-              </ul>
-            </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="about-proj-item">
-              <p class="about-proj-title">eBPF 기반 Spring Boot 애플리케이션 로깅 정책 표준 수립 <span class="about-exp-period">(2026.08 ~ 진행 중)</span></p>
-              <p class="about-exp-tech">eBPF, Spring Boot</p>
-            </div>
-
+      <div class="about-section-block">
+        <h2 class="about-section-title">Troubleshooting</h2>
+        <div class="about-proj-list">
+          <div class="about-proj-item">
+            <p class="about-proj-title">주식 BFF 간헐적 499 원인 분석 <span class="about-exp-period">(2026.06 ~ 2026.08)</span></p>
+            <p class="about-proj-role">역할: 원인 분석 및 조치</p>
+            <ul class="about-exp-desc">
+              <li>원인: SCG의 <strong>idle-timeout 1초 설정</strong>으로 커넥션이 먼저 끊김 → 제거 후 구간별 idle-timeout 정합, SCG 재시도 추가</li>
+              <li>분석 중 발견한 커넥션 풀 고갈도 함께 해결</li>
+              <li>남은 499는 실제 에러가 아닌 eBPF 트레이싱 노이즈임을 확인</li>
+            </ul>
+            <p class="about-proj-link">관련 글: <a href="/2026/08/17/stock-mediation-499-part1/">stock-mediation 499 트레이싱 삽질 (1~4부)</a></p>
           </div>
         </div>
       </div>
@@ -115,19 +194,31 @@ permalink: /about
             <div class="stack-tags">
               <span class="stack-tag main">Spring Boot</span>
               <span class="stack-tag main">Spring WebFlux</span>
-              <span class="stack-tag">Spring Data JPA</span>
               <span class="stack-tag">Kotlin Coroutines</span>
+              <span class="stack-tag">Spring Cloud Gateway</span>
+              <span class="stack-tag">Spring Data JPA / JDBC</span>
+              <span class="stack-tag">R2DBC</span>
+              <span class="stack-tag">Spring Batch</span>
             </div>
           </div>
           <div class="about-stack-group">
-            <span class="stack-label">Infra / Etc</span>
+            <span class="stack-label">Messaging / Data</span>
             <div class="stack-tags">
-              <span class="stack-tag">MSA</span>
-              <span class="stack-tag">Kafka</span>
+              <span class="stack-tag main">Kafka</span>
+              <span class="stack-tag">Debezium(CDC)</span>
               <span class="stack-tag">Redis</span>
+              <span class="stack-tag">PostgreSQL(Aurora)</span>
+            </div>
+          </div>
+          <div class="about-stack-group">
+            <span class="stack-label">Infra / CI·CD</span>
+            <div class="stack-tags">
+              <span class="stack-tag">AWS EKS</span>
               <span class="stack-tag">Kubernetes</span>
-              <span class="stack-tag">CI/CD</span>
-              <span class="stack-tag">PostgreSQL</span>
+              <span class="stack-tag">Argo Workflow</span>
+              <span class="stack-tag">KEDA</span>
+              <span class="stack-tag">Helm</span>
+              <span class="stack-tag">GitLab CI</span>
             </div>
           </div>
         </div>
@@ -148,6 +239,15 @@ permalink: /about
       </div>
 
       <div class="about-section-block">
+        <h2 class="about-section-title">Awards &amp; Activities</h2>
+        <ul class="about-exp-desc">
+          <li><strong>사내 AI 공모전 금상</strong> (2025 상반기) — 주식 서비스 프로젝트를 사내 AI 모델에 녹여 폐쇄망 환경에서 테스트 코드 작성, 리팩토링, 바이브 코딩 적용</li>
+          <li><strong>AWS re:Invent 2025</strong> 참가 (AI 공모전 포상) — ElastiCache 세션 내용을 Redis Pub/Sub 기반 로컬 캐시 동기화에 적용</li>
+          <li><strong>사내 세션 발표</strong> (2025.10) — <a href="/2025/10/31/letter-to-business-managers-eda/">BM들에게 보내는 편지 - EDA</a>: 기획·사업 담당자 대상 EDA 도입 필요성 발표</li>
+        </ul>
+      </div>
+
+      <div class="about-section-block">
         <h2 class="about-section-title">Certifications</h2>
         <ul class="about-cert-list">
           <li><span class="cert-name">신용분석사</span><span class="cert-meta">한국금융연수원, 2026.06</span></li>
@@ -164,7 +264,7 @@ permalink: /about
       <div class="about-section-block">
         <h2 class="about-section-title">Featured Posts</h2>
         <ul class="about-posts-list">
-          <li><a href="/2024/11/26/mediation-pattern-introduction/">mediation 패턴 도입기 — BFF 설계 전체 흐름 정리</a></li>
+          <li><a href="/2024/10/10/mediation-pattern-where-is-the-common-handler/">mediation 패턴 도입기 — 짬통은 어디에?</a></li>
           <li><a href="/2024/10/11/mediation-feign-client-vs-webclient-nonblocking/">feignClient vs WebClient Non-blocking 비교</a></li>
           <li><a href="/2024/12/04/mediation-reactor-nonblocking-vs-virtual-thread/">Reactor Non-blocking vs Virtual Thread 실험</a></li>
           <li><a href="/2025/02/06/mediation-what-if-100-percent-kotlin/">Java Reactor에서 Kotlin 코루틴으로 — 왜 코틀린인가</a></li>
@@ -257,6 +357,19 @@ permalink: /about
   color: var(--text, #e6edf3);
   margin: 0 0 0.4rem;
 }
+.about-proj-role {
+  font-size: 0.82rem;
+  color: var(--accent, #58a6ff);
+  margin: 0 0 0.3rem;
+}
+.about-proj-link {
+  font-size: 0.82rem;
+  color: var(--text-muted, #888);
+  margin: 0.4rem 0 0;
+}
+.about-proj-link a { color: var(--accent, #58a6ff); text-decoration: none; }
+.about-proj-link a:hover { text-decoration: underline; }
+.about-exp-desc a { color: var(--accent, #58a6ff); text-decoration: none; }
 .about-exp-tech {
   font-size: 0.82rem;
   color: var(--text-muted, #888);
