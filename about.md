@@ -33,9 +33,9 @@ permalink: /about
       <div class="about-section-block">
         <h2 class="about-section-title">Core Competencies</h2>
         <ul class="about-exp-desc">
+          <li><strong>배치 · CI/CD 표준화:</strong> 금융권 폐쇄망·컴플라이언스 환경에서의 개발과 배포 표준 수립, 정기작업 솔루션과 Argo Workflow/Kubernetes 잡 연동 표준, SonarQube 정적 분석 CI 개선</li>
           <li><strong>MSA · EKS 서비스 설계/운영:</strong> IDC 레거시와 EKS 연계, Spring Cloud Gateway, BFF 패턴, 헥사고날 아키텍처</li>
           <li><strong>Kafka 기반 EDA · 데이터 파이프라인:</strong> 폐쇄망 대외 데이터 수신 파이프라인, 계정계 입출금 비동기화, Transactional Outbox</li>
-          <li><strong>배치 · CI/CD 표준화:</strong> 정기작업 솔루션과 Argo Workflow/Kubernetes 잡 연동 표준, KEDA, Helm</li>
           <li><strong>모니터링 · 로깅 표준:</strong> 데브옵스와 Spring Boot 로깅 표준 합의, traceId 전파, 커넥션 풀·idle-timeout 장애 분석</li>
         </ul>
       </div>
@@ -121,6 +121,17 @@ permalink: /about
             </div>
 
             <div class="about-proj-item">
+              <p class="about-proj-title">CI 정적 분석 파이프라인 개선 <span class="about-exp-period">(2025.02 ~ 2025.03)</span></p>
+              <p class="about-proj-role">역할: 데브옵스와 공동 추진</p>
+              <p class="about-exp-tech">GitLab CI, SonarQube, Docker</p>
+              <ul class="about-exp-desc">
+                <li>Gradle 플러그인 기반 SonarQube 분석을 sonar-scanner CLI 이미지 기반으로 전환해, Gradle 프로젝트에서만 돌던 정적 분석을 Kotlin DSL·Python 프로젝트까지 확대</li>
+                <li>Quality Gate 결과 대기 옵션을 적용해 품질 기준 미달 시 파이프라인이 중단되도록 개선</li>
+              </ul>
+              <p class="about-proj-link">관련 글: <a href="/2025/03/17/ci-sonarqube-python-integration-sonar-scanner-image/">Sonarqube + Python 연동 문제 해결 : Sonar Scanner Image</a></p>
+            </div>
+
+            <div class="about-proj-item">
               <p class="about-proj-title">MSA 배치 실행 표준화 (정기작업 솔루션 ↔ Kubernetes 잡 연동 개선) <span class="about-exp-period">(2024.09 ~ 2025.02)</span></p>
               <p class="about-proj-role">역할: 표준 수립 주도</p>
               <p class="about-exp-tech">Spring Boot, Spring Batch, Argo Workflow, Kubernetes, KEDA, Helm, GitLab CI</p>
@@ -130,7 +141,7 @@ permalink: /about
                 <li>@ConditionalOnProperty에 파라미터를 전달해 특정 잡 빈만 기동하는 JobLauncher 표준을 만들어 한 프로젝트에서 다수의 잡을 관리, 가이드 문서화</li>
                 <li>데브옵스 엔지니어와 협의해 CI 스크립트가 폴더 단위로 N개의 workflow yaml을 배포하도록 개선, KEDA ScaledObject 배포용 Helm Chart 구성</li>
                 <li>점프호스트 스크립트용 CI 파이프라인 신설, 데브옵스·개발팀 역할 분리</li>
-                <li><strong>성과:</strong> 서브도메인별 배치 프로젝트 5~30개 → 1~2개로 통합, 현재 다른 팀에서도 사용 중</li>
+                <li><strong>성과:</strong> 서브도메인별 배치 프로젝트 5~30개 → 1~2개로 통합, 사내 표준으로 채택되어 정기작업을 EKS에 배포하는 팀 모두가 사용 중</li>
               </ul>
               <p class="about-proj-link">관련 글: <a href="/2024/10/20/first-complete-version/">@ConditionalOnProperty 기반 잡 실행 표준 + Argo Workflow 템플릿</a> · <a href="/2024/08/19/regrets-and-apologies/">배치 1:1 구조의 문제와 개선 방향</a></p>
             </div>
@@ -167,11 +178,21 @@ permalink: /about
             <p class="about-proj-title">주식 BFF 간헐적 499 원인 분석 <span class="about-exp-period">(2026.06 ~ 2026.08)</span></p>
             <p class="about-proj-role">역할: 원인 분석 및 조치</p>
             <ul class="about-exp-desc">
-              <li>원인: SCG의 <strong>idle-timeout 1초 설정</strong>으로 커넥션이 먼저 끊김 → 제거 후 구간별 idle-timeout 정합, SCG 재시도 추가</li>
+              <li>Grafana Tempo 트레이스로 원인을 추적하다 MSA 전환 때부터 SCG에 <strong>idle-timeout이 1초로 세팅되어 있던 것</strong>을 발견 → 제거 후 구간별 idle-timeout 정합, SCG 재시도 추가</li>
               <li>분석 중 발견한 커넥션 풀 고갈도 함께 해결</li>
               <li>남은 499는 실제 에러가 아닌 eBPF 트레이싱 노이즈임을 확인</li>
             </ul>
             <p class="about-proj-link">관련 글: <a href="/2026/08/17/stock-mediation-499-part1/">stock-mediation 499 트레이싱 삽질 (1~4부)</a></p>
+          </div>
+          <div class="about-proj-item">
+            <p class="about-proj-title">ElastiCache(Valkey) 네트워크 대역폭 초과 장애 <span class="about-exp-period">(2025.12)</span></p>
+            <p class="about-proj-role">역할: 장애 대응 및 원인 분석</p>
+            <ul class="about-exp-desc">
+              <li>점심시간 게임 서비스(돈나무 키우기, 주간 투자왕)가 Redis 커넥션 실패로 503 반환</li>
+              <li>원인: T타입(burstable) 인스턴스의 네트워크 크레딧이 소진되어 패킷 드랍. 공통 코드를 기능 호출마다 Redis에서 반복 조회하는 구조가 30분간 20GB 이상 트래픽을 만듦</li>
+              <li>조치: 인스턴스 타입 변경(t4g.medium → m5.large), 네트워크 한도 초과 지표 알림 추가, 공통 코드를 Redis Pub/Sub 기반 로컬 캐시 동기화로 전환하도록 같은 팀 담당자에게 제안하고 샘플 구현·코드 리뷰 지원</li>
+            </ul>
+            <p class="about-proj-link">관련 글: <a href="/2025/12/21/elasticache-network-bandwidth-outage/">Elasticache 네트워크 대역 장애</a></p>
           </div>
         </div>
       </div>
@@ -211,11 +232,13 @@ permalink: /about
             <span class="stack-label">Infra / CI·CD</span>
             <div class="stack-tags">
               <span class="stack-tag">AWS EKS</span>
+              <span class="stack-tag">Docker</span>
               <span class="stack-tag">Kubernetes</span>
               <span class="stack-tag">Argo Workflow</span>
               <span class="stack-tag">KEDA</span>
               <span class="stack-tag">Helm</span>
               <span class="stack-tag">GitLab CI</span>
+              <span class="stack-tag">SonarQube</span>
             </div>
           </div>
         </div>
@@ -239,7 +262,7 @@ permalink: /about
         <h2 class="about-section-title">Awards &amp; Activities</h2>
         <ul class="about-exp-desc">
           <li><strong>사내 AI 공모전 금상</strong> (2025 상반기) — 주식 서비스 프로젝트를 사내 AI 모델에 녹여 폐쇄망 환경에서 테스트 코드 작성, 리팩토링, 바이브 코딩 적용</li>
-          <li><strong>AWS re:Invent 2025</strong> 참가 (AI 공모전 포상) — ElastiCache 세션 내용을 Redis Pub/Sub 기반 로컬 캐시 동기화에 적용</li>
+          <li><strong>AWS re:Invent 2025</strong> 참가 (AI 공모전 포상) — ElastiCache 세션 내용을 바탕으로 Redis Pub/Sub 기반 로컬 캐시 동기화 샘플을 구현해 장애 개선에 활용</li>
           <li><strong>사내 세션 발표</strong> (2025.10) — <a href="/2025/10/31/letter-to-business-managers-eda/">BM들에게 보내는 편지 - EDA</a>: 기획·사업 담당자 대상 EDA 도입 필요성 발표</li>
         </ul>
       </div>
