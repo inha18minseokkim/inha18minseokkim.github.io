@@ -281,7 +281,7 @@ fun grantReward(occurrence: EventOccurrence) {
 
 ## CDC vs Domain Event 논쟁
 
-이전에 {% post_url 2026-01-02-postgresql-cdc-debezium-kafka-eda-transactional-outbox %} 에서 정리했던 내용인데,
+이전에 [Postgresql CDC + Debezium + kafka 사용 EDA > transactional outbox 패턴]({% post_url 2026-01-02-postgresql-cdc-debezium-kafka-eda-transactional-outbox %}) 에서 정리했던 내용인데,
 CDC를 이벤트 소싱에 쓰면 "비즈니스 의미가 사라진다"는 비판이 있음.
 
 > "도메인 이벤트는 비즈니스 의미를 담아야 한다. CDC는 DB 레벨 변경 사실만 준다."
