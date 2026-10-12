@@ -21,7 +21,7 @@ Postgresql 시퀀스 nextval을 호출하는데 자꾸 20씩 증가한다. INCRE
 옆에 계시는분이 no cache로 가도 되니깐 no cache로 가야한다고 말씀하심. jpa 에서는 sequenceGenerator가 자동으로 관리해주는데(한번에 nextval 한 번 호출하는게 아니라  20번에 한 번 nextval 호출) r2dbc는 그게 안되기때문에 no cache가 맞다는 주장
 
 ### 반론
-[[2024-03-04-PostgreSQL 시퀀스 + 캐시 주의점]]
+[PostgreSQL 시퀀스 + 캐시 주의점]({% post_url 2024-03-04-postgresql-sequence-cache-caution %})
 2023년에 공부했던 내용으로 비추어보았을 때, cache는 db 와 연결되어 있는 세션별로 가지고 있어서 세션이 여러 개인 경우 , 연결이 끊겼다가 다시 연결되는 경우 시퀀스에 단층이 발생할 수 있지만 jdbc든 r2dbc든 물리적으로 db와 연결되어 있는 세션은 하나이기 때문에 시퀀스가 항상 20씩 증가하면 안됨(커넥션풀이 한 개고 연결이 지속되고 있다는 가정하에)
  이건 db 드라이버의 문제이지 r2dbc 자체의 문제는 아니었다고 생각함
 

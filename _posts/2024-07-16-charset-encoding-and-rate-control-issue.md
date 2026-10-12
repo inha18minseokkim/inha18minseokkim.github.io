@@ -10,7 +10,7 @@ category:
   - 실무경험
   - MSA표준
 ---
-[[2024-06-25-EKS-IDCkafka-openApi 수신 구조 잡기]]
+[EKS-IDCkafka-openApi 수신 구조 잡기]({% post_url 2024-06-25-eks-idc-kafka-openapi-data-reception-architecture %})
  구현하면서 생겼던 문제들
 
 KAFKA - API 표준 잡는 중
