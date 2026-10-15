@@ -5051,12 +5051,12 @@
 - date: '2025-02-02'
   title: Keep Alive + Content Length를 잘못세팅하면 벌어지는 일
   url: /2025/02/02/keep-alive-content-length-misconfiguration/
-- date: '2025-02-02'
-  title: Keep Alive + Content Length를 잘못 세팅하면 벌어지는 일
-  url: /2025/02/02/keep-alive-content-length/
 - date: '2026-08-28'
   title: Spring Cloud Gateway에서 traceId 전파 — ServerWebExchange attribute
   url: /2026/08/28/stock-mediation-499-part7/
 - date: '2026-08-20'
   title: stock-mediation 499 트레이싱 삽질 (4부) Q&A — 커넥션 풀, idle-timeout 레이스, eBPF
   url: /2026/08/20/stock-mediation-499-part4/
+- date: '2025-02-02'
+  title: Keep Alive + Content Length를 잘못 세팅하면 벌어지는 일
+  url: /2025/02/02/keep-alive-content-length/
