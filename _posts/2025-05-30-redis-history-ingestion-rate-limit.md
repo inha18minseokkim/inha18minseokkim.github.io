@@ -158,4 +158,4 @@ override fun addHitHistory(criteria: HitHistoryAddCriteria): HitHistoryAddResult
     }
 ```
 
-[[2025-04-01-RateLimiting을 응용하여 이력 적재 속도를 조절해보자]]
+[RateLimiting을 응용하여 이력 적재 속도를 조절해보자]({% post_url 2025-04-01-rate-limiting-for-history-ingestion-speed-control %})
