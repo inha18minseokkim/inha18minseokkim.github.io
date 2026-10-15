@@ -1,5 +1,5 @@
 ---
-title: keep-alive 커넥션이 안 죽어서 L4가 뺀 서버로 요청이 계속 간 이야기 — maxLifeTime
+title: 또 다른 네티 네트워크 이슈
 date: 2026-10-14
 tags:
   - Spring

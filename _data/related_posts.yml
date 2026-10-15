@@ -4504,7 +4504,7 @@
   title: Reactor에서 MDC가 안 찍히는 이유 — Slf4JEventListener scope 문제
   url: /2026/08/26/stock-mediation-499-part5/
 - date: '2026-10-14'
-  title: keep-alive 커넥션이 안 죽어서 L4가 뺀 서버로 요청이 계속 간 이야기 — maxLifeTime
+  title: 또 다른 네티 네트워크 이슈
   url: /2026/10/14/webclient-maxlifetime-l4/
 - date: '2026-08-26'
   title: CoroutineContext로 traceId 전파하기 — MDC 대신
