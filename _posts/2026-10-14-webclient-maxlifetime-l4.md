@@ -169,12 +169,10 @@ stock-mediation에서 쓰던 값을 그대로 가져왔다.
 
 | 설정 | 값 | 이유 |
 |---|---|---|
-| `maxConnections` | 500 | 기존 전역 풀이랑 같게. 상대 서버 용량 보고 정한 값은 아님 |
+| `maxConnections` | 500 | 일단 다른 서버 기본설정이랑 똑같이 둠 |
 | `pendingAcquireMaxCount` | 1000 | 499 때 값 |
 | `pendingAcquireTimeout` | 5s | 기본 45초 동안 붙잡고 있지 말고 빨리 실패 |
 | `maxIdleTime` | 40s | 상대 idle timeout(60s)보다 짧게 |
 | `maxLifeTime` | 90s | L4에서 뺀 서버로 요청이 가는 시간의 상한 |
 | `evictInterval` | 30s | 499 때 값 |
 | `responseTimeout` | 60s | 레거시 HTTP 타임아웃(60~70s)에 맞춤. 원래는 없었음 |
-
-idle은 짧게, lifetime은 L4 운영 절차에 맞게. 499 때 이거까지 같이 봤으면 좋았을텐데..
