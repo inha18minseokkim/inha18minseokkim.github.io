@@ -1228,6 +1228,9 @@
 - date: '2024-09-09'
   title: 연결재무제표 작성 대상기업/면제기업
   url: /2024/09/09/consolidated-financial-statement-exempt-companies/
+- date: '2025-11-06'
+  title: 25' Associate 미니 프로젝트 제출
+  url: /2025/11/06/25-associate-mini-project-submission/
 2024-01-17-deposit-cashback-payment-transaction:
 - date: '2024-01-14'
   title: 준비해야 할 사항(정리중)
@@ -1654,6 +1657,12 @@
 - date: '2025-02-20'
   title: 투자온도 SUNSET 건
   url: /2025/02/20/investment-temperature-sunset/
+- date: '2024-02-28'
+  title: DDL
+  url: /2024/02/28/DDL/
+- date: '2024-06-11'
+  title: 상장주식시세
+  url: /2024/06/11/listed-stock-price/
 2024-04-22-emergency-meta-column-length-change:
 - date: '2024-04-15'
   title: 권리변동에 따른 데이터 보정 필요
@@ -1795,6 +1804,9 @@
 - date: '2024-02-28'
   title: DDL
   url: /2024/02/28/DDL/
+- date: '2024-02-29'
+  title: 두나무 문의 내용
+  url: /2024/02/29/dunamu-inquiry/
 2024-05-28-stock-unit-msa-architecture-improvement:
 - date: '2024-11-26'
   title: mediation 패턴 도입기 - RECYCLE_FACADES
@@ -1853,6 +1865,12 @@
 - date: '2024-08-20'
   title: 해외주식 NASDAQ NYSE test ticker(to Exclude)
   url: /2024/08/20/overseas-stock-nasdaq-nyse-test-tickers/
+- date: '2024-04-15'
+  title: 권리변동에 따른 데이터 보정 필요
+  url: /2024/04/15/data-correction-for-rights-change/
+- date: '2025-10-31'
+  title: 채널 연동 관련 끄적
+  url: /2025/10/31/channel-integration-notes/
 2024-06-14-listed-stock-price-plan-improvement-api-data:
 - date: '2025-05-07'
   title: 재무 데이터 처리
@@ -1866,6 +1884,9 @@
 - date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
   url: /2024/02/21/screen-spec-pre-meeting/
+- date: '2025-02-20'
+  title: api 분석
+  url: /2025/02/20/api-analysis/
 2024-06-25-eks-idc-kafka-openapi-data-reception-architecture:
 - date: '2024-09-04'
   title: EKS - IDC kafka - openApi 그대로 구현해보기(절망 프로젝트)
@@ -2039,6 +2060,9 @@
 - date: '2024-02-28'
   title: DDL
   url: /2024/02/28/DDL/
+- date: '2025-05-07'
+  title: 재무 데이터 처리
+  url: /2025/05/07/financial-data-processing/
 2024-08-20-trading-volume-inconsistency:
 - date: '2024-06-11'
   title: 상장주식시세
@@ -2052,6 +2076,9 @@
 - date: '2024-04-15'
   title: 권리변동에 따른 데이터 보정 필요
   url: /2024/04/15/data-correction-for-rights-change/
+- date: '2024-04-05'
+  title: 'Redis '
+  url: /2024/04/05/Redis/
 2024-08-24-nasdaq-suffix:
 - date: '2024-09-27'
   title: 미국 주식 시장 코드 정리 (NMS, NYQ, ARCA...)
@@ -2110,6 +2137,12 @@
 - date: '2024-02-28'
   title: DDL
   url: /2024/02/28/DDL/
+- date: '2024-08-20'
+  title: 해외주식 NASDAQ NYSE test ticker(to Exclude)
+  url: /2024/08/20/overseas-stock-nasdaq-nyse-test-tickers/
+- date: '2024-02-22'
+  title: 화면 명세(회의 후)
+  url: /2024/02/22/screen-spec-post-meeting/
 2024-09-09-financial-data-exposure-criteria:
 - date: '2025-05-07'
   title: 재무 데이터 처리
@@ -2123,6 +2156,9 @@
 - date: '2025-02-20'
   title: 무형자산>가상자산 계정 분석
   url: /2025/02/20/intangible-virtual-asset-account-analysis/
+- date: '2025-02-20'
+  title: api 분석
+  url: /2025/02/20/api-analysis/
 2024-09-09-listed-company-business-report-deadline:
 - date: '2024-09-09'
   title: 재무데이터 노출기준 정하기
@@ -3306,6 +3342,9 @@
 - date: '2024-06-14'
   title: 상장주식시세 기획안 개선 + API 기준 데이터 정리
   url: /2024/06/14/listed-stock-price-plan-improvement-api-data/
+- date: '2025-02-17'
+  title: OpenDart - 전문투자자 대상 선별 방법
+  url: /2025/02/17/opendart-professional-investor-selection/
 2025-02-20-intangible-virtual-asset-account-analysis:
 - date: '2025-05-07'
   title: 재무 데이터 처리
@@ -3332,6 +3371,12 @@
 - date: '2024-02-21'
   title: 화면 명세(회의전 기획안)
   url: /2024/02/21/screen-spec-pre-meeting/
+- date: '2024-02-28'
+  title: DDL
+  url: /2024/02/28/DDL/
+- date: '2024-06-11'
+  title: 투자온도(구 공포탐욕지수)
+  url: /2024/06/11/investment-temperature-fear-greed-index/
 2025-02-20-spring-batch-exit-logic-improvement:
 - date: '2023-11-01'
   title: Spring batch + Control M
@@ -3375,6 +3420,12 @@
 - date: '2024-02-28'
   title: DDL
   url: /2024/02/28/DDL/
+- date: '2024-06-11'
+  title: 투자온도(구 공포탐욕지수)
+  url: /2024/06/11/investment-temperature-fear-greed-index/
+- date: '2024-09-09'
+  title: 정기 작업이 꼭 배치 형태여야 하는가(20240909)
+  url: /2024/09/09/does-scheduled-job-have-to-be-batch/
 2025-03-16-python-istio-sidecar-integration-issue:
 - date: '2024-12-31'
   title: Python + jflow 필요성 + 샘플 프로젝트
@@ -3484,6 +3535,9 @@
 - date: '2024-04-05'
   title: 'Redis '
   url: /2024/04/05/Redis/
+- date: '2025-07-29'
+  title: DB Sync 개선 - 거래이력 로깅 병목 해결
+  url: /2025/07/29/db-sync-improvement/
 2025-04-02-Mono context cannot contain job in it. Its lifecycle:
 - date: '2023-10-30'
   title: Spring batch + FlowJob
@@ -3529,6 +3583,9 @@
 - date: '2024-02-28'
   title: DDL
   url: /2024/02/28/DDL/
+- date: '2025-02-20'
+  title: api 분석
+  url: /2025/02/20/api-analysis/
 2025-05-25-tech-talk-kbank-stock-msa-langchain-mcp:
 - date: '2025-04-01'
   title: '[Tech Talk] 케이뱅크 주식 MSA 서비스를 활용한 LangChain + MCP'
@@ -4062,6 +4119,18 @@
 - date: '2024-06-14'
   title: 상장주식시세 기획안 개선 + API 기준 데이터 정리
   url: /2024/06/14/listed-stock-price-plan-improvement-api-data/
+- date: '2024-06-11'
+  title: 상장주식시세
+  url: /2024/06/11/listed-stock-price/
+- date: '2024-09-09'
+  title: 정기 작업이 꼭 배치 형태여야 하는가(20240909)
+  url: /2024/09/09/does-scheduled-job-have-to-be-batch/
+- date: '2024-04-15'
+  title: 권리변동에 따른 데이터 보정 필요
+  url: /2024/04/15/data-correction-for-rights-change/
+- date: '2025-02-20'
+  title: 투자온도 SUNSET 건
+  url: /2025/02/20/investment-temperature-sunset/
 2025-10-31-letter-to-business-managers-eda:
 - date: '2023-09-04'
   title: 회의록(야놀자 사례)
@@ -4107,6 +4176,9 @@
 - date: '2025-09-26'
   title: api명세
   url: /2025/09/26/api-specification/
+- date: '2025-08-12'
+  title: BFF(Backend-For-Frontend)
+  url: /2025/08/12/BFF(Backend-For-Frontend)/
 2025-11-30-AWS Reinvent Las Vegas(2025):
 - date: '2025-12-03'
   title: '**Advanced data modeling for Amazon ElastiCache **'
@@ -4431,6 +4503,9 @@
 - date: '2026-08-26'
   title: Reactor에서 MDC가 안 찍히는 이유 — Slf4JEventListener scope 문제
   url: /2026/08/26/stock-mediation-499-part5/
+- date: '2026-10-14'
+  title: 또 다른 네티 네트워크 이슈
+  url: /2026/10/14/webclient-maxlifetime-l4/
 - date: '2026-08-26'
   title: CoroutineContext로 traceId 전파하기 — MDC 대신
   url: /2026/08/26/stock-mediation-499-part6/
@@ -4440,9 +4515,6 @@
 - date: '2024-10-02'
   title: Minikube + Mac 안되는 이유, Kubernetes with Docker desktop
   url: /2024/10/02/minikube-mac-issue-kubernetes-docker-desktop/
-- date: '2024-05-16'
-  title: 데이터 소진 후 안드로이드 프록시 서버로 테더링 뻘짓
-  url: /2024/05/16/proxy-tethering-experiment/
 2026-01-26-raptor-rag-disclosure-document-summarization:
 - date: '2025-06-18'
   title: AI 공모전 - 2025상반기 (금상, 400만원 + AWS re:Invent 참가)
@@ -4472,6 +4544,9 @@
 - date: '2024-04-05'
   title: 'Redis '
   url: /2024/04/05/Redis/
+- date: '2024-10-12'
+  title: 주관사, 공동 주관사 문제
+  url: /2024/10/12/ipo-lead-underwriter-joint-underwriter-issue/
 2026-02-19-redis-pubsub-local-cache:
 - date: '2026-02-19'
   title: Redis pub/sub 활용해서 Local Cache 동기화 - kotlin arrow 응용
@@ -4851,6 +4926,12 @@
 - date: '2025-10-31'
   title: 채널 연동 관련 끄적
   url: /2025/10/31/channel-integration-notes/
+- date: '2026-02-12'
+  title: 공모주 메이트 2차 리팩토링
+  url: /2026/02/12/ipo-mate-second-refactoring/
+- date: '2024-10-10'
+  title: STK업무 장애(DBA의 작업실수)
+  url: /2024/10/10/stk-service-outage-dba-mistake/
 2026-08-17-stock-mediation-499-part1:
 - date: '2026-08-17'
   title: stock-mediation 499 트레이싱 삽질 (2부) — 커넥션 풀 고갈과 여러 이슈들
@@ -4963,3 +5044,19 @@
 - date: '2026-08-17'
   title: stock-mediation 499 트레이싱 삽질 (3부) — 두 가지 원인과 SCG 재시도 추가
   url: /2026/08/17/stock-mediation-499-part3/
+2026-10-14-webclient-maxlifetime-l4:
+- date: '2026-08-26'
+  title: Reactor에서 MDC가 안 찍히는 이유 — Slf4JEventListener scope 문제
+  url: /2026/08/26/stock-mediation-499-part5/
+- date: '2025-02-02'
+  title: Keep Alive + Content Length를 잘못세팅하면 벌어지는 일
+  url: /2025/02/02/keep-alive-content-length-misconfiguration/
+- date: '2026-08-28'
+  title: Spring Cloud Gateway에서 traceId 전파 — ServerWebExchange attribute
+  url: /2026/08/28/stock-mediation-499-part7/
+- date: '2026-08-20'
+  title: stock-mediation 499 트레이싱 삽질 (4부) Q&A — 커넥션 풀, idle-timeout 레이스, eBPF
+  url: /2026/08/20/stock-mediation-499-part4/
+- date: '2025-02-02'
+  title: Keep Alive + Content Length를 잘못 세팅하면 벌어지는 일
+  url: /2025/02/02/keep-alive-content-length/
